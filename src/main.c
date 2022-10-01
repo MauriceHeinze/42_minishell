@@ -13,9 +13,11 @@ char *ft_strred(char *cmd_line)
 	int		k;
 	int		end;
 	char	*tmp;
+	int		reduce;
 
 	i = 0;
 	k = 0;
+	reduce = 1;
 	tmp = malloc(sizeof(char) * ft_strlen(cmd_line));
 	if (!tmp)
 		return (NULL);
@@ -27,11 +29,21 @@ char *ft_strred(char *cmd_line)
 	while (cmd_line[i++] == ' ');
 	while (cmd_line[i] != '\0')
 	{
-		if (cmd_line[i] != ' ')
-		{
+		if (cmd_line[i] == '\'' && reduce == 1)
+			reduce = 0;
+		else if (cmd_line[i] == '\'' && reduce == 0)
+			reduce = 1;
+		if (reduce == 0)
 			tmp[k++] = cmd_line[i];
-			if (cmd_line[i + 1] == ' ' && (i < end))
-				tmp[k++] = cmd_line[i + 1];
+		else if (reduce == 1)
+		{
+			if (cmd_line[i] != ' ')
+			{
+				tmp[k++] = cmd_line[i];
+				if (cmd_line[i + 1] == ' ' && (i < end) && reduce)
+					tmp[k++] = cmd_line[i + 1];
+
+			}
 		}
 		i++;
 	}
@@ -44,7 +56,7 @@ int	main(int argc, char *argv[])
 
 	// printf("%s\n", cmd_line);
 	// printf("%d\n", is_separator('|'));
-	printf("%s", ft_strred("    Hallo   meine   Welt    "));
+	printf("%s", ft_strred("'    Hallo   meine   Welt  test   '"));
 	printf("abc");
 	// found_cmd(cmd_line);
 	return (0);
