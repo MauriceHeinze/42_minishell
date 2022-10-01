@@ -84,33 +84,33 @@ char	**split_cmd_lines(char *input_str)
 	return (cmd_lines);
 }
 
-// // creates tokens out of reduced cmd_line
-// char	**tokenizer(char *reduced_cmd_line)
-// {
-// 	int		cmd_i;
-// 	int		token_i;
-// 	int		tokens_k;
-// 	char	*token;
-// 	char	**tokens;
+//      \"Hallo' meine Welttest\"
 
-// 	cmd_i = 0;
-// 	token_i = 0;
-// 	tokens_k = 0;
-// 	token = malloc(sizeof(token) * 10000);
-// 	tokens = malloc(sizeof(token) * 10000);
+int	follows_quote_rules(char *cmd_line)
+{
+	int	i;
+	int	single_quote;
+	int	double_quote;
 
-// 	while (reduced_cmd_line[cmd_i] != '\0')
-// 	{
-// 		while (is_delimiter(reduced_cmd_line[cmd_i]) == 0)
-// 		{
-// 			tokens[tokens_k][token_i] = reduced_cmd_line[cmd_i];
-// 			token_i++;
-// 			cmd_i++;
-// 		}
-// 		tokens[tokens_k][token_i] = '\0';
-// 		tokens_k++;
-// 	}
-// }
+	i = 0;
+	single_quote = 0;
+	double_quote = 0;
+	while (cmd_line[i] != '\0')
+	{
+		if (cmd_line[i] == '\'' && double_quote != 1)
+			single_quote++;
+		else if (cmd_line[i] == '\"' && single_quote == 0)
+			double_quote++;
+		if (single_quote == 2)
+			single_quote = 0;
+		if (double_quote == 2)
+			double_quote = 0;
+		i++;
+	}
+	if (single_quote == 1 || double_quote == 1)
+		return (0);
+	return (1);
+}
 
 int	main(int argc, char *argv[])
 {
@@ -120,19 +120,27 @@ int	main(int argc, char *argv[])
 	// printf("%d\n", is_separator('|'));
 	// printf("%s", ft_strred("'  	Hallo   meine   Welt'  test   "));
 
-	char	**tab;
-	int		i;
+	// char	**tab;
+	// int		i;
 
-	i = 0;
-	tab = split_cmd_lines("echo Hallo Welt | touch file |");
+	// i = 0;
+	// tab = split_cmd_lines("echo Hallo Welt | touch file |");
 
-	if (!tab[0])
-		ft_putendl_fd("ok\n", 1);
-	while (tab[i] != NULL)
-	{
-		ft_putendl_fd(tab[i], 1);
-		i++;
-	}
+	// if (!tab[0])
+	// 	ft_putendl_fd("ok\n", 1);
+	// while (tab[i] != NULL)
+	// {
+	// 	ft_putendl_fd(tab[i], 1);
+	// 	i++;
+	// }
 	// found_cmd(cmd_line);
+	printf("Should display 1:%d\n", follows_quote_rules("\"Hallo meine Welttest\""));
+	printf("Should display 1:%d\n", follows_quote_rules("\'Hallo meine Welttest\'"));
+	printf("Should display 1:%d\n", follows_quote_rules("Hallo'' meine Welttest"));
+	printf("Should display 1:%d\n", follows_quote_rules("\"Hallo' meine Welttest\""));
+	printf("Should display 0:%d\n", follows_quote_rules("Hallo' meine Welttest"));
+	printf("Should display 0:%d\n", follows_quote_rules("\'Hallo\' meine \" Welttest"));
+	printf("Should display 0:%d\n", follows_quote_rules("' Hallo meine Welttest"));
+
 	return (0);
 }
