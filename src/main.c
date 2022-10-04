@@ -3,9 +3,8 @@
 // lexer -> expander ->  parser -> executor
 
 // Todos
-// - Rewrite ft_split to skip | if they are in quotes
-// - Find out if you handle the input correctly now
-// - maybe just start testing with prompt
+// - handle special chars like /t /n etc.
+// - recognize commands like >> && || etc.
 
 char	*copy_quote(char found_quote, char *input_str, int pos)
 {
@@ -85,21 +84,68 @@ char	**ft_tokenizer(char *input_str)
 			words[no_word++][1] = '\0';
 		}
 	}
+	words[no_word] = NULL;
 	return (words);
+}
+
+int		is_command(char *word)
+{
+	// printf("result:	%d\n", ft_strcmp(word, "echo"));
+	if (ft_strcmp(word, "echo") == 0)
+		return (ECHO);
+	if (ft_strcmp(word, "cd") == 0)
+		return (CD);
+	if (ft_strcmp(word, "pwd") == 0)
+		return (PWD);
+	if (ft_strcmp(word, "export") == 0)
+		return (EXPORT);
+	if (ft_strcmp(word, "unset") == 0)
+		return (UNSET);
+	if (ft_strcmp(word, "env") == 0)
+		return (ENV);
+	if (ft_strcmp(word, "exit") == 0)
+		return (EXIT);
+	return (0);
+}
+
+int		is_operator(char *word)
+{
+	if (ft_strcmp(word, ">") == 0)
+		return (ARROW_LEFT);
+	if (ft_strcmp(word, ">>") == 0)
+		return (DOUBLE_ARROW_LEFT);
+	if (ft_strcmp(word, "<") == 0)
+		return (ARROW_RIGHT);
+	if (ft_strcmp(word, "<<") == 0)
+		return (DOUBLE_ARROW_RIGHT);
+	if (ft_strcmp(word, "|") == 0)
+		return (PIPE);
+	if (ft_strcmp(word, "||") == 0)
+		return (OR);
+	if (ft_strcmp(word, "&&") == 0)
+		return (AND);
+	if (word == NULL)
+		return (EXIT);
+	return (0);
 }
 
 int	main(int argc, char *argv[])
 {
 	char	**tokens;
+	int		i;
 
-	tokens = ft_tokenizer("Hallo \\\"Welt\" Test");
-	printf("%s", tokens[0]);
-	printf("%s", tokens[1]);
-	printf("%s", tokens[2]);
-	printf("%s", tokens[3]);
-	printf("%s", tokens[4]);
-	// printf("%s", tokens[5]);
-	// printf("%s", tokens[6]);
-	// printf("%s", tokens[7]);
+	i = 0;
+	// printf("Test %d\n", is_command("echo"));
+	tokens = ft_tokenizer("cd ../Desktop | echo \"Hallo Welt!\" >> file.txt");
+
+	while (tokens[i] != NULL)
+	{
+		if (is_command(tokens[i]))
+			printf("%s is %d\n", tokens[i], is_command(tokens[i]));
+		if (is_operator(tokens[i]))
+			printf("%s is %d\n", tokens[i], is_operator(tokens[i]));
+		i++;
+	}
+
 	return (0);
 }
