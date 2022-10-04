@@ -29,6 +29,12 @@ struct	s_cmd_line {
 	struct cmd_line		*next;
 }		t_cmd_line;
 
+
+// TOOLS
+int		get_category(char *word);
+char	special_char(char *input_str, int pos);
+
+
 // KEYS FOR BUILT INS
 # define ECHO 100
 # define CD 200

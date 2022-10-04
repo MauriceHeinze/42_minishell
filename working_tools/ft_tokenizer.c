@@ -1,41 +1,5 @@
 #include "../inc/minishell.h"
 
-// lexer -> expander ->  parser -> executor
-
-// Todos
-// - Rewrite ft_split to skip | if they are in quotes
-// - Find out if you handle the input correctly now
-// - maybe just start testing with prompt
-
-char	*copy_quote(char found_quote, char *input_str, int pos)
-{
-	int		k;
-	char	*quote;
-
-	k = 0;
-	quote = malloc(sizeof(char) * ft_strlen(input_str));
-	// printf("Test: %c\n", input_str[pos]);
-	quote[k++] = input_str[pos++];
-	while (input_str[pos] != '\0')
-	{
-		if (input_str[pos] == found_quote)
-			break ;
-		else
-		{
-			if (input_str[pos] == '\\')
-			{
-				pos++;
-				quote[k] = input_str[pos++];
-			}
-			else
-				quote[k] = input_str[pos++];
-			k++;
-		}
-	}
-	quote[k] = '\0';
-	return (quote);
-}
-
 char	**ft_tokenizer(char *input_str)
 {
 	int		i;
@@ -85,21 +49,6 @@ char	**ft_tokenizer(char *input_str)
 			words[no_word++][1] = '\0';
 		}
 	}
+	words[no_word] = NULL;
 	return (words);
-}
-
-int	main(int argc, char *argv[])
-{
-	char	**tokens;
-
-	tokens = ft_tokenizer("Hallo \\\"Welt\" Test");
-	printf("%s", tokens[0]);
-	printf("%s", tokens[1]);
-	printf("%s", tokens[2]);
-	printf("%s", tokens[3]);
-	printf("%s", tokens[4]);
-	// printf("%s", tokens[5]);
-	// printf("%s", tokens[6]);
-	// printf("%s", tokens[7]);
-	return (0);
 }
