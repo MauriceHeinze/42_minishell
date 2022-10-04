@@ -47,4 +47,11 @@ struct	s_cmd_line {
 # define OR 1300
 # define AND 1400
 
+// KEYS FOR WORDS, WHITE-SPACE AND QUOTES
+# define WHITE_SPACE 1500
+# define QUOTE 1600
+# define DOUBLE_QUOTE 1700
+# define WORD 1900
+
+
 #endif

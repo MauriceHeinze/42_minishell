@@ -129,6 +129,24 @@ int		is_operator(char *word)
 	return (0);
 }
 
+int		get_category(char *word)
+{
+	// printf("result:	%d\n", ft_strcmp(word, "echo"));
+	if (is_command(word) > 0)
+		return (is_command(word));
+	else if (is_operator(word) > 0)
+		return (is_operator(word));
+	else if ((ft_strcmp(word, " ") == 0) || (ft_strcmp(word, "	") == 0))
+		return (WHITE_SPACE);
+	else if (ft_strcmp(word, "\'") == 0)
+		return (QUOTE);
+	else if (ft_strcmp(word, "\"") == 0)
+		return (DOUBLE_QUOTE);
+	else
+		return (WORD);
+	return (0);
+}
+
 int	main(int argc, char *argv[])
 {
 	char	**tokens;
@@ -140,10 +158,12 @@ int	main(int argc, char *argv[])
 
 	while (tokens[i] != NULL)
 	{
-		if (is_command(tokens[i]))
-			printf("%s is %d\n", tokens[i], is_command(tokens[i]));
-		if (is_operator(tokens[i]))
-			printf("%s is %d\n", tokens[i], is_operator(tokens[i]));
+		// printf("%s\n", tokens[i]);
+		// if (is_command(tokens[i]))
+		// 	printf("%s is %d\n", tokens[i], is_command(tokens[i]));
+		// if (is_operator(tokens[i]))
+		// 	printf("%s is %d\n", tokens[i], is_operator(tokens[i]));
+		printf("%s is %d\n", tokens[i], get_category(tokens[i]));
 		i++;
 	}
 
