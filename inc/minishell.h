@@ -16,17 +16,17 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
-struct token {
+typedef struct	s_token {
 	char			*word;
 	int				type; // Use define function
 	struct token	*next;
-};
+}				t_token;
 
-struct cmd_line {
+struct	s_cmd_line {
 	char				*cmd;
 	struct token		*word;
 	char				**args;
 	struct cmd_line		*next;
-};
+}		t_cmd_line;
 
 #endif
