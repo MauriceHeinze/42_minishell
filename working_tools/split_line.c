@@ -6,22 +6,25 @@ char	**split_line(char *input_str)
 	int		k;
 	int		no_word;
 	char	**words;
+	int		total_words;
 
-	words = malloc(sizeof(char *) * (count_words(input_str)));
-	words = ft_calloc(count_words(input_str) + 1, sizeof(char *));
+	total_words =  count_words(input_str) + 1;
+
+	words = malloc(sizeof(char *) * total_words);
+	words = ft_calloc(total_words, sizeof(char *));
 
 	i = 0;
 	k = 0;
 	no_word = 0;
-	while (no_word < 100)
+	while (no_word <  (count_words(input_str) + 1))
 	{
 		words[no_word] = malloc(sizeof(char) * 100);
-		words[no_word][0] = '\0';
 		no_word++;
 	}
 	no_word = 0;
 	while (input_str[i] != '\0')
 	{
+		// printf("Run %d\n", i);
 		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
 		{
 			if (input_str[i] == '\\')
@@ -31,6 +34,7 @@ char	**split_line(char *input_str)
 			}
 			words[no_word][k++] = input_str[i++];
 		}
+		// printf("%s  - Index: %d \n", words[no_word], no_word);
 		if (k > 0)
 		{
 			words[no_word++][k] = '\0';
@@ -45,19 +49,11 @@ char	**split_line(char *input_str)
 			// printf("\ntest: %c\n", input_str[i]);
 			i++;
 		}
-		else if (ft_strchr(" 	", input_str[i]))
-		{
-			words[no_word][0] = input_str[i++];
-			words[no_word++][1] = '\0';
-		}
+		else
+			i++;
 	}
-	// printf("Last word:	%s\n", words[no_word - 3]);
-	// printf("no_word:	%d\n", no_word);
-
-	// printf("char:	%d\n", words[no_word - 1][0]);
-	// printf("char:	%d\n", words[no_word - 2][0]);
-	// printf("char:	%d\n", words[no_word - 3][0]);
-	// printf("char:	%d\n", words[no_word - 4][0]);
-	// words[no_word - 4] = NULL;
+	printf("First word in split_line: %s\n", words[0]);
+	// printf("%d\n", count_words(input_str));
+	words[total_words - 1] = NULL;
 	return (words);
 }

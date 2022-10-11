@@ -35,6 +35,7 @@ char	special_char(char *input_str, int pos);
 char	**split_line(char *input_str);
 char	*copy_quote(char found_quote, char *input_str, int pos);
 int		count_words(char *input_str);
+t_token	*tokenizer(char	**words);
 
 // KEYS FOR BUILT INS
 # define ECHO 100
