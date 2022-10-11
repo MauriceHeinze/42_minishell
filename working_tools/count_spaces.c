@@ -20,9 +20,11 @@ static int	count_spaces(char *input_str)
 		if (count == 0)
 			i++;
 		else if (count == 1)
+		{
 			if (input_str[i] == ' ' || input_str[i] == '	')
 				no_spaces++;
-		i++;
+			i++;
+		}
 	}
 	return (no_spaces);
 }

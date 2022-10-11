@@ -2,8 +2,10 @@
 
 int	main(int argc, char *argv[])
 {
-	char		*input_str = " 	   	cd ../Desktop | echo \"Hallo Welt!\" >> file.txt 	 	 ";
+	// char		*input_str = " 	   	cd ../Desktop | echo \"Hallo Welt!\" >> file.txt 	 	 ";
 	// char		*input_str = " 	   	cd ../Desktop | touch file_21.txt | echo \"Hallo Welt!\" >> file.txt 	 	 ";
+	char	*input_str = " 	   	cd ../Desktop | echo \"Hallo \\\\t Welt!\" >> file.txt 	 	 ";
+
 
 	char		**words;
 	t_token		*tokens;
@@ -16,7 +18,7 @@ int	main(int argc, char *argv[])
 	// printf("%s\n", input_str);
 	printf("Number of words: %d\n", count_words(input_str));
 	words = split_line(input_str);
-	printf("First word in main: %s\n", words[0]);
+	// printf("First word in main: %s\n", words[0]);
 	tokens = tokenizer(words);
 	// printf("Result: %s\n", ft_substr_backslash(input_str, 0, 100));
 
