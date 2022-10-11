@@ -4,6 +4,7 @@ char	**split_line(char *input_str)
 {
 	int		i;
 	int		k;
+	int		start;
 	int		no_word;
 	char	**words;
 	int		total_words;
@@ -15,6 +16,7 @@ char	**split_line(char *input_str)
 
 	i = 0;
 	k = 0;
+	start = 0;
 	no_word = 0;
 	while (no_word <  (count_words(input_str) + 1))
 	{
