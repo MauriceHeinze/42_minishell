@@ -4,7 +4,7 @@ int	main(int argc, char *argv[])
 {
 	// char		*input_str = " 	   	cd ../Desktop | echo \"Hallo Welt!\" >> file.txt 	 	 ";
 	// char		*input_str = " 	   	cd ../Desktop | touch file_21.txt | echo \"Hallo Welt!\" >> file.txt 	 	 ";
-	char	*input_str = " 	   	cd ../Desktop | echo \"Hallo \\\\t Welt!\" >> file.txt 	 	 ";
+	char	*input_str = " 	   	cd ../Desktop | echo \"Hallo \\\\t Welt!\" >> file.txt 	 a\"	 ";
 
 
 	char		**words;

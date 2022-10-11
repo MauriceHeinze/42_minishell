@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/11 11:32:57 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/11 12:20:51 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int	quote_length(char found_quote, char *input_str, int pos)
 	while (input_str[pos++] != '\0')
 	{
 		if (input_str[pos] == found_quote)
-		{
-			k++;
 			break ;
-		}
 		else
 			k++;
 	}

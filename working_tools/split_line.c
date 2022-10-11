@@ -30,7 +30,9 @@ char	**split_line(char *input_str)
 		if (input_str[i] == '\'' || input_str[i] == '\"')
 		{
 			i = i + quote_length(input_str[i], input_str, i) + 1;
+			start++;
 			words[no_word++] = ft_substr_backslash(input_str, start, i - start);
+			i++;
 		}
 		else
 			i++;
