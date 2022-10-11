@@ -1,54 +1,31 @@
 #include "../inc/minishell.h"
 
-char	**ft_tokenizer(char *input_str)
+t_token	*ft_tokenizer(char	**words)
 {
 	int		i;
-	int		k;
-	int		no_word;
-	char	**words;
+	t_token	*head;
+	t_token	*tmp_token;
+	t_token	*tmp_token_2;
 
-	words = malloc(sizeof(char *) * 10000);
-
-	i = 0;
-	k = 0;
-	no_word = 0;
-	while (no_word < 100)
+	head = malloc(sizeof(t_token));
+	if (!head)
+		return (NULL);
+	head->word = ft_strdup(words[0]);
+	head->category = get_category(words[0]);
+	head->next = NULL;
+	tmp_token_2 = head;
+	i = 1;
+	while (words[i] != NULL)
 	{
-		words[no_word] = malloc(sizeof(char) * 100);
-		no_word++;
+		tmp_token = malloc(sizeof(t_token));
+		if (!tmp_token)
+			return (NULL);
+		tmp_token->word = ft_strdup(words[i]);
+		tmp_token->category = get_category(words[i]);
+		tmp_token->next = NULL;
+		tmp_token_2->next = tmp_token;
+		tmp_token_2 = tmp_token;
+		i++;
 	}
-	no_word = 0;
-	while (input_str[i] != '\0')
-	{
-		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
-		{
-			if (input_str[i] == '\\')
-			{
-				i++;
-				words[no_word][k++] = input_str[i++];
-			}
-			words[no_word][k++] = input_str[i++];
-		}
-		if (k > 0)
-		{
-			words[no_word++][k] = '\0';
-			k = 0;
-		}
-		if (input_str[i] == '\'' || input_str[i] == '\"')
-		{
-			// printf("fire!\n");
-			words[no_word] = copy_quote(input_str[i], input_str, i);
-			i = i + ft_strlen(words[no_word++]);
-			words[no_word - 1][ft_strlen(words[no_word - 1])] = input_str[i];
-			// printf("\ntest: %c\n", input_str[i]);
-			i++;
-		}
-		else if (ft_strchr(" 	", input_str[i]))
-		{
-			words[no_word][0] = input_str[i++];
-			words[no_word++][1] = '\0';
-		}
-	}
-	words[no_word] = NULL;
-	return (words);
+	return (head);
 }

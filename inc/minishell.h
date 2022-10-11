@@ -16,24 +16,25 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
-typedef struct	s_token {
+typedef struct s_token {
 	char			*word;
-	int				type; // Use define function
-	struct token	*next;
+	int				category; // Use define function
+	struct s_token	*next;
 }				t_token;
 
-struct	s_cmd_line {
+typedef struct s_cmd_line {
 	char				*cmd;
-	struct token		*word;
+	t_token				*word;
 	char				**args;
-	struct cmd_line		*next;
-}		t_cmd_line;
-
+	struct s_cmd_line	*next;
+}				t_cmd_line;
 
 // TOOLS
 int		get_category(char *word);
 char	special_char(char *input_str, int pos);
-
+char	**split_line(char *input_str);
+char	*copy_quote(char found_quote, char *input_str, int pos);
+int		count_words(char *input_str);
 
 // KEYS FOR BUILT INS
 # define ECHO 100
@@ -58,6 +59,5 @@ char	special_char(char *input_str, int pos);
 # define QUOTE 1600
 # define DOUBLE_QUOTE 1700
 # define WORD 1900
-
 
 #endif
