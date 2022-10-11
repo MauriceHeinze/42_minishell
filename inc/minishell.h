@@ -34,6 +34,7 @@ int		get_category(char *word);
 char	special_char(char *input_str, int pos);
 char	**split_line(char *input_str);
 char	*copy_quote(char found_quote, char *input_str, int pos);
+int		quote_length(char found_quote, char *input_str, int pos);
 int		count_words(char *input_str);
 t_token	*tokenizer(char	**words);
 char	*ft_substr_backslash(char const *s, unsigned int start, size_t len);

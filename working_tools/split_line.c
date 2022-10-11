@@ -3,59 +3,38 @@
 char	**split_line(char *input_str)
 {
 	int		i;
-	int		k;
 	int		start;
 	int		no_word;
-	char	**words;
 	int		total_words;
-
-	total_words =  count_words(input_str) + 1;
-
-	words = malloc(sizeof(char *) * total_words);
-	words = ft_calloc(total_words, sizeof(char *));
+	char	**words;
 
 	i = 0;
-	k = 0;
 	start = 0;
 	no_word = 0;
-	while (no_word <  (count_words(input_str) + 1))
-	{
-		words[no_word] = malloc(sizeof(char) * 100);
-		no_word++;
-	}
-	no_word = 0;
+	total_words = count_words(input_str) + 1;
+	words = malloc(sizeof(char *) * total_words);
+	if (!words)
+		return (NULL);
 	while (input_str[i] != '\0')
 	{
-		// printf("Run %d\n", i);
+		start = i;
 		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
 		{
 			if (input_str[i] == '\\')
-			{
+				i = i + 2;
+			else
 				i++;
-				words[no_word][k++] = input_str[i++];
-			}
-			words[no_word][k++] = input_str[i++];
 		}
-		// printf("%s  - Index: %d \n", words[no_word], no_word);
-		if (k > 0)
-		{
-			words[no_word++][k] = '\0';
-			k = 0;
-		}
+		if (i > start)
+			words[no_word++] = ft_substr_backslash(input_str, start, i - start);
 		if (input_str[i] == '\'' || input_str[i] == '\"')
 		{
-			// printf("fire!\n");
-			words[no_word] = copy_quote(input_str[i], input_str, i);
-			i = i + ft_strlen(words[no_word++]);
-			words[no_word - 1][ft_strlen(words[no_word - 1])] = input_str[i];
-			// printf("\ntest: %c\n", input_str[i]);
-			i++;
+			i = i + quote_length(input_str[i], input_str, i) + 1;
+			words[no_word++] = ft_substr_backslash(input_str, start, i - start);
 		}
 		else
 			i++;
 	}
-	printf("First word in split_line: %s\n", words[0]);
-	// printf("%d\n", count_words(input_str));
 	words[total_words - 1] = NULL;
 	return (words);
 }
