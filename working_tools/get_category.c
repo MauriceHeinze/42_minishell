@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/04 21:07:27 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/11 12:39:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int		is_operator(char *word)
 
 int		get_category(char *word)
 {
-	// printf("result:	%d\n", ft_strcmp(word, "echo"));
 	if (is_command(word) > 0)
 		return (is_command(word));
 	else if (is_operator(word) > 0)

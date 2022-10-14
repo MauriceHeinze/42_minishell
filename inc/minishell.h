@@ -38,8 +38,12 @@ int		quote_length(char found_quote, char *input_str, int pos);
 int		count_words(char *input_str);
 t_token	*tokenizer(char	**words);
 char	*ft_substr_backslash(char const *s, unsigned int start, size_t len);
+char	**split_subline(char **words);
+char	*remove_quotes(char *input_str);
+int		count_words_operators(char *input_str);
 
 // KEYS FOR BUILT INS
+# define UNDEFINED 50
 # define ECHO 100
 # define CD 200
 # define PWD 300
@@ -62,5 +66,6 @@ char	*ft_substr_backslash(char const *s, unsigned int start, size_t len);
 # define QUOTE 1600
 # define DOUBLE_QUOTE 1700
 # define WORD 1900
+# define VARIABLE 2000
 
 #endif
