@@ -17,9 +17,9 @@
 # include "../libft/libft.h"
 
 typedef struct s_token {
-	char			*word;
-	int				category; // Use define function
-	struct s_token	*next;
+	char				*word;
+	int					category; // Use define function
+	struct s_token		*next;
 }				t_token;
 
 typedef struct s_cmd_line {
@@ -41,6 +41,8 @@ char	*ft_substr_backslash(char const *s, unsigned int start, size_t len);
 char	**split_subline(char **words);
 char	*remove_quotes(char *input_str);
 int		count_words_operators(char *input_str);
+int		get_var_len(char *input_str);
+char	*str_add(char *dest, char *src, int pos);
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
