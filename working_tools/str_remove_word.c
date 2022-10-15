@@ -7,12 +7,6 @@ char	*str_remove_word(char const *orig, unsigned int start, size_t len)
 	int		new_part_i;
 	char	*copy;
 
-	// printf("DEBUG PART 1:\n");
-	// printf("len	%zu\n", len);
-	// printf("start	%d\n", start);
-	// printf("orig:	%s\n", orig);
-	// printf("str len:	%zu\n", ft_strlen(orig));
-
 	if (start > 0)
 		start--;
 	i = 0;
@@ -31,16 +25,5 @@ char	*str_remove_word(char const *orig, unsigned int start, size_t len)
 	while (orig[orig_i] != '\0')
 		copy[i++] = orig[orig_i++];
 	copy[i] = '\0';
-
-	// printf("DEBUG PART 2:\n");
-	// printf("len	%zu\n", len);
-	// printf("start	%d\n", start);
-	// printf("orig:	%s\n", orig);
-	// printf("i:	%d\n", i);
-	// printf("orig_i:	%d\n", orig_i);
-	// printf("Last char of copy:	%c\n", copy[i - 1]);
-	// printf("Last char of orig:	%c\n", orig[orig_i - 1]);
-	// printf("Result:\n%s\n", copy);
 	return (copy);
 }
-// echo $PWD/path | echo $USER
