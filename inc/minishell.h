@@ -43,7 +43,7 @@ char	*remove_quotes(char *input_str);
 int		count_words_operators(char *input_str);
 int		get_var_len(char *input_str);
 char	*str_add(char *dest, char *src, int pos);
-int		expand_variables(char *input_str);
+char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 
 // KEYS FOR BUILT INS

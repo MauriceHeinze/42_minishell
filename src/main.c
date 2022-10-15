@@ -9,8 +9,8 @@ int	main(int argc, char *argv[])
 	// char	*input_str = "aaa>bbb>ccc&&ddd>>";
 	char	*input_str = "echo $PWD/path | echo $USER";
 
-	char		**words;
-	t_token		*tokens;
+	// char		**words;
+	// t_token		*tokens;
 	int			i;
 
 	i = 0;
@@ -20,7 +20,10 @@ int	main(int argc, char *argv[])
 
 	// printf("Path is %zu\n", ft_strlen(getenv("PATH")));
 	// printf("Var len is %d\n", get_var_len(input_str));
-	expand_variables(input_str);
+
+	printf("%s\n", input_str);
+	input_str = expand_variables(input_str);
+	printf("%s\n", input_str);
 
 	// char	*orig = "Hallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo WeltHallo Welt";
 	// char	*new_part = " meine";

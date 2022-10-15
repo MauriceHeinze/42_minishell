@@ -35,7 +35,7 @@ int	get_var_len(char *input_str)
 	return (var_len);
 }
 
-int	expand_variables(char *input_str)
+char	*expand_variables(char *input_str)
 {
 	int		i;
 	int		var_len;
@@ -48,7 +48,7 @@ int	expand_variables(char *input_str)
 	// get number of chars of variables
 	while (input_str[i] != '\0')
 	{
-		printf("%s\n", input_str);
+		// printf("%s\n", input_str);
 		// printf("%d\n", is_uppercase(input_str[i + 1]));
 		if (input_str[i] == '$' && is_uppercase(input_str[i + 1]))
 		{
@@ -68,7 +68,7 @@ int	expand_variables(char *input_str)
 			// printf("start		%d\n", start);
 			// printf("i		%d\n", i);
 			// printf("var_name:	%s\n\n\n", var_name);
-			printf("%s\n", getenv(var_name));
+			// printf("%s\n", getenv(var_name));
 			// input_str = ft_strjoin(input_str, &input_str[5]);
 			input_str = str_add(input_str, getenv(var_name), start);
 			free(var_name);
@@ -77,8 +77,6 @@ int	expand_variables(char *input_str)
 			i++;
 		}
 		i++;
-		usleep(5000);
 	}
-	return (var_len);
+	return (input_str);
 }
-

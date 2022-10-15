@@ -9,10 +9,10 @@ static int	count_operator_helper(char *input_str)
 	no_operators = 0;
 	while (input_str[i] != '\0')
 	{
-		if ((input_str[i] == '<') && (input_str[i + 1] == '<') ||
-			(input_str[i] == '>') && (input_str[i + 1] == '>') ||
-			(input_str[i] == '&') && (input_str[i + 1] == '&') ||
-			(input_str[i] == '|') && (input_str[i + 1] == '|'))
+		if (((input_str[i] == '<') && (input_str[i + 1] == '<')) ||
+			((input_str[i] == '>') && (input_str[i + 1] == '>')) ||
+			((input_str[i] == '&') && (input_str[i + 1] == '&')) ||
+			((input_str[i] == '|') && (input_str[i + 1] == '|')))
 		{
 			i++;
 			no_operators++;
@@ -28,10 +28,10 @@ static int	count_operator_helper(char *input_str)
 
 static int	operator_start(char *input_str)
 {
-	if ((input_str[0] == '<') && (input_str[1] == '<') ||
-			(input_str[0] == '>') && (input_str[1] == '>') ||
-			(input_str[0] == '&') && (input_str[1] == '&') ||
-			(input_str[0] == '<') || (input_str[0] == '>') || (input_str[0] == '|'))
+	if (((input_str[0] == '<') && (input_str[1] == '<')) ||
+			((input_str[0] == '>') && (input_str[1] == '>')) ||
+			((input_str[0] == '&') && (input_str[1] == '&')) ||
+			((input_str[0] == '<') || (input_str[0] == '>')) || (input_str[0] == '|'))
 				return (1);
 	return (0);
 }
@@ -41,9 +41,9 @@ static int	operator_end(char *input_str)
 	int	len;
 
 	len = ft_strlen(input_str);
-	if ((input_str[len - 1] == '<') && (input_str[len - 2] == '<') ||
-			(input_str[len - 1] == '>') && (input_str[len - 2] == '>') ||
-			(input_str[len - 1] == '&') && (input_str[len - 2] == '&') ||
+	if (((input_str[len - 1] == '<') && (input_str[len - 2] == '<')) ||
+			((input_str[len - 1] == '>') && (input_str[len - 2] == '>')) ||
+			((input_str[len - 1] == '&') && (input_str[len - 2] == '&')) ||
 			(input_str[len - 1] == '<') || (input_str[len - 1] == '>') || (input_str[len - 1] == '|'))
 				return (1);
 	return (0);
@@ -53,7 +53,6 @@ static int	operator_end(char *input_str)
 int	count_words_operators(char *input_str)
 {
 	int	no_operators;
-	int	operator_start_end;
 	int additional_operators;
 
 	additional_operators = 0;

@@ -2,8 +2,6 @@
 
 char	*remove_quotes(char *input_str)
 {
-	int	i;
-	int	error;
 	int	len;
 	char *shortend;
 
