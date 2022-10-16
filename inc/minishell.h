@@ -44,6 +44,7 @@ int		count_words_operators(char *input_str);
 char	*str_add(char *dest, char *src, int pos);
 char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
+int		skip_quote(char *input_str, int pos);
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
