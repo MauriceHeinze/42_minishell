@@ -8,13 +8,15 @@ char	*str_add(char *orig, char *new_part, int pos)
 	int		max_len;
 	char	*copy;
 
+	if (!new_part && orig)
+		return (orig);
 	pos--;
 	i = 0;
 	orig_i = 0;
 	new_part_i = 0;
 	max_len = ft_strlen(orig) + ft_strlen(new_part) + 1;
 	copy = malloc(sizeof(char) * max_len);
-	if (!copy || !orig || !new_part)
+	if (!copy || !orig)
 		return (NULL);
 	// copy original until pos reached
 	while (orig[orig_i] != '\0' && (i < max_len && i < pos))
