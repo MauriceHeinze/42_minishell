@@ -14,6 +14,20 @@
 # include <fcntl.h>
 # include <errno.h>
 
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+
 
 typedef struct s_token {
 	char				*word;
@@ -32,10 +46,10 @@ typedef struct s_node {
 	char				*full_cmd; // e.g. echo, cd etc.
 	char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
 	int					pid; // default -1, is set by executor
-	int					infile_mode;
-	char				*infile_meta; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing
-	int					outfile_mode;
-	char				*outfile_meta; // 1. file -> full path, 2. stderr -> nothing, 3. stdin -> nothing
+	int					infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char				*infile_meta;
+	int					outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char				*outfile_meta; // full path name || delimiter || pipe id
 	struct s_cmd_line	*next;
 }				t_node;
 
@@ -56,10 +70,12 @@ char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 int		skip_quote(char *input_str, int pos);
 void	setup_signal_handler(void);
+void	track_history(char *line);
+void	ctrl_c(void);
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
-# define ECHO 100
+# define ECHO_CMD 100
 # define CD 200
 # define PWD 300
 # define EXPORT 400

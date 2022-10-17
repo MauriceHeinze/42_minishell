@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/11 12:39:37 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/17 17:39:32 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		is_command(char *word)
 {
 	// printf("result:	%d\n", ft_strcmp(word, "echo"));
 	if (ft_strcmp(word, "echo") == 0)
-		return (ECHO);
+		return (ECHO_CMD);
 	if (ft_strcmp(word, "cd") == 0)
 		return (CD);
 	if (ft_strcmp(word, "pwd") == 0)
