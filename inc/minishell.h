@@ -3,18 +3,17 @@
 
 # include <stdio.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdbool.h>
 # include <string.h>
+# include "../libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <errno.h>
 
-# include <stdio.h>
-# include "../libft/libft.h"
 
 typedef struct s_token {
 	char				*word;
@@ -28,6 +27,17 @@ typedef struct s_cmd_line {
 	char				**args;
 	struct s_cmd_line	*next;
 }				t_cmd_line;
+
+typedef struct s_node {
+	char				*full_cmd; // e.g. echo, cd etc.
+	char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
+	int					pid; // default -1, is set by executor
+	int					infile_mode;
+	char				*infile_meta; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing
+	int					outfile_mode;
+	char				*outfile_meta; // 1. file -> full path, 2. stderr -> nothing, 3. stdin -> nothing
+	struct s_cmd_line	*next;
+}				t_node;
 
 // TOOLS
 int		get_category(char *word);

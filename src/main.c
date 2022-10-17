@@ -2,31 +2,22 @@
 
 int	main(int argc, char *argv[])
 {
-	// char		*input_str = " 	   	cd ../Desktop | echo \"Hallo Welt!\" >> file.txt 	 	 ";
-	// char		*input_str = " 	   	cd ../Desktop | touch file_21.txt | echo \"Hallo Welt!\" >> file.txt 	 	 ";
-	// char	*input_str = "echo               text \"$USER\"            \"$USER\"text";
-	char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
-	// char	*input_str = "aaa>bbb>ccc&&ddd>>";
-	// char	*input_str = "echo ~/path | echo home is: ~";
+	char	*line;
 
-	char		**words;
-	int			i;
+	// prompt = readline("USER@MINISHELL:");
+	// add_history(prompt);
+	// printf("%s\n", prompt);
+	// printf("test %s\n", readline("USER@MINISHELL:"));
 
-	i = 0;
 
-	printf("\n%s\n------------------\n", input_str);
-	input_str = expand_variables(input_str);
-	printf("%s\n\n", input_str);
-
-	input_str = ft_strtrim(input_str, " 	");
-	input_str = expand_variables(input_str);
-	words = split_line(input_str);
-	words = split_subline(words);
-	while (words[i] != NULL)
+	while (1)
 	{
-		words[i] = remove_quotes(words[i]);
-		printf("%s\n", words[i]);
-		i++;
+		line = readline("\e[1;92mminishell\e[1;94m $\e[0;37m ");
+		if (line[0] != '\0')
+			add_history(line);
+		printf("%s\n", line);
+		free(line);
 	}
+	// add_history("test");
 	return (0);
 }
