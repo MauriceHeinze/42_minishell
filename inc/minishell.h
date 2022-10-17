@@ -55,6 +55,7 @@ char	*str_add(char *dest, char *src, int pos);
 char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 int		skip_quote(char *input_str, int pos);
+void	setup_signal_handler(void);
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50

@@ -1,14 +1,15 @@
 #include "../inc/minishell.h"
 
+int	g_status;
+
+g_status = 0;
+
+
 int	main(int argc, char *argv[])
 {
 	char	*line;
 
-	// prompt = readline("USER@MINISHELL:");
-	// add_history(prompt);
-	// printf("%s\n", prompt);
-	// printf("test %s\n", readline("USER@MINISHELL:"));
-
+	setup_signal_handler();
 
 	while (1)
 	{
