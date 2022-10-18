@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/11 12:39:37 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/18 20:49:46 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 static int		is_command(char *word)
 {
-	// printf("result:	%d\n", ft_strcmp(word, "echo"));
 	if (ft_strcmp(word, "echo") == 0)
 		return (ECHO);
-	if (ft_strcmp(word, "cd") == 0)
+	else if (ft_strcmp(word, "cd") == 0)
 		return (CD);
-	if (ft_strcmp(word, "pwd") == 0)
+	else if (ft_strcmp(word, "pwd") == 0)
 		return (PWD);
-	if (ft_strcmp(word, "export") == 0)
+	else if (ft_strcmp(word, "export") == 0)
 		return (EXPORT);
-	if (ft_strcmp(word, "unset") == 0)
+	else if (ft_strcmp(word, "unset") == 0)
 		return (UNSET);
-	if (ft_strcmp(word, "env") == 0)
+	else if (ft_strcmp(word, "env") == 0)
 		return (ENV);
-	if (ft_strcmp(word, "exit") == 0)
+	else if (ft_strcmp(word, "exit") == 0)
 		return (EXIT);
 	return (0);
 }
@@ -36,20 +35,23 @@ static int		is_operator(char *word)
 {
 	if (ft_strcmp(word, ">") == 0)
 		return (ARROW_LEFT);
-	if (ft_strcmp(word, ">>") == 0)
+	else if (ft_strcmp(word, ">>") == 0)
 		return (DOUBLE_ARROW_LEFT);
-	if (ft_strcmp(word, "<") == 0)
+	else if (ft_strcmp(word, "<") == 0)
 		return (ARROW_RIGHT);
-	if (ft_strcmp(word, "<<") == 0)
+	else if (ft_strcmp(word, "<<") == 0)
 		return (DOUBLE_ARROW_RIGHT);
-	if (ft_strcmp(word, "|") == 0)
+	else if (ft_strcmp(word, "|") == 0)
 		return (PIPE);
-	if (ft_strcmp(word, "||") == 0)
+	else if (ft_strcmp(word, "||") == 0)
 		return (OR);
-	if (ft_strcmp(word, "&&") == 0)
+	else if (ft_strcmp(word, "&&") == 0)
 		return (AND);
-	if (word == NULL)
+	else if (ft_strcmp(word, "NULL") == 0)
+	{
+		// printf("Here\n");
 		return (EXIT);
+	}
 	return (0);
 }
 

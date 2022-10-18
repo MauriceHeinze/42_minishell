@@ -16,6 +16,24 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
+typedef struct s_program {
+	char			**envp;
+	int				status;
+	char			*cmd_line;
+	char			**tokens;
+}				t_program;
+
+typedef struct s_node {
+	char				*full_cmd; // e.g. echo, cd etc.
+	char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
+	int					pid; // default -1, is set by executor
+	int					infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char				*infile_meta;
+	int					outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char				*outfile_meta; // full path name || delimiter || pipe id
+	struct s_node		*next;
+}				t_node;
+
 typedef struct s_token {
 	char				*word;
 	int					category; // Use define function
@@ -45,6 +63,10 @@ char	*str_add(char *dest, char *src, int pos);
 char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 int		skip_quote(char *input_str, int pos);
+t_node	*fill_node(t_program *program);
+char	*get_cmd_path(char **paths, char *cmd);
+char	**get_cmd_paths(char **envp);
+
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
