@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/18 20:57:14 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/19 16:45:23 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_node	*setup_node(void)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(node));
+	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
 	node->full_cmd = "";
@@ -50,7 +50,6 @@ void	get_command(t_node	*node, char *token, t_program *program)
 
 	category = get_category(token);
 	node->full_cmd = token;
-	// printf("categroy is %d\n", category);
 	// is undefined/not builtin
 	if (category == 50 || category == 1900)
 	{
@@ -60,13 +59,14 @@ void	get_command(t_node	*node, char *token, t_program *program)
 	if (category > 50 && category <= 700)
 	{
 		node->full_path = token;
+		printf("%s\n", node->full_path);
 	}
-	// is operator - redirection stuff
-	else if (category >= 800 && category <= 1100)
-	{
-		printf("3\n");
-		// handle_pipe()
-	}
+	// // is operator - redirection stuff
+	// else if (category >= 800 && category <= 1100)
+	// {
+	// 	printf("3\n");
+	// 	// handle_pipe()
+	// }
 }
 
 t_node	*fill_node(t_program *program)
@@ -81,44 +81,26 @@ t_node	*fill_node(t_program *program)
 	head = setup_node();
 	if (!head)
 		return (NULL);
-	// set type
-	// get arguments
-	// remove quotes
-	// break if pipe is found
-	// restart
-	get_command(head, tokens[0], program);
-	printf("%s\n", head->full_cmd);
-	printf("%s\n", head->full_path);
-
-	// node = head;
-	// while (node != NULL)
-	// {
-	// 	printf("%s\n", node->full_cmd);
-	// 	node = node->next;
-	// }
-	// while (tokens[i] != NULL)
-	// {
-	// 	// setup a new node
-	// 	node->next = setup_node();
-	// 	// categorize first token
-	// 	// is builtin
-
-	// 	// if (strncmp("<", tokens[i], 1))
-	// 	// 	// open();
-	// 	// if (strncmp(">", tokens[i], 1))
-	// 	// 	// open()
-	// 	// if (strncmp(">>", tokens[i], 2))
-	// 	// 	// open()
-	// 	// if (strncmp("<<", tokens[i], 2))
-	// 	// 	// open()
-	// 	// add arguments to node
-	// 	// while (tokens[i] != NULL)
-	// 	// {
-
-	// 	// 	i++;
-	// 	// 	if (get_category(tokens[i]) == PIPE)
-	// 	// 		break ;
-	// 	// }
-	// }
-	return (node);
+	node = head;
+	while (tokens[i] != NULL)
+	{
+		// store command
+		get_command(node, program->tokens[i], program);
+		i++;
+		// store arguments to command
+		while (get_category(tokens[i]) != PIPE && tokens[i] != NULL)
+		{
+			tokens[i] = remove_quotes(tokens[i]);
+			node->infile_meta = ft_strjoin(node->infile_meta, tokens[i]);
+			i++;
+		}
+		// fill node
+		if (tokens[i] != NULL)
+		{
+			node->next = setup_node();
+			node = node->next;
+			i++;
+		}
+	}
+	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/16 13:54:13 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/19 15:36:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ int	skip_quote(char *input_str, int pos)
 		else
 			pos++;
 	}
-	return (pos);
+	return (pos + 1);
 }

@@ -16,13 +16,6 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
-typedef struct s_program {
-	char			**envp;
-	int				status;
-	char			*cmd_line;
-	char			**tokens;
-}				t_program;
-
 typedef struct s_node {
 	char				*full_cmd; // e.g. echo, cd etc.
 	char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
@@ -33,6 +26,14 @@ typedef struct s_node {
 	char				*outfile_meta; // full path name || delimiter || pipe id
 	struct s_node		*next;
 }				t_node;
+
+typedef struct s_program {
+	char			**envp;
+	int				status;
+	char			*cmd_line;
+	char			**tokens;
+	t_node			*nodes;
+}				t_program;
 
 typedef struct s_token {
 	char				*word;

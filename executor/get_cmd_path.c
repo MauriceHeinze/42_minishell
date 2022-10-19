@@ -24,10 +24,14 @@ char	*get_cmd_path(char **paths, char *cmd)
 // returns executable paths
 char	**get_cmd_paths(char **envp)
 {
+	char	**paths;
+
 	while (ft_strncmp("PATH", *envp, 4))
 		envp++;
 	*envp += 5;
-	return (ft_split(*envp, ':'));
+	paths = ft_split(*envp, ':');
+	*envp -= 5;
+	return (paths);
 }
 
 // int main(int argc, char *argv[], char *envp[])

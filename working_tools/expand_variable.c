@@ -48,7 +48,8 @@ char	*expand_variables(char *input_str)
 			i = 0;
 			start = 0;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (input_str);
 }
