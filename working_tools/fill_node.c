@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/19 16:45:23 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/19 19:29:36 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	get_command(t_node	*node, char *token, t_program *program)
 	int category;
 
 	category = get_category(token);
-	node->full_cmd = token;
+	node->full_cmd = remove_quotes(token);
 	// is undefined/not builtin
 	if (category == 50 || category == 1900)
 	{

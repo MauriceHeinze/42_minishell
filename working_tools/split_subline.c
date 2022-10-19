@@ -1,5 +1,22 @@
 #include "../inc/minishell.h"
 
+static void	free_split(char **words)
+{
+	int	i;
+
+	if (words == NULL)
+		return ;
+	i = 0;
+	while (words[i] != NULL)
+	{
+		words[i] = NULL;
+		free(words[i]);
+		i++;
+	}
+	words = NULL;
+	free(words);
+}
+
 static int	double_operator_found(char a, char b)
 {
 	if (a == '<' && b == '<')
@@ -40,12 +57,16 @@ char	**split_subline(char **splitted_line)
 	no_word = 0;
 	start = 0;
 	words = malloc(sizeof(char *) * get_total_words(splitted_line));
+	// printf("total words %d\n", get_total_words(splitted_line));
 	if (!words)
 		return (NULL);
 	while (splitted_line[i] != NULL)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
-			words[no_word++] = splitted_line[i];
+		{
+			words[no_word] = splitted_line[i];
+			no_word++;
+		}
 		else
 		{
 			k = 0;
@@ -55,20 +76,22 @@ char	**split_subline(char **splitted_line)
 				while (!ft_strchr("|<>&", splitted_line[i][k]) && splitted_line[i][k] != '\0')
 					k++;
 				if (k > start)
-					words[no_word++] = ft_substr_backslash(splitted_line[i], start, k - start);
+				{
+					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
+				}
 				if (double_operator_found(splitted_line[i][k], splitted_line[i][k + 1]))
 				{
 					start = k;
 					k += 2;
 					// printf("k	%d\n", k);
 					// printf("start	%d\n", start);
-					words[no_word++] = ft_substr_backslash(splitted_line[i], start, k - start);
+					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
 				}
 				else if ((splitted_line[i][k]  == '<') || (splitted_line[i][k]  == '>') || (splitted_line[i][k]  == '|'))
 				{
 					start = k;
 					k++;
-					words[no_word++] = ft_substr_backslash(splitted_line[i], start, k - start);
+					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
 				}
 				else
 					k++;
@@ -76,7 +99,14 @@ char	**split_subline(char **splitted_line)
 		}
 		i++;
 	}
-
 	words[get_total_words(splitted_line) - 1] = NULL;
+	free_split(splitted_line);
+
+	i = 0;
+	while (splitted_line[i] != NULL)
+	{
+		printf("%s \n", splitted_line[i]);
+		i++;
+	}
 	return (words);
 }
