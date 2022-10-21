@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/19 19:29:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/21 19:11:33 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 // char				*full_cmd; // e.g. echo, cd etc.
 // char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
-// int					pid; // default -1, is set by executor
-// int					infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+// int				pid; // default -1, is set by executor
+// int				infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
 // char				*infile_meta; // full path name || delimiter | NULL || pipe id
-// int					outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+// int				outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
 // char				*outfile_meta; // full path name || delimiter || pipe id
 
 // < redirection fd ist nicht stdin, sondern fd
@@ -26,81 +26,112 @@
 // >> output ist in appendmode -> cat text >> cat text1
 // check pipex manual
 
+t_fd	*setup_fd(void)
+{
+	t_fd	*fd;
+
+	fd = malloc(sizeof(t_fd));
+	if (!fd)
+		return (NULL);
+
+	fd->infile_mode = -1;
+	fd->infile_meta = "";
+	fd->outfile_mode = -1;
+	fd->outfile_meta = "";
+	fd->next = NULL;
+	return (fd);
+}
+
 t_node	*setup_node(void)
 {
 	t_node	*node;
+	t_fd	*fd;
 
 	node = malloc(sizeof(t_node));
-	if (!node)
+	fd = setup_fd();
+	if (!node || !fd)
 		return (NULL);
 	node->full_cmd = "";
 	node->full_path = "";
 	node->pid = -1;
-	node->infile_mode = -1;
-	node->infile_meta = "";
-	node->outfile_mode = -1;
-	node->outfile_meta = "";
+	node->fd = fd;
 	node->next = NULL;
 	return (node);
 }
 
-void	get_command(t_node	*node, char *token, t_program *program)
+void	fill_fds(t_program *program, t_node *node, int *pos)
 {
-	int category;
+	t_fd	*fd;
+	t_fd	*head;
 
+	// printf("---> 1\n");
+	fd = node->fd;
+	head = fd;
+	while (fd->next != NULL)
+		fd = fd->next;
+	// printf("---> 2\n");
+	while (program->tokens[(*pos)] != NULL)
+	{
+		// printf("---> 3\n");
+		if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
+		{
+			// printf("---> 4 - i is:%d\n", *pos);
+			fd->outfile_mode = MODE_FILE;
+			fd->outfile_meta = ft_strjoin(getenv("PWD"), "/");
+			fd->outfile_meta = ft_strjoin(fd->outfile_meta, program->tokens[(*pos) + 1]);
+			// printf("%s\n", fd->outfile_meta);
+			fd->next = setup_fd();
+			fd = fd->next;
+			(*pos)++;
+		}
+		(*pos)++;
+	}
+}
+
+int	get_command(t_node	*node, t_program *program, int pos)
+{
+	int 	category;
+	char	*token;
+	char	**paths;
+
+	token = program->tokens[pos];
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
+	// printf("%d\n", category);
 	// is undefined/not builtin
-	if (category == 50 || category == 1900)
+	if (category == UNDEFINED || category == WORD)
 	{
-		node->full_path = get_cmd_path(get_cmd_paths(program->envp), token);
+		paths = get_cmd_paths(program->envp);
+		node->full_path = get_cmd_path(paths, token);
+		free(paths);
 	}
 	// is builtin
-	if (category > 50 && category <= 700)
+	if (category > UNDEFINED && category <= EXIT)
 	{
 		node->full_path = token;
 		printf("%s\n", node->full_path);
 	}
-	// // is operator - redirection stuff
-	// else if (category >= 800 && category <= 1100)
-	// {
-	// 	printf("3\n");
-	// 	// handle_pipe()
-	// }
+	return (0);
 }
 
 t_node	*fill_node(t_program *program)
 {
-	int	i;
+	int		*i;
 	t_node	*head;
 	t_node	*node;
 	char	**tokens;
 
 	tokens = program->tokens;
-	i = 0;
+	*i = 0;
 	head = setup_node();
 	if (!head)
 		return (NULL);
-	node = head;
-	while (tokens[i] != NULL)
-	{
-		// store command
-		get_command(node, program->tokens[i], program);
-		i++;
-		// store arguments to command
-		while (get_category(tokens[i]) != PIPE && tokens[i] != NULL)
-		{
-			tokens[i] = remove_quotes(tokens[i]);
-			node->infile_meta = ft_strjoin(node->infile_meta, tokens[i]);
-			i++;
-		}
-		// fill node
-		if (tokens[i] != NULL)
-		{
-			node->next = setup_node();
-			node = node->next;
-			i++;
-		}
-	}
+	// node = head;
+	// printf("1: i is %d\n", *i);
+	fill_fds(program, head, i);
+	// printf("2: i is %d\n", *i);
+	// printf("%s\n", head->fd->outfile_meta);
+	// printf("%s\n", head->fd->next->outfile_meta);
+	// printf("%s\n", head->fd->next->next->outfile_meta);
 	return (head);
 }

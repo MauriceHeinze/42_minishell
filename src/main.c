@@ -21,9 +21,10 @@ static void	free_split(char **words)
 
 int main(int argc, char *argv[], char *envp[])
 {
-	char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
+	// char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
 	// char	*input_str = "echo 'Current Path is: ' $PWD | echo 'User name is: ' $USER | cat";
 	// char	*input_str = "< infile ls -l | wc -l > outfile";
+	char	*input_str = "echo 'Hallo' > output1 > output2 > output3";
 	char	**words;
 	int		i;
 
@@ -46,24 +47,31 @@ int main(int argc, char *argv[], char *envp[])
 	printf("total_words: %d\n", i);
 	program->tokens = words;
 	i = 0;
-	while (words[i] != NULL)
-	{
-		printf("%s \n", words[i]);
-		i++;
-	}
+	// while (words[i] != NULL)
+	// {
+	// 	printf("%s \n", words[i]);
+	// 	i++;
+	// }
 
 	program->nodes = fill_node(program);
 	t_node *node = program->nodes;
+	t_fd *fd = program->nodes->fd;
 	while (node != NULL)
 	{
 		printf("%d	Command:	%s \n", i++, node->full_cmd);
 		printf("%d:	Path:		%s \n", i++, node->full_path);
-		printf("%d:	Mode:		%d \n", i++, node->infile_mode);
-		printf("%d:	Meta:		%s \n", i++, node->infile_meta);
-		printf("-----------\n");
+		printf("----------- FD\n");
+		while (fd != NULL)
+		{
+			printf("%s\n", fd->outfile_meta);
+			fd = fd->next;
+		}
 		node = node->next;
+		if (node)
+			fd = node->fd;
 	}
-	free(program);
+	// free(program->envp);
 	free_split(words);
+	// system("leaks a.out");
 	return (0);
 }

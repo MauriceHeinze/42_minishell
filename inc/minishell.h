@@ -16,16 +16,33 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
+typedef struct s_fd {
+	int				infile_fd; // defined by executor
+	int				infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char			*infile_meta; // full path name || delimiter || pipe id
+	int				outfile_fd; // defined by executor
+	int				outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
+	char			*outfile_meta;
+	struct s_fd		*next;
+}				t_fd;
+
+// Bsp: outfile1 > outfile2
+// infile_fd;
+// infile_mode -1;
+// *infile_meta -1;
+// outfile_fd:
+// outfile_mode: PIPE
+// *outfile_meta: 0 // increments
+
+// echo "Hallo" > outfile > outfile1 > outfile2 > outfile3
 typedef struct s_node {
-	char				*full_cmd; // e.g. echo, cd etc.
-	char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
-	int					pid; // default -1, is set by executor
-	int					infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-	char				*infile_meta;
-	int					outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-	char				*outfile_meta; // full path name || delimiter || pipe id
-	struct s_node		*next;
+	char			*full_cmd; // e.g. echo -n, cd etc.
+	char			*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
+	int				pid; // default -1, is set by executor
+	t_fd			*fd;
+	struct s_node	*next;
 }				t_node;
+
 
 typedef struct s_program {
 	char			**envp;
@@ -94,5 +111,11 @@ char	**get_cmd_paths(char **envp);
 # define DOUBLE_QUOTE 1700
 # define WORD 1900
 # define VARIABLE 2000
+
+// MODES
+# define MODE_FILE 10000
+# define MODE_HEREDOC 10100
+# define MODE_STDIN 10200
+# define MODE_PIPE 10300
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/18 22:35:35 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/19 21:34:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ static int		is_command(char *word)
 static int		is_operator(char *word)
 {
 	if (ft_strcmp(word, ">") == 0)
-		return (ARROW_LEFT);
-	else if (ft_strcmp(word, ">>") == 0)
-		return (DOUBLE_ARROW_LEFT);
-	else if (ft_strcmp(word, "<") == 0)
 		return (ARROW_RIGHT);
-	else if (ft_strcmp(word, "<<") == 0)
+	else if (ft_strcmp(word, ">>") == 0)
 		return (DOUBLE_ARROW_RIGHT);
+	else if (ft_strcmp(word, "<") == 0)
+		return (ARROW_LEFT);
+	else if (ft_strcmp(word, "<<") == 0)
+		return (DOUBLE_ARROW_LEFT);
 	else if (ft_strcmp(word, "|") == 0)
 		return (PIPE);
 	else if (ft_strcmp(word, "||") == 0)

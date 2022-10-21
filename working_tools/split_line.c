@@ -39,6 +39,5 @@ char	**split_line(char *input_str)
 	}
 	printf("total_words: %s\n", words[total_words]);
 	words[total_words + 1] = NULL;
-	system("leaks a.out");
 	return (words);
 }
