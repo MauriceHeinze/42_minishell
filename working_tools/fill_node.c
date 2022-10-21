@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/21 19:11:33 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/21 19:27:45 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,34 @@ void	fill_fds(t_program *program, t_node *node, int *pos)
 		// printf("---> 3\n");
 		if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
 		{
-			// printf("---> 4 - i is:%d\n", *pos);
 			fd->outfile_mode = MODE_FILE;
 			fd->outfile_meta = ft_strjoin(getenv("PWD"), "/");
 			fd->outfile_meta = ft_strjoin(fd->outfile_meta, program->tokens[(*pos) + 1]);
-			// printf("%s\n", fd->outfile_meta);
+			fd->next = setup_fd();
+			fd = fd->next;
+			(*pos)++;
+		}
+		else if (get_category(program->tokens[(*pos)]) == ARROW_LEFT) // < stdin
+		{
+			fd->infile_mode = MODE_STDIN;
+			fd->next = setup_fd();
+			fd = fd->next;
+			(*pos)++;
+		}
+		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_LEFT) // << HEREDOC
+		{
+			fd->outfile_mode = MODE_HEREDOC;
+			fd->outfile_meta= program->tokens[(*pos)]; // delimiter
+			fd->next = setup_fd();
+			fd = fd->next;
+			(*pos)++;
+		}
+		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_RIGHT) // >> APPEND
+		{
+			fd->infile_mode = MODE_STDIN; // e.g. echo 'Hello world!'
+			fd->outfile_mode = MODE_FILE; // e.g. >> outfile
+			fd->outfile_meta = ft_strjoin(getenv("PWD"), "/");
+			fd->outfile_meta = ft_strjoin(fd->outfile_meta, program->tokens[(*pos) + 1]);
 			fd->next = setup_fd();
 			fd = fd->next;
 			(*pos)++;
