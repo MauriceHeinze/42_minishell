@@ -17,12 +17,10 @@
 # include "../libft/libft.h"
 
 typedef struct s_fd {
-	int				infile_fd; // defined by executor
-	int				infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-	char			*infile_meta; // full path name || delimiter || pipe id
-	int				outfile_fd; // defined by executor
-	int				outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-	char			*outfile_meta;
+	int				io; // 0 stdin, 1 stdout
+	int				mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. append mode -> full path
+	char			*meta; // full path || delimiter
+	int				fd; // Ralf only
 	struct s_fd		*next;
 }				t_fd;
 
@@ -86,6 +84,9 @@ char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(char **envp);
 
 
+# define OUTPUT 0;
+# define INPUT 1;
+
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
 # define ECHO 100
@@ -116,6 +117,7 @@ char	**get_cmd_paths(char **envp);
 # define MODE_FILE 10000
 # define MODE_HEREDOC 10100
 # define MODE_STDIN 10200
-# define MODE_PIPE 10300
+# define MODE_APPEND 10300
+# define MODE_PIPE 10400
 
 #endif

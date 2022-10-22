@@ -22,8 +22,13 @@ static int	count_spaces(char *input_str)
 		else if (count == 1)
 		{
 			if (input_str[i] == ' ' || input_str[i] == '	')
+			{
+				while (input_str[i] == ' ' || input_str[i] == '	')
+					i++;
 				no_spaces++;
-			i++;
+			}
+			else
+				i++;
 		}
 	}
 	return (no_spaces);
@@ -39,5 +44,8 @@ int	count_words(char *input_str)
 	if (ft_strlen(input_str) > 0 && no_spaces == 0)
 		return (1);
 	else
-		return (no_spaces + 1);
+		if (no_spaces % 2)
+			return (no_spaces + 1);
+		else
+			return (no_spaces + 2);
 }

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/21 19:27:45 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/22 22:30:16 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@
 
 t_fd	*setup_fd(void)
 {
-	t_fd	*fd;
+	t_fd	*node;
 
-	fd = malloc(sizeof(t_fd));
-	if (!fd)
+	node = malloc(sizeof(t_fd));
+	if (!node)
 		return (NULL);
 
-	fd->infile_mode = -1;
-	fd->infile_meta = "";
-	fd->outfile_mode = -1;
-	fd->outfile_meta = "";
-	fd->next = NULL;
-	return (fd);
+	node->io = OUTPUT;
+	node->mode = -1;
+	node->meta = "";
+	node->fd = -1;
+	node->next = NULL;
+	return (node);
 }
 
 t_node	*setup_node(void)
@@ -64,63 +64,82 @@ void	fill_fds(t_program *program, t_node *node, int *pos)
 	t_fd	*fd;
 	t_fd	*head;
 
-	// printf("---> 1\n");
 	fd = node->fd;
 	head = fd;
 	while (fd->next != NULL)
 		fd = fd->next;
-	// printf("---> 2\n");
 	while (program->tokens[(*pos)] != NULL)
 	{
-		// printf("---> 3\n");
+		if (get_category(program->tokens[(*pos)]) == PIPE)
+			break ;
 		if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
 		{
-			fd->outfile_mode = MODE_FILE;
-			fd->outfile_meta = ft_strjoin(getenv("PWD"), "/");
-			fd->outfile_meta = ft_strjoin(fd->outfile_meta, program->tokens[(*pos) + 1]);
+			// infile infos don't change
+			fd->io = OUTPUT;
+			fd->mode = MODE_FILE;
+			fd->meta = ft_strjoin(getenv("PWD"), "/");
+			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
 			fd->next = setup_fd();
 			fd = fd->next;
 			(*pos)++;
 		}
 		else if (get_category(program->tokens[(*pos)]) == ARROW_LEFT) // < stdin
 		{
-			fd->infile_mode = MODE_STDIN;
+			fd->io = INPUT;
+			fd->mode = MODE_FILE;
+			fd->meta = ft_strjoin(getenv("PWD"), "/");
+			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
 			fd->next = setup_fd();
 			fd = fd->next;
 			(*pos)++;
 		}
 		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_LEFT) // << HEREDOC
 		{
-			fd->outfile_mode = MODE_HEREDOC;
-			fd->outfile_meta= program->tokens[(*pos)]; // delimiter
+			fd->io = INPUT;
+			fd->mode = MODE_HEREDOC;
+			fd->meta = program->tokens[(*pos)]; // delimiter
 			fd->next = setup_fd();
 			fd = fd->next;
 			(*pos)++;
 		}
 		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_RIGHT) // >> APPEND
 		{
-			fd->infile_mode = MODE_STDIN; // e.g. echo 'Hello world!'
-			fd->outfile_mode = MODE_FILE; // e.g. >> outfile
-			fd->outfile_meta = ft_strjoin(getenv("PWD"), "/");
-			fd->outfile_meta = ft_strjoin(fd->outfile_meta, program->tokens[(*pos) + 1]);
+			fd->io = OUTPUT;
+			fd->mode = MODE_APPEND;
+			fd->meta = ft_strjoin(getenv("PWD"), "/");
+			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
 			fd->next = setup_fd();
 			fd = fd->next;
 			(*pos)++;
 		}
+		// printf("Meta:	%s \n", head->meta);
 		(*pos)++;
 	}
+	fd = head;
+	printf("--------\n");
 }
 
-int	get_command(t_node	*node, t_program *program, int pos)
+int	get_command(t_node	*node, t_program *program, int *pos)
 {
 	int 	category;
 	char	*token;
 	char	**paths;
 
-	token = program->tokens[pos];
+	printf("pos: %d\n", (*pos));
+	// printf("1: %s\n", program->tokens[pos]);
+	token = program->tokens[(*pos)];
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
 	// printf("%d\n", category);
+	// is
+	if (category >= ARROW_LEFT && category <= ARROW_RIGHT)
+	{
+		// fill_fds(program, node, &pos);
+		printf("here: %d\n", (*pos));
+		(*pos)++;
+		printf("here: %d\n", (*pos));
+		return (0);
+	}
 	// is undefined/not builtin
 	if (category == UNDEFINED || category == WORD)
 	{
@@ -129,7 +148,7 @@ int	get_command(t_node	*node, t_program *program, int pos)
 		free(paths);
 	}
 	// is builtin
-	if (category > UNDEFINED && category <= EXIT)
+	else if (category > UNDEFINED && category <= EXIT)
 	{
 		node->full_path = token;
 		printf("%s\n", node->full_path);
@@ -139,20 +158,37 @@ int	get_command(t_node	*node, t_program *program, int pos)
 
 t_node	*fill_node(t_program *program)
 {
-	int		*i;
+	int		i;
 	t_node	*head;
 	t_node	*node;
 	char	**tokens;
 
+	head = NULL;
 	tokens = program->tokens;
-	*i = 0;
+	i = 0;
 	head = setup_node();
 	if (!head)
 		return (NULL);
-	// node = head;
-	// printf("1: i is %d\n", *i);
-	fill_fds(program, head, i);
-	// printf("2: i is %d\n", *i);
+	node = head;
+	// printf("1: i is %d\n", i);
+	// printf("%s\n", program->cmd_line);
+	while (program->tokens[i] != NULL)
+	{
+		// printf("%c", program->cmd_line[*i]);
+		get_command(node, program, &i);
+		// printf("Command:	%s \n", node->full_cmd);
+		// printf("Path:		%s \n", node->full_path);
+		i++;
+		fill_fds(program, node, &i);
+		if (get_category(program->tokens[i]) == PIPE)
+		{
+			node->next = setup_node();
+			node = node->next;
+			i++;
+			continue;
+		}
+	}
+	// printf("\n2: i is %d\n", i);
 	// printf("%s\n", head->fd->outfile_meta);
 	// printf("%s\n", head->fd->next->outfile_meta);
 	// printf("%s\n", head->fd->next->next->outfile_meta);
