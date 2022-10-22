@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/22 22:30:16 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/22 23:33:34 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_node	*setup_node(void)
 	return (node);
 }
 
-void	fill_fds(t_program *program, t_node *node, int *pos)
+void	fill_fd(t_program *program, t_node *node, int *pos)
 {
 	t_fd	*fd;
 	t_fd	*head;
@@ -68,90 +68,79 @@ void	fill_fds(t_program *program, t_node *node, int *pos)
 	head = fd;
 	while (fd->next != NULL)
 		fd = fd->next;
-	while (program->tokens[(*pos)] != NULL)
+
+	if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
 	{
-		if (get_category(program->tokens[(*pos)]) == PIPE)
-			break ;
-		if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
-		{
-			// infile infos don't change
-			fd->io = OUTPUT;
-			fd->mode = MODE_FILE;
-			fd->meta = ft_strjoin(getenv("PWD"), "/");
-			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
-			fd->next = setup_fd();
-			fd = fd->next;
-			(*pos)++;
-		}
-		else if (get_category(program->tokens[(*pos)]) == ARROW_LEFT) // < stdin
-		{
-			fd->io = INPUT;
-			fd->mode = MODE_FILE;
-			fd->meta = ft_strjoin(getenv("PWD"), "/");
-			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
-			fd->next = setup_fd();
-			fd = fd->next;
-			(*pos)++;
-		}
-		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_LEFT) // << HEREDOC
-		{
-			fd->io = INPUT;
-			fd->mode = MODE_HEREDOC;
-			fd->meta = program->tokens[(*pos)]; // delimiter
-			fd->next = setup_fd();
-			fd = fd->next;
-			(*pos)++;
-		}
-		else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_RIGHT) // >> APPEND
-		{
-			fd->io = OUTPUT;
-			fd->mode = MODE_APPEND;
-			fd->meta = ft_strjoin(getenv("PWD"), "/");
-			fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos) + 1]);
-			fd->next = setup_fd();
-			fd = fd->next;
-			(*pos)++;
-		}
-		// printf("Meta:	%s \n", head->meta);
+		// infile infos don't change
+		(*pos)++;
+		fd->io = OUTPUT;
+		fd->mode = MODE_FILE;
+		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		fd->next = setup_fd();
+		fd = fd->next;
+		(*pos)++;
+	}
+	else if (get_category(program->tokens[(*pos)]) == ARROW_LEFT) // < stdin
+	{
+		(*pos)++;
+		fd->io = INPUT;
+		fd->mode = MODE_FILE;
+		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		fd->next = setup_fd();
+		fd = fd->next;
+		(*pos)++;
+	}
+	else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_LEFT) // << HEREDOC
+	{
+		(*pos)++;
+		fd->io = INPUT;
+		fd->mode = MODE_HEREDOC;
+		fd->meta = program->tokens[(*pos)]; // delimiter
+		fd->next = setup_fd();
+		fd = fd->next;
+		(*pos)++;
+	}
+	else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_RIGHT) // >> APPEND
+	{
+		(*pos)++;
+		fd->io = OUTPUT;
+		fd->mode = MODE_APPEND;
+		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		fd->next = setup_fd();
+		fd = fd->next;
 		(*pos)++;
 	}
 	fd = head;
-	printf("--------\n");
 }
 
-int	get_command(t_node	*node, t_program *program, int *pos)
+int	get_command(t_program *program, t_node	*node, int *pos)
 {
 	int 	category;
 	char	*token;
 	char	**paths;
 
-	printf("pos: %d\n", (*pos));
-	// printf("1: %s\n", program->tokens[pos]);
+	// printf("pos: %d\n", (*pos));
+	printf("1: %s\n", program->tokens[(*pos)]);
 	token = program->tokens[(*pos)];
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
-	// printf("%d\n", category);
-	// is
-	if (category >= ARROW_LEFT && category <= ARROW_RIGHT)
-	{
-		// fill_fds(program, node, &pos);
-		printf("here: %d\n", (*pos));
-		(*pos)++;
-		printf("here: %d\n", (*pos));
-		return (0);
-	}
 	// is undefined/not builtin
 	if (category == UNDEFINED || category == WORD)
 	{
 		paths = get_cmd_paths(program->envp);
 		node->full_path = get_cmd_path(paths, token);
 		free(paths);
+		(*pos)++;
 	}
 	// is builtin
 	else if (category > UNDEFINED && category <= EXIT)
 	{
 		node->full_path = token;
 		printf("%s\n", node->full_path);
+		(*pos)++;
 	}
 	return (0);
 }
@@ -174,18 +163,48 @@ t_node	*fill_node(t_program *program)
 	// printf("%s\n", program->cmd_line);
 	while (program->tokens[i] != NULL)
 	{
-		// printf("%c", program->cmd_line[*i]);
-		get_command(node, program, &i);
-		// printf("Command:	%s \n", node->full_cmd);
-		// printf("Path:		%s \n", node->full_path);
-		i++;
-		fill_fds(program, node, &i);
+		// if arrow, fill up fd list
+		// first word is always command
+		// copy arguments until you find pipe or arrows
+		// if pipe is found, create new node
+
+		// if arrow, fill up fd list
+		if (get_category(tokens[i]) >= ARROW_LEFT && get_category(tokens[i]) <= DOUBLE_ARROW_RIGHT)
+		{
+			// printf("1. pos: %d\n", i);
+			fill_fd(program, node, &i);
+			// printf("2. pos: %d\n", i);
+			// first word is always command
+			if (tokens[i] == NULL || tokens[i + 1] == NULL)
+				break ;
+			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
+				get_command(program, node, &i);
+			// printf("3. pos: %d\n-----------\n", i);
+			// printf("Command:	%s \n", node->full_cmd);
+		}
+		else
+		{
+			// printf("2. pos: %d\n", i);
+			get_command(program, node, &i);
+			// printf("3. pos: %d\n", i);
+			// printf("Command:	%s \n", node->full_cmd);
+		}
+		// printf("Token:	%s \n", tokens[i]);
+		// copy arguments until you find pipe or arrows
+		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
+		{
+			node->full_cmd = ft_strjoin(node->full_cmd, " ; ");
+			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
+			// printf("HERE -> Command:	%s \n", node->full_cmd);
+			i++;
+		}
+		// if pipe is found, create new node
 		if (get_category(program->tokens[i]) == PIPE)
 		{
+			// printf("NEW NODE! %d\n-----------\n", i);
 			node->next = setup_node();
 			node = node->next;
 			i++;
-			continue;
 		}
 	}
 	// printf("\n2: i is %d\n", i);
