@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/10/21 12:16:01 by ralf             ###   ########.fr       */
+/*   Updated: 2022/10/22 21:14:47 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,22 @@ void	fd_manager(s_node *node)
 	fd_manager_output(s_node *node);
 } 
 
+// Buildins need in field fullpath the command with
+// How has exit ot be handeled? There must be some kind of signal from the child to the parent to exit minishell
+void	command_executor(s_node *node, s_exec *executor)
+{
+	
+	
+	
+	if (execve(get_cmd_path(pipex->cmd_paths, *args), args, envp) == -1)
+		exit_msg("CMD - command not found", 127);
+	
+
+
+
+	
+}
+
 void	process_executor(s_node *node, s_exec *executor)
 {
 	fd_manager(s_node *node);
@@ -102,8 +118,7 @@ void	process_executor(s_node *node, s_exec *executor)
 	if (dup2(node->infile_fd, 0) < 0)
 		exit_msg("Dup 2 output - bad fd", EXIT_FAILURE);
 	// Process the command with our own recoded builtins or the original buildtins	
-	if (execve(get_cmd_path(pipex->cmd_paths, *args), args, envp) == -1)
-		exit_msg("CMD - command not found", 127);
+	command_executor(node, executor);
 
 	
 }
