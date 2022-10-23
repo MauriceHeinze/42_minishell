@@ -40,12 +40,12 @@ int main(int argc, char *argv[], char *envp[])
 	// printf("%s \n", input_str);
 	words = split_line(input_str);
 	words = split_subline(words);
-	while (words[i] != NULL)
-	{
-		printf("%s \n", words[i]);
-		i++;
-	}
-	printf("-----------------\n");
+	// while (words[i] != NULL)
+	// {
+	// 	printf("%s \n", words[i]);
+	// 	i++;
+	// }
+	// printf("-----------------\n");
 	program->tokens = words;
 	program->cmd_line = input_str;
 	i = 0;
@@ -66,7 +66,6 @@ int main(int argc, char *argv[], char *envp[])
 			printf("- - - - - - - - - - -\n");
 			fd = fd->next;
 		}
-
 		node = node->next;
 		if (node)
 			fd = node->fd;

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/23 15:24:43 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/23 16:40:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ t_node	*fill_node(t_program *program)
 		{
 			if (tokens[i] == NULL)
 				return (head);
+			tokens[i] = remove_quotes(tokens[i]);
 			node->full_cmd = ft_strjoin(node->full_cmd, " ; ");
 			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
 			// printf("HERE -> Command:	%s \n", node->full_cmd);
