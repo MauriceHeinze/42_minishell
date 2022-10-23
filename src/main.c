@@ -22,7 +22,7 @@ static void	free_split(char **words)
 int main(int argc, char *argv[], char *envp[])
 {
 	// char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
-	// char	*input_str = "cat 'hallo'";
+	// char	*input_str = "echo 'hallo' | echo 'ciao'";
 	// char	*input_str = "echo 'Current Path is: ' $PWD | echo 'User name is: ' $USER | cat";
 	// char	*input_str = "< infile ls -l | wc -l > outfile";
 	// char	*input_str = "echo -n 'Max' > output1 > output2 | cat 'Paul' > 4k | cd 'Maurice' > hdmi > xyz | pwd 'Marie' > abc > 123";
@@ -54,6 +54,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_fd *fd = node->fd;
 	while (node != NULL)
 	{
+		printf("-- COMMAND ----------\n");
 		printf("Command:	%s \n", node->full_cmd);
 		printf("Path:		%s \n", node->full_path);
 		printf("-- FD ---------------\n");
@@ -71,7 +72,7 @@ int main(int argc, char *argv[], char *envp[])
 			fd = node->fd;
 	}
 	// free(program->envp);
-	// free_split(words);
+	free_split(words);
 	// system("leaks a.out");
 	return (0);
 }

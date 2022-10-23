@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"history.h": "c",
-		"stdio.h": "c",
-		"minishell.h": "c",
-		"stat.h": "c"
-	}
-}

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/23 13:17:57 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/23 15:24:43 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,94 +26,19 @@
 // >> output ist in appendmode -> cat text >> cat text1
 // check pipex manual
 
-t_fd	*setup_fd(void)
-{
-	t_fd	*node;
-
-	node = malloc(sizeof(t_fd));
-	if (!node)
-		return (NULL);
-
-	node->io = OUTPUT;
-	node->mode = -1;
-	node->meta = "";
-	node->fd = -1;
-	node->next = NULL;
-	return (node);
-}
-
 t_node	*setup_node(void)
 {
 	t_node	*node;
-	t_fd	*fd;
 
 	node = malloc(sizeof(t_node));
-	fd = setup_fd();
-	if (!node || !fd)
+	if (!node)
 		return (NULL);
 	node->full_cmd = "";
 	node->full_path = "";
 	node->pid = -1;
-	node->fd = fd;
+	node->fd = NULL;
 	node->next = NULL;
 	return (node);
-}
-
-void	fill_fd(t_program *program, t_node *node, int *pos)
-{
-	t_fd	*fd;
-	t_fd	*head;
-
-	fd = node->fd;
-	head = fd;
-	while (fd->next != NULL)
-		fd = fd->next;
-
-	if (get_category(program->tokens[(*pos)]) == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
-	{
-		// infile infos don't change
-		(*pos)++;
-		fd->io = OUTPUT;
-		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
-		fd->next = setup_fd();
-		fd = fd->next;
-		(*pos)++;
-	}
-	else if (get_category(program->tokens[(*pos)]) == ARROW_LEFT) // < stdin
-	{
-		(*pos)++;
-		fd->io = INPUT;
-		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
-		fd->next = setup_fd();
-		fd = fd->next;
-		(*pos)++;
-	}
-	else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_LEFT) // << HEREDOC
-	{
-		(*pos)++;
-		fd->io = INPUT;
-		fd->mode = MODE_HEREDOC;
-		fd->meta = program->tokens[(*pos)]; // delimiter
-		fd->next = setup_fd();
-		fd = fd->next;
-		(*pos)++;
-	}
-	else if (get_category(program->tokens[(*pos)]) == DOUBLE_ARROW_RIGHT) // >> APPEND
-	{
-		(*pos)++;
-		fd->io = OUTPUT;
-		fd->mode = MODE_APPEND;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
-		fd->next = setup_fd();
-		fd = fd->next;
-		(*pos)++;
-	}
-	fd = head;
 }
 
 int	get_command(t_program *program, t_node	*node, int *pos)

@@ -82,7 +82,8 @@ int		skip_quote(char *input_str, int pos);
 t_node	*fill_node(t_program *program);
 char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(char **envp);
-
+t_fd	*setup_fd(void);
+void	fill_fd(t_program *program, t_node *node, int *pos);
 
 # define OUTPUT 0;
 # define INPUT 1;
