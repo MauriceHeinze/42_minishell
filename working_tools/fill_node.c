@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/22 23:33:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/23 13:17:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	// is builtin
 	else if (category > UNDEFINED && category <= EXIT)
 	{
+		node->full_cmd = token;
 		node->full_path = token;
-		printf("%s\n", node->full_path);
 		(*pos)++;
 	}
 	return (0);
@@ -193,11 +193,14 @@ t_node	*fill_node(t_program *program)
 		// copy arguments until you find pipe or arrows
 		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 		{
+			if (tokens[i] == NULL)
+				return (head);
 			node->full_cmd = ft_strjoin(node->full_cmd, " ; ");
 			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
 			// printf("HERE -> Command:	%s \n", node->full_cmd);
 			i++;
 		}
+		// printf("here!\n");
 		// if pipe is found, create new node
 		if (get_category(program->tokens[i]) == PIPE)
 		{

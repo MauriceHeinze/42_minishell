@@ -21,11 +21,12 @@ static void	free_split(char **words)
 
 int main(int argc, char *argv[], char *envp[])
 {
-	char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
+	// char	*input_str = "<Makefile cat| echo \"$PWD $e 'hola'\" ~/src | 'tr' -d / >outfile";
+	// char	*input_str = "cat 'hallo'";
 	// char	*input_str = "echo 'Current Path is: ' $PWD | echo 'User name is: ' $USER | cat";
 	// char	*input_str = "< infile ls -l | wc -l > outfile";
 	// char	*input_str = "echo -n 'Max' > output1 > output2 | cat 'Paul' > 4k | cd 'Maurice' > hdmi > xyz | pwd 'Marie' > abc > 123";
-	// char	*input_str = "< infile.txt echo 'Hallo' > output1 > output2 > output3";
+	char	*input_str = "< infile.txt echo 'Hallo' > output1 > output2 > output3";
 	char	**words;
 	int		i;
 
@@ -39,11 +40,12 @@ int main(int argc, char *argv[], char *envp[])
 	// printf("%s \n", input_str);
 	words = split_line(input_str);
 	words = split_subline(words);
-	// while (words[i] != NULL)
-	// {
-	// 	printf("%s \n", words[i]);
-	// 	i++;
-	// }
+	while (words[i] != NULL)
+	{
+		printf("%s \n", words[i]);
+		i++;
+	}
+	printf("-----------------\n");
 	program->tokens = words;
 	program->cmd_line = input_str;
 	i = 0;
