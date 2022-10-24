@@ -7,6 +7,16 @@ static int	is_uppercase(char c)
 	return (0);
 }
 
+static char	*get_exit_code(char *input_str, int start, int i)
+{
+	char	*var_name;
+
+	input_str = str_remove_word(input_str, start, i - start + 1);
+	input_str = str_add(input_str, ft_itoa(program->status), start);
+	free(var_name);
+	return (input_str);
+}
+
 static char	*expand_variable(char *input_str, int start, int i)
 {
 	char	*var_name;
@@ -29,6 +39,17 @@ char	*expand_variables(char *input_str)
 	{
 		if (input_str[i] == '\'')
 			i = skip_quote(input_str, i);
+		else if (input_str[i] == '$' && input_str[i + 1] == '?' && ft_strchr("/ 	\0", input_str[i + 2]))
+		{
+			input_str = get_exit_code(input_str, i, 2);
+			// i++;
+			// start = i;
+			// while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || input_str[i] == '_'))
+			// 	i++;
+			// input_str = expand_variable(input_str, start, i);
+			// i = 0;
+			// start = 0;
+		}
 		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || input_str[i + 1] == '_'))
 		{
 			i++;

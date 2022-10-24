@@ -3,10 +3,11 @@
 
 # include <stdio.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdbool.h>
 # include <string.h>
+# include "../libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -14,7 +15,18 @@
 # include <errno.h>
 
 # include <stdio.h>
-# include "../libft/libft.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 
 typedef struct s_fd {
 	int				io; // 0 stdin, 1 stdout
@@ -49,6 +61,8 @@ typedef struct s_program {
 	char			**tokens;
 	t_node			*nodes;
 }				t_program;
+
+t_program *program;
 
 typedef struct s_token {
 	char				*word;
@@ -85,13 +99,15 @@ char	**get_cmd_paths(char **envp);
 t_fd	*setup_fd(void);
 void	fill_fd(t_program *program, t_node *node, int *pos);
 void	free_nodes(t_program *program);
+void	track_history(char *line);
+void	setup_signal_handler(void);
 
 # define OUTPUT 0;
 # define INPUT 1;
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
-# define ECHO 100
+# define ECHO_CMD 100 // conflict with macro of other lib
 # define CD 200
 # define PWD 300
 # define EXPORT 400
