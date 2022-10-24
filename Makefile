@@ -17,7 +17,6 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/split_subline.c				\
 			./working_tools/str_add.c					\
 			./working_tools/str_remove_word.c			\
-			./libft/libft.a 							\
 
 CLIENT = main.c $(SOURCES)
 
@@ -30,7 +29,8 @@ RM = rm -f
 
 all: $(CLIENT_NAME)
 $(CLIENT_NAME): $(HDR) $(CLIENTOBJ)
-	$(CC) $(FLAGS) $(CLIENTOBJ) -o $(CLIENT_NAME)
+	$(MAKE) -C libft
+	$(CC) $(FLAGS) $(CLIENTOBJ) ./libft/libft.a -o $(CLIENT_NAME)
 
 clean:
 	$(RM) *.o
