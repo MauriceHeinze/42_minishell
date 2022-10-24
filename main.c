@@ -72,13 +72,12 @@ int main(int argc, char *argv[], char *envp[])
 	// 	if (node)
 	// 		fd = node->fd;
 	// }
-	free(program->envp);
+	free_nodes(program);
+	free(node);
+	free(fd);
+	free(program);
 	free_split(words);
 	free_split(subwords);
 	free(input_str);
-	free(program);
-	free(program->nodes);
-	free(program->nodes->next);
-	// system("leaks a.out");
 	return (0);
 }

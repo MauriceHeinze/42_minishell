@@ -17,6 +17,7 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/split_subline.c				\
 			./working_tools/str_add.c					\
 			./working_tools/str_remove_word.c			\
+			./working_tools/free_nodes.c			\
 
 CLIENT = main.c $(SOURCES)
 
