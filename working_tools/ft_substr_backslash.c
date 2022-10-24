@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/19 17:13:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/10/24 13:03:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,3 @@ char	*ft_substr_backslash(char const *s, unsigned int start, size_t len)
 	sub_s[len] = '\0';
 	return (sub_s);
 }
-
-// int	main(void)
-// {
-// 	ft_substr("tripouille", 1, 1);
-// 	return (0);
-// }

@@ -33,9 +33,3 @@ char	**get_cmd_paths(char **envp)
 	*envp -= 5;
 	return (paths);
 }
-
-// int main(int argc, char *argv[], char *envp[])
-// {
-// 	printf("%s\n", get_cmd_path(get_cmd_paths(envp), "echo"));
-// 	return (0);
-// }
