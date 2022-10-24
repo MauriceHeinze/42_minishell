@@ -48,14 +48,12 @@ int main(int argc, char *argv[], char *envp[])
 		i++;
 	}
 	printf("-----------------\n");
-	free_split(words);
-	free_split(subwords);
-	// program->tokens = words;
-	// program->cmd_line = input_str;
-	// i = 0;
-	// program->nodes = fill_node(program);
-	// t_node *node = program->nodes;
-	// t_fd *fd = node->fd;
+	program->tokens = words;
+	program->cmd_line = input_str;
+	i = 0;
+	program->nodes = fill_node(program);
+	t_node *node = program->nodes;
+	t_fd *fd = node->fd;
 	// while (node != NULL)
 	// {
 	// 	printf("-- COMMAND ----------\n");
@@ -74,7 +72,13 @@ int main(int argc, char *argv[], char *envp[])
 	// 	if (node)
 	// 		fd = node->fd;
 	// }
-	// free(program->envp);
+	free(program->envp);
+	free_split(words);
+	free_split(subwords);
+	free(input_str);
+	free(program);
+	free(program->nodes);
+	free(program->nodes->next);
 	// system("leaks a.out");
 	return (0);
 }
