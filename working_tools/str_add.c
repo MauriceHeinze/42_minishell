@@ -28,5 +28,6 @@ char	*str_add(char *orig, char *new_part, int pos)
 	while (orig[orig_i] != '\0')
 		copy[i++] = orig[orig_i++];
 	copy[i] = '\0';
+	free(orig);
 	return (copy);
 }

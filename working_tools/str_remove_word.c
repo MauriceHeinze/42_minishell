@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-char	*str_remove_word(char const *orig, unsigned int start, size_t len)
+char	*str_remove_word(char *orig, unsigned int start, size_t len)
 {
 	int		i;
 	int		orig_i;
@@ -25,5 +25,6 @@ char	*str_remove_word(char const *orig, unsigned int start, size_t len)
 	while (orig[orig_i] != '\0')
 		copy[i++] = orig[orig_i++];
 	copy[i] = '\0';
+	free(orig);
 	return (copy);
 }

@@ -75,7 +75,6 @@ int main(int argc, char *argv[], char *envp[])
 	// 		fd = node->fd;
 	// }
 	// free(program->envp);
-	free_split(words);
 	// system("leaks a.out");
 	return (0);
 }
