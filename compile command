@@ -1,0 +1,1 @@
+gcc ./src/main.c ./inc/minishell.h ./libft/libft.a  ./working_tools/*.c -lreadline -L /goinfre/rpohl/.brew/opt/readline/lib -I /goinfre/rpohl/.brew/opt/readline/include ./executor/*.c -g

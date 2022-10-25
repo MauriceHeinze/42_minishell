@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/10/22 21:05:37 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/10/23 13:00:46 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	echo(char *str, int n)
 		write(1, "\n", 1);
 }
 
+// What about variables like $USER?
 // change working relative or aboslute
 // Relative paths can use . to stay in the current dir and .. to go one dir up
 // WHat error management is needed? e.g. dir not found
