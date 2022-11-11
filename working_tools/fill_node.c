@@ -48,7 +48,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	char	**paths;
 
 	// printf("pos: %d\n", (*pos));
-	printf("1: %s\n", program->tokens[(*pos)]);
+	// printf("1: %s\n", program->tokens[(*pos)]);
 	token = program->tokens[(*pos)];
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
@@ -64,7 +64,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	else if (category > UNDEFINED && category <= EXIT)
 	{
 		node->full_cmd = token;
-		node->full_path = token;
+		node->full_path = "builtin";
 		(*pos)++;
 	}
 	return (0);

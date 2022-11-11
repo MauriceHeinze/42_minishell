@@ -1,12 +1,5 @@
 #include "../inc/minishell.h"
 
-static int	is_uppercase(char c)
-{
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	return (0);
-}
-
 static char	*expand_variable(char *input_str, int start, int i)
 {
 	char	*var_name;

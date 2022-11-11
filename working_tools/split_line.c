@@ -16,7 +16,6 @@ char	**split_line(char *input_str)
 	start = 0;
 	no_word = 0;
 	total_words = count_words(input_str);
-	printf("total words: %d\n", total_words);
 	words = malloc(sizeof(char *) * (total_words + 1));
 	if (!words)
 		return (NULL);

@@ -2,10 +2,10 @@
 
 char	*str_remove_word(char const *orig, unsigned int start, size_t len)
 {
-	int		i;
-	int		orig_i;
-	int		new_part_i;
-	char	*copy;
+	unsigned int	i;
+	int				orig_i;
+	int				new_part_i;
+	char			*copy;
 
 	if (start > 0)
 		start--;

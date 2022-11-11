@@ -2,18 +2,18 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
-# include <string.h>
-# include <sys/types.h>
 # include <sys/wait.h>
-# include <sys/stat.h>
 # include <fcntl.h>
-# include <errno.h>
-
-# include <stdio.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 # include "../libft/libft.h"
 
 typedef struct s_fd {
@@ -24,15 +24,6 @@ typedef struct s_fd {
 	struct s_fd		*next;
 }				t_fd;
 
-// Bsp: outfile1 > outfile2
-// infile_fd;
-// infile_mode -1;
-// *infile_meta -1;
-// outfile_fd:
-// outfile_mode: PIPE
-// *outfile_meta: 0 // increments
-
-// echo "Hallo" > outfile > outfile1 > outfile2 > outfile3
 typedef struct s_node {
 	char			*full_cmd; // e.g. echo -n, cd etc.
 	char			*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
@@ -40,6 +31,12 @@ typedef struct s_node {
 	t_fd			*fd;
 	struct s_node	*next;
 }				t_node;
+
+typedef struct s_var {
+	char			*name;		
+	char			*content;				
+	struct s_var	*next;
+}				t_var;
 
 
 typedef struct s_program {
@@ -84,13 +81,24 @@ char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(char **envp);
 t_fd	*setup_fd(void);
 void	fill_fd(t_program *program, t_node *node, int *pos);
+void	setup_signal_handler(void);
+void	track_history(char *line);
+void	ctrl_c(void);
+
+t_var	*store_env(char *env[]);
+char	*get_env(t_var *env, char *var_name);
+
+// Executor
+char	*get_cmd_path(char **paths, char *cmd);
+char	**get_cmd_paths(char **envp);
+
 
 # define OUTPUT 0;
 # define INPUT 1;
 
 // KEYS FOR BUILT INS
 # define UNDEFINED 50
-# define ECHO 100
+# define ECHO_CMD 100
 # define CD 200
 # define PWD 300
 # define EXPORT 400

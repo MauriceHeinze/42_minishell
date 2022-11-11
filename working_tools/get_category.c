@@ -15,7 +15,7 @@
 static int		is_command(char *word)
 {
 	if (ft_strcmp(word, "echo") == 0)
-		return (ECHO);
+		return (ECHO_CMD);
 	else if (ft_strcmp(word, "cd") == 0)
 		return (CD);
 	else if (ft_strcmp(word, "pwd") == 0)

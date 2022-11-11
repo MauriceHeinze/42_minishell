@@ -33,7 +33,6 @@ t_fd	*setup_fd(void)
 	node = malloc(sizeof(t_fd));
 	if (!node)
 		return (NULL);
-
 	node->io = OUTPUT;
 	node->mode = -1;
 	node->meta = "";
