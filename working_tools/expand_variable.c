@@ -6,7 +6,7 @@ static char	*expand_variable(char *input_str, int start, int i)
 
 	var_name = ft_substr(input_str, start, i - start);
 	input_str = str_remove_word(input_str, start, i - start + 1);
-	input_str = str_add(input_str, getenv(var_name), start);
+	input_str = str_add(input_str, get_env(program->envp, var_name), start);
 	free(var_name);
 	return (input_str);
 }
@@ -37,7 +37,7 @@ char	*expand_variables(char *input_str)
 			i++;
 			start = i;
 			input_str = str_remove_word(input_str, start, i - start + 1);
-			input_str = str_add(input_str, getenv("HOME"), start);
+			input_str = str_add(input_str, get_env(program->envp, "HOME"), start);
 			i = 0;
 			start = 0;
 		}

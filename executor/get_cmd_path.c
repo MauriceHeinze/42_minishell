@@ -22,14 +22,15 @@ char	*get_cmd_path(char **paths, char *cmd)
 }
 
 // returns executable paths
-char	**get_cmd_paths(char **envp)
+char	**get_cmd_paths(t_var *envp)
 {
 	char	**paths;
+	t_var	*tmp;
 
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	*envp += 5;
-	paths = ft_split(*envp, ':');
-	*envp -= 5;
+	tmp = envp;
+	while (ft_strcmp("PATH", tmp->name) != 0)
+		tmp = tmp->next;
+	// printf("Here! %s\n", tmp->name);
+	paths = ft_split(tmp->content, ':');
 	return (paths);
 }

@@ -1,7 +1,5 @@
 #include "./inc/minishell.h"
 
-t_program *program;
-
 static void	free_split(char **words)
 {
 	int	i;
@@ -30,7 +28,8 @@ int main(int argc, char *argv[], char *envp[])
 	program = malloc(sizeof(t_program));
 	if (!program)
 		return (0);
-	program->envp = envp;
+	program->envp = store_env(envp);
+	// printf("Paths are %s\n", get_cmd_paths(program->envp)[0]);
 	// start shell
 	setup_signal_handler();
 	while (1)

@@ -74,7 +74,7 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = OUTPUT;
 		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
 		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
 		(*pos)++;
 	}
@@ -83,7 +83,7 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = INPUT;
 		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
 		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
 		(*pos)++;
 	}
@@ -100,7 +100,7 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = OUTPUT;
 		fd->mode = MODE_APPEND;
-		fd->meta = ft_strjoin(getenv("PWD"), "/");
+		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
 		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
 		(*pos)++;
 	}

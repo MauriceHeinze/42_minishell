@@ -16,6 +16,7 @@
 # include <sys/ioctl.h>
 # include "../libft/libft.h"
 
+
 typedef struct s_fd {
 	int				io; // 0 stdin, 1 stdout
 	int				mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. append mode -> full path
@@ -40,12 +41,14 @@ typedef struct s_var {
 
 
 typedef struct s_program {
-	char			**envp;
+	t_var			*envp;
 	int				status;
 	char			*cmd_line;
 	char			**tokens;
 	t_node			*nodes;
 }				t_program;
+
+t_program *program;
 
 typedef struct s_token {
 	char				*word;
@@ -59,6 +62,7 @@ typedef struct s_cmd_line {
 	char				**args;
 	struct s_cmd_line	*next;
 }				t_cmd_line;
+
 
 // TOOLS
 int		get_category(char *word);
@@ -77,8 +81,6 @@ char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 int		skip_quote(char *input_str, int pos);
 t_node	*fill_node(t_program *program);
-char	*get_cmd_path(char **paths, char *cmd);
-char	**get_cmd_paths(char **envp);
 t_fd	*setup_fd(void);
 void	fill_fd(t_program *program, t_node *node, int *pos);
 void	setup_signal_handler(void);
@@ -90,8 +92,7 @@ char	*get_env(t_var *env, char *var_name);
 
 // Executor
 char	*get_cmd_path(char **paths, char *cmd);
-char	**get_cmd_paths(char **envp);
-
+char	**get_cmd_paths(t_var *envp);
 
 # define OUTPUT 0;
 # define INPUT 1;
