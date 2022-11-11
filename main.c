@@ -35,6 +35,8 @@ int main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		line = readline("minishell $");
+		if (!line)
+			break ;
 		if (ft_strlen(line) == 0)
 			continue ;
 		track_history(line);

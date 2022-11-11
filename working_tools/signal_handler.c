@@ -26,14 +26,14 @@ void	ctrl_c(void)
 }
 
 // should do nothing
-static void	signal_quit()
+static void	signal_quit(int sig)
 {
 	// should do nothing
 }
 
 // WATCH OUT! Check on different Imacs if ctrl-C is really not printing ++
 // should return a new prompt
-static void	signal_interrupt()
+static void	signal_interrupt(int sig)
 {
 	ctrl_c();
 	// write (1, "\n", 1);
