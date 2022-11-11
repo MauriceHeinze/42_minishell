@@ -44,8 +44,5 @@ int	count_words(char *input_str)
 	if (ft_strlen(input_str) > 0 && no_spaces == 0)
 		return (1);
 	else
-		if (no_spaces % 2)
-			return (no_spaces + 1);
-		else
-			return (no_spaces + 2);
+		return (no_spaces + 1);
 }

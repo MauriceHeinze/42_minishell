@@ -35,6 +35,8 @@ int main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		line = readline("minishell $");
+		if (ft_strlen(line) == 0)
+			continue ;
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
@@ -44,23 +46,25 @@ int main(int argc, char *argv[], char *envp[])
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
-		printf("Mode: %s\n", node->full_cmd);
-		printf("Meta: %s\n_____\n", node->full_path);
-		while (node != NULL)
-		{
-			// EXECUTOR COMMAND HIER EINFÜGEN
-			// while (fd != NULL)
-			// {
-				// printf("Mode: %d\n", fd->mode);
-				// printf("Meta: %s\n_____\n", fd->meta);
-			// 	fd = fd->next;
-			// }
-			node = node->next;
-			// if (node)
-			// 	fd = node->fd;
-		}
+		// printf("Mode: %s\n", node->full_cmd);
+		// printf("Meta: %s\n_____\n", node->full_path);
+		// while (node != NULL)
+		// {
+		// 	// EXECUTOR COMMAND HIER EINFÜGEN
+		// 	node = node->next;
+		// 	// if (node)
+		// 	// 	fd = node->fd;
+		// }
 
-		free(line);
+		// free(program->tokens);
+		// free(program->cmd_line);
+		// free(program->cmd_line);
+		// free_nodes(program);
+		// free(program);
+		// free(node);
+		// free(fd);
+		// free_split(words);
+		// free(line);
 	}
 	return (0);
 }

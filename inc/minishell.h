@@ -94,6 +94,9 @@ char	*get_env(t_var *env, char *var_name);
 char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(t_var *envp);
 
+// free
+void	free_nodes(t_program *program);
+
 # define OUTPUT 0;
 # define INPUT 1;
 

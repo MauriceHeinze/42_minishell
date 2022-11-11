@@ -53,13 +53,17 @@ char	**split_subline(char **splitted_line)
 	int		no_word;
 	char	**words;
 
+	// printf("\n=============\nstart! \n");
 	i = 0;
 	no_word = 0;
 	start = 0;
+	// printf("1\n");
 	words = malloc(sizeof(char *) * get_total_words(splitted_line));
 	// printf("total words %d\n", get_total_words(splitted_line));
+	// printf("2\n");
 	if (!words)
 		return (NULL);
+	// printf("3\n");
 	while (splitted_line[i] != NULL)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
@@ -99,13 +103,14 @@ char	**split_subline(char **splitted_line)
 		}
 		i++;
 	}
+	// printf("end! \n");
 	words[get_total_words(splitted_line) - 1] = NULL;
 	free_split(splitted_line);
 
 	i = 0;
 	while (splitted_line[i] != NULL)
 	{
-		printf("%s \n", splitted_line[i]);
+		// printf("%s \n", splitted_line[i]);
 		i++;
 	}
 	return (words);
