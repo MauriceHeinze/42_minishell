@@ -10,6 +10,7 @@ static t_var	*setup_node(void)
 
 	var->name = NULL;
 	var->content = NULL;
+    var->not_splitted = NULL;
 	var->next = NULL;
 	return (var);
 }
@@ -28,6 +29,10 @@ t_var	*store_env(char *env[])
     i = 0;
 	while (env[i])
     {
+        k = 0;
+        while (env[i][k] != '\0')
+            k++;
+        var->not_splitted = ft_substr(env[i], 0, k);
         k = 0;
         while (env[i][k] != '\0' && env[i][k] != '=')
             k++;

@@ -35,7 +35,8 @@ typedef struct s_node {
 
 typedef struct s_var {
 	char			*name;		
-	char			*content;				
+	char			*content;	
+	char			*not_splitted;			
 	struct s_var	*next;
 }				t_var;
 

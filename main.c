@@ -29,7 +29,7 @@ int main(int argc, char *argv[], char *envp[])
 	if (!program)
 		return (0);
 	program->envp = store_env(envp);
-	// printf("Paths are %s\n", get_cmd_paths(program->envp)[0]);
+	// printf("not_splitted is %s\n", program->envp->not_splitted);
 	// start shell
 	setup_signal_handler();
 	while (1)
@@ -57,16 +57,6 @@ int main(int argc, char *argv[], char *envp[])
 		// 	// if (node)
 		// 	// 	fd = node->fd;
 		// }
-
-		// free(program->tokens);
-		// free(program->cmd_line);
-		// free(program->cmd_line);
-		// free_nodes(program);
-		// free(program);
-		// free(node);
-		// free(fd);
-		// free_split(words);
-		// free(line);
 	}
 	return (0);
 }
