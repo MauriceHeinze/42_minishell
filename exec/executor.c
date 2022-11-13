@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/13 16:27:12 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/13 18:22:13 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ char **restore_envp(t_var *envp)
 	counter = 0;
 	i = 0;
 	while (temp != NULL)
+	{
 		counter++;
+		temp = temp->next;
+	}
 	restored_envp = malloc(sizeof(char *) * (counter + 1));
 	temp = envp;
 	while (temp != NULL)
@@ -37,17 +40,15 @@ char **restore_envp(t_var *envp)
 	return (restored_envp);
 }
 
-
-// Allocated memory is not freed because of execve
-void	command_executor(t_node *node, t_exec *executor, t_var *envp)
+void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 {
 	char	**cmd_paths;
 	char	**args;
 	char	**restored_envp;
 
-	cmd_paths = get_cmd_paths(envp);
+	cmd_paths = get_cmd_paths(envpn);
+	restored_envp = restore_envp(envpn);
 	args = ft_split(node->full_cmd, ' ');
-	restored_envp = restore_envp(envp);
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 		perror("CMD - command not found");
 }
@@ -155,9 +156,6 @@ void	fd_manager_output(t_node *node, t_exec	*executor)
 
 void	process_executor(t_node *node, t_exec *executor, t_var *envp)
 {
-	t_fd	*fd_temp;
-	
-	fd_temp = node->fd;
 	fd_manager_output(node, executor);
 	fd_manager_input(node, executor);
 	command_executor(node, executor, envp);
@@ -220,7 +218,6 @@ int	execution_manager (t_node *node, t_var *envp)
 	t_node	*node_tmp;
 	
 	node_tmp = node;
-
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
 	while (node != NULL && executor.pid_old > 0)
