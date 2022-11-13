@@ -68,43 +68,84 @@ t_var	*store_env(char *env[])
     return (head);
 }
 
+// TODO: Add check for double
 t_var	*add_env(t_var *env, char *name, char* content)
 {
-    t_var *head;
+    t_var   *head;
+    int     exists;
 
     head = env;
-    while (env->next != NULL)
+    exists = 0;
+    while (env)
+    {
+        if (ft_strcmp(env->name, name) == 0)
+        {
+            exists = 1;
+            break;
+        }
+        if (env->next)
+            env = env->next;
+        else
+            break;
+    }
+    if (exists)
+    {
+        // free(env->content);
+        // free(env->not_splitted);
+        env->content = content;
+        env->not_splitted = ft_strjoin(name, "=");
+        env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+    }
+    else
+    {
+        env->next = setup_node();
         env = env->next;
-    env->next = setup_node();
-    env = env->next;
-    env->name = name;
-    env->content = content;
-    env->not_splitted = ft_strjoin(name, "=");
-    env->not_splitted = ft_strjoin(env->not_splitted, env->content);
-    // printf("Here\n");
+        env->name = name;
+        env->content = content;
+        env->not_splitted = ft_strjoin(name, "=");
+        env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+    }
     return (head);
 }
 
-// t_var	*remove_env(t_var *env, char *name, char* content)
-// {
-//     t_var *head;
+void    remove_env(t_var *env, char *name)
+{
+    t_var *head;
+    t_var *tmp;
 
-//     head = env;
-    
-//     while (env)
-//     {
-//         if (ft_strcmp(env->name, var_name) == 0)
-//             return (env->content);
-//         env = env->next;
-//     }
-//     return (env);
-// }
+    head = env;
 
-char	*get_env(t_var *env, char *var_name)
+    // check first element
+    // printf("name: %s\n", env->name);
+    if (ft_strcmp(env->name, name) == 0) // found it!
+    {
+        head = env->next;
+        // free(env);
+        program->envp = head;
+    }
+    // check next elements
+    while (env)
+    {
+        if (!env->next)
+            break;
+        // printf("Here\n");
+        if (ft_strcmp(env->next->name, name) == 0) // found it!
+        {
+            tmp = env->next;
+            // remove next node
+            // set pointer to next node
+            env->next = tmp->next;
+        }
+        env = env->next;
+    }
+    program->envp = head;
+}
+
+char	*get_env(t_var *env, char *name)
 {
 	while (env)
     {
-        if (ft_strcmp(env->name, var_name) == 0)
+        if (ft_strcmp(env->name, name) == 0)
             return (env->content);
         env = env->next;
     }
