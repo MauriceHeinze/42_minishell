@@ -54,6 +54,23 @@ t_var	*store_env(char *env[])
     return (head);
 }
 
+t_var	*add_env(t_var *env, char *name, char* content)
+{
+    t_var *head;
+
+    head = env;
+    while (env->next != NULL)
+        env = env->next;
+    env->next = setup_node();
+    env = env->next;
+    env->name = name;
+    env->content = content;
+    env->not_splitted = ft_strjoin(name, "=");
+    env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+    // printf("Here\n");
+    return (env);
+}
+
 char	*get_env(t_var *env, char *var_name)
 {
 	while (env)

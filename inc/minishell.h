@@ -90,6 +90,7 @@ void	ctrl_c(void);
 
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *var_name);
+t_var	*add_env(t_var *env, char *name, char* content);
 
 // Executor
 char	*get_cmd_path(char **paths, char *cmd);
