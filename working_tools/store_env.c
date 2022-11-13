@@ -71,17 +71,40 @@ t_var	*store_env(char *env[])
 // TODO: Add check for double
 t_var	*add_env(t_var *env, char *name, char* content)
 {
-    t_var *head;
+    t_var   *head;
+    int     exists;
 
     head = env;
-    while (env->next != NULL)
+    exists = 0;
+    while (env)
+    {
+        if (ft_strcmp(env->name, name) == 0)
+        {
+            exists = 1;
+            break;
+        }
+        if (env->next)
+            env = env->next;
+        else
+            break;
+    }
+    if (exists)
+    {
+        // free(env->content);
+        // free(env->not_splitted);
+        env->content = content;
+        env->not_splitted = ft_strjoin(name, "=");
+        env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+    }
+    else
+    {
+        env->next = setup_node();
         env = env->next;
-    env->next = setup_node();
-    env = env->next;
-    env->name = name;
-    env->content = content;
-    env->not_splitted = ft_strjoin(name, "=");
-    env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+        env->name = name;
+        env->content = content;
+        env->not_splitted = ft_strjoin(name, "=");
+        env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+    }
     return (head);
 }
 
