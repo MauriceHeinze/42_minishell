@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/13 14:22:38 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/13 16:27:12 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char **restore_envp(t_var *envp)
 	temp = envp;
 	while (temp != NULL)
 	{
-		restored_envp[i] = temp->content;
+		restored_envp[i] = temp->not_splitted;
 		temp = temp->next;
 		i++;	
 	}
