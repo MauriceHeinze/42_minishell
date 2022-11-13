@@ -1,5 +1,19 @@
 #include "../inc/minishell.h"
 
+t_var	*setup_var_node(void)
+{
+	t_var	*var;
+
+	var = malloc(sizeof(t_var));
+	if (!var)
+		return (NULL);
+
+	var->name = NULL;
+	var->content = NULL;
+	var->next = NULL;
+	return (var);
+}
+
 static t_var	*setup_node(void)
 {
 	t_var	*var;
