@@ -68,8 +68,23 @@ t_var	*add_env(t_var *env, char *name, char* content)
     env->not_splitted = ft_strjoin(name, "=");
     env->not_splitted = ft_strjoin(env->not_splitted, env->content);
     // printf("Here\n");
-    return (env);
+    return (head);
 }
+
+// t_var	*remove_env(t_var *env, char *name, char* content)
+// {
+//     t_var *head;
+
+//     head = env;
+    
+//     while (env)
+//     {
+//         if (ft_strcmp(env->name, var_name) == 0)
+//             return (env->content);
+//         env = env->next;
+//     }
+//     return (env);
+// }
 
 char	*get_env(t_var *env, char *var_name)
 {
