@@ -1,6 +1,8 @@
 CLIENT_NAME = minishell
 SOURCES = 	./working_tools/copy_quote.c				\
 			./executor/get_cmd_path.c					\
+			./exec/executor.c							\
+			./exec/builtins.c							\
 			./working_tools/count_operators.c			\
 			./working_tools/count_words.c				\
 			./working_tools/expand_variable.c			\
@@ -15,6 +17,7 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/special_char.c				\
 			./working_tools/split_line.c				\
 			./working_tools/split_subline.c				\
+			./working_tools/store_env.c					\
 			./working_tools/str_add.c					\
 			./working_tools/str_remove_word.c			\
 			./working_tools/track_history.c				\
@@ -27,7 +30,8 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 
 HDR = ./inc/minishell.h
 CC = cc
-FLAGS = -g -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
+FLAGS = -Wall -Wextra -Werror -lreadline -L /goinfre/rpohl/.brew/opt/readline/lib -I /goinfre/rpohl/.brew/opt/readline/include
 RM = rm -f
 
 all: $(CLIENT_NAME)

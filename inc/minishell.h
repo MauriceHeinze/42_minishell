@@ -87,11 +87,13 @@ void	fill_fd(t_program *program, t_node *node, int *pos);
 void	setup_signal_handler(void);
 void	track_history(char *line);
 void	ctrl_c(void);
-
+t_var	*setup_var_node(void);
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);
 void    remove_env(t_var *env, char *name);
+void	rl_replace_line (const char *text, int clear_undo);
+
 
 // Executor
 char	*get_cmd_path(char **paths, char *cmd);
