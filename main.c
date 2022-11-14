@@ -1,6 +1,16 @@
 #include "./inc/minishell.h"
 #include "./exec/executor.h"
 
+static void setup_term(void)
+{
+	struct termios	t;
+
+	tcgetattr(0, &t);
+	t.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
+	setup_signal_handler();
+}
+
 static void	free_split(char **words)
 {
 	int	i;
@@ -36,7 +46,7 @@ int main(int argc, char *argv[], char *envp[])
 
 	// printf("not_splitted is %s\n", program->envp->not_splitted);
 	// start shell
-	setup_signal_handler();
+	setup_term();
 	while (1)
 	{
 		line = readline("minishell $");
@@ -53,7 +63,8 @@ int main(int argc, char *argv[], char *envp[])
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
-		execution_manager (node, program->envp);
+		execution_manager(node, program->envp);
+		// write(1, "1 \n", 3);
 		// printf("Full cmd: %s\n", node->full_cmd);
 		// printf("Full path: %s\n_____\n", node->full_path);
 		// printf("Meta: %s\n_____\n", node->fd->meta);
@@ -66,3 +77,4 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
+

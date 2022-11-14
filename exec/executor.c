@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/13 18:22:13 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/14 13:49:36 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char **restore_envp(t_var *envp)
 	{
 		restored_envp[i] = temp->not_splitted;
 		temp = temp->next;
-		i++;	
+		i++;
 	}
 	restored_envp[i] = NULL;
 	return (restored_envp);
@@ -171,8 +171,8 @@ void	buildin_executor(t_node *node, t_exec *executor, t_var *envp)
 void heredoc_handler(t_exec *executor, t_node *node_tmp)
 {
 	t_fd	*fd_temp;
-	
-	fd_temp = node_tmp->fd;	
+
+	fd_temp = node_tmp->fd;
 	while (fd_temp != NULL)
 	{
 		if (fd_temp->mode == MODE_HEREDOC)
@@ -187,7 +187,7 @@ void heredoc_handler(t_exec *executor, t_node *node_tmp)
 			}
 		}
 		fd_temp = fd_temp->next;
-	}	
+	}
 }
 
 void	init_exec_manager(t_exec *executor, t_node *node)
@@ -213,10 +213,12 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 
 // env -i plus call let occure a seg vault - call was "env -i ./a.out"
 int	execution_manager (t_node *node, t_var *envp)
-{	
+{
 	t_exec	executor;
 	t_node	*node_tmp;
-	
+	int		err;
+
+	// write(1, "2 \n", 3);
 	node_tmp = node;
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
@@ -233,8 +235,11 @@ int	execution_manager (t_node *node, t_var *envp)
 				process_executor(node, &executor, envp);
 			executor.pid_old = node->pid;
 		}
+		wait(&err);
 		node = node->next;
 	}
+	// waitid(node->pid, 0, NULL);
+	// write(1, "3 \n", 3);
 	// Should the final input and output fds be closed here? If so there shoudl be input and output fd vars in the executor
 	return (WEXITSTATUS(executor.status));
 }

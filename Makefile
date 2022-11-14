@@ -31,7 +31,7 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 HDR = ./inc/minishell.h
 CC = cc
 # FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
-FLAGS = -Wall -Wextra -Werror -lreadline -L /goinfre/rpohl/.brew/opt/readline/lib -I /goinfre/rpohl/.brew/opt/readline/include
+FLAGS = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
 RM = rm -f
 
 all: $(CLIENT_NAME)

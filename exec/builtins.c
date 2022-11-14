@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/13 14:29:54 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/14 12:41:53 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	echo(char *str)
 // change working relative or aboslute
 // Relative paths can use . to stay in the current dir and .. to go one dir up
 // WHat error management is needed? e.g. dir not found
-// does stringcompare recognize the null temrinator int the string? This is a must 
+// does stringcompare recognize the null temrinator int the string? This is a must
 void	cd(char *dir)
 {
 	if (chdir (dir) == -1)
@@ -50,10 +50,10 @@ void	cd(char *dir)
 void	pwd()
 {
 	char	*cwd;
-	
+
 	if (getcwd(cwd, 0) == NULL)
 		perror("getcwd failed");
-	ft_putstr_fd(cwd, 1, NULL);
+	ft_putstr_fd(cwd, 1);
 	free(cwd);
 }
 
@@ -74,9 +74,9 @@ void	export(char *export, t_var *envp)
 		lst_envp = lst_envp->next;
 	new_var = setup_var_node();
 	lst_envp->next = new_var;
-	// new_var->name 
+	// new_var->name
 	// new_var->content
-	// new_var->"complete"	
+	// new_var->"complete"
 }
 
 

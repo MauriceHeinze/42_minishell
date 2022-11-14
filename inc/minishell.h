@@ -6,8 +6,8 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include "../readline/readline.h"
+# include "../readline/history.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <sys/types.h>
@@ -34,9 +34,9 @@ typedef struct s_node {
 }				t_node;
 
 typedef struct s_var {
-	char			*name;		
-	char			*content;	
-	char			*not_splitted;			
+	char			*name;
+	char			*content;
+	char			*not_splitted;
 	struct s_var	*next;
 }				t_var;
 
