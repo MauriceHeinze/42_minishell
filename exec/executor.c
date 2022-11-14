@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/14 13:49:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/14 18:07:57 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 
 	cmd_paths = get_cmd_paths(envpn);
 	restored_envp = restore_envp(envpn);
-	args = ft_split(node->full_cmd, ' ');
+	args = ft_split(node->full_cmd_orig, ' ');
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 		perror("CMD - command not found");
 }
@@ -216,7 +216,7 @@ int	execution_manager (t_node *node, t_var *envp)
 {
 	t_exec	executor;
 	t_node	*node_tmp;
-	int		err;
+	// int		err;
 
 	// write(1, "2 \n", 3);
 	node_tmp = node;
@@ -224,7 +224,7 @@ int	execution_manager (t_node *node, t_var *envp)
 	heredoc_handler(&executor, node);
 	while (node != NULL && executor.pid_old > 0)
 	{
-		if (ft_strcmp(node->full_path, "buildin") == 0)
+		if (ft_strcmp(node->full_path, "builtin") == 0)
 			buildin_executor(node, &executor, envp);
 		else
 		{
@@ -233,9 +233,11 @@ int	execution_manager (t_node *node, t_var *envp)
 				perror("Fork failed");
 			if (node->pid == 0)
 				process_executor(node, &executor, envp);
-			executor.pid_old = node->pid;
+			else
+				executor.pid_old = node->pid;
+			waitpid(executor.pid_old, &(executor.status), 0);
 		}
-		wait(&err);
+		// wait(&err);
 		node = node->next;
 	}
 	// waitid(node->pid, 0, NULL);
