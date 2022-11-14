@@ -39,11 +39,16 @@ char	**split_line(char *input_str)
 		{
 			i = i + quote_length(input_str[i], input_str, i) + 1;
 			words[no_word++] = ft_substr(input_str, start, i - start + 1);
-			i++;
+			// i++;
 		}
 		i++;
 	}
-	// printf("last word: %s\n", words[total_words - 1]);
+	i = 0;
+
+	// while (total_words)
+	// {
+	// 	printf("word: %s\n", words[i++]);
+	// }
 	words[total_words] = NULL;
 	return (words);
 }

@@ -29,6 +29,7 @@ char	*expand_variables(char *input_str)
 			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || input_str[i] == '_'))
 				i++;
 			input_str = expand_variable(input_str, start, i);
+			// printf("called!\n");
 			i = 0;
 			start = 0;
 		}
