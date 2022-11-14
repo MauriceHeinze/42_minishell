@@ -1,0 +1,4 @@
+hallo 
+Full cmd: echo ; "hallo 
+Orig cmd: echo "hallo 
+[?2004hminishell $[?2004l

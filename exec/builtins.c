@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/14 18:01:12 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/14 18:18:18 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	echo(char *str)
 	int		quotes;
 	int		inside_quotes;
 	int		n;
-	
+
 	check = str;
 	quotes = 0;
 	n = 0;
@@ -78,7 +78,7 @@ void	cd(char *dir)
 void	pwd()
 {
 	char	cwd[PATH_MAX];
-	
+
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		perror("getcwd failed");
 	ft_putstr_fd(cwd, 1, NULL);
@@ -91,7 +91,7 @@ void	export(char *export, t_var *envp)
 	int		length_content;
 	char	*name;
 	char	*content;
-	
+
 	length_content = 0;
 	length_name = 0;
 	while(export[length_name] != '\0' && export[length_name] != '=')

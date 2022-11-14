@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/14 16:52:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/14 18:38:56 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	if (category == UNDEFINED || category == WORD)
 	{
 		paths = get_cmd_paths(program->envp);
+		node->full_cmd_orig = token;
 		node->full_path = get_cmd_path(paths, token);
 		free(paths);
 		(*pos)++;

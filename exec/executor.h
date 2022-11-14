@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 13:19:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/13 18:19:47 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/14 18:19:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXECUTOR_H
 
 # include <sys/types.h>
+# include <limits.h>
 
 typedef struct s_exec {
 	int		pipe[2];
@@ -24,7 +25,7 @@ typedef struct s_exec {
 	int		pipes;
 	pid_t	pid_old;
 	t_node	*first_node;
-	
+
 }				t_exec;
 
 void	builtin_caller(t_node *node, t_var *envp);
