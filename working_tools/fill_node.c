@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/14 13:17:48 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/14 15:03:46 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_node	*setup_node(void)
 	if (!node)
 		return (NULL);
 	node->full_cmd = "";
+	node->full_cmd_orig = "";
 	node->full_path = "";
 	node->pid = -1;
 	node->fd = NULL;
@@ -116,11 +117,15 @@ t_node	*fill_node(t_program *program)
 		}
 		// printf("Token:	%s \n", tokens[i]);
 		// copy arguments until you find pipe or arrows
+		node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, tokens[i - 1]);
+		node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, " ");
 		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 		{
 			if (tokens[i] == NULL)
 				return (head);
 			// tokens[i] = remove_quotes(tokens[i]);
+			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, remove_quotes(tokens[i]));
+			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, " ");
 			node->full_cmd = ft_strjoin(node->full_cmd, " ; ");
 			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
 			// printf("HERE -> Command:	%s \n", node->full_cmd);

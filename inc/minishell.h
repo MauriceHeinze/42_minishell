@@ -27,6 +27,7 @@ typedef struct s_fd {
 
 typedef struct s_node {
 	char			*full_cmd; // e.g. echo -n, cd etc.
+	char			*full_cmd_orig; // e.g. echo -n, cd etc.
 	char			*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
 	int				pid; // default -1, is set by executor
 	t_fd			*fd;

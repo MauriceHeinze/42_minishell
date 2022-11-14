@@ -64,6 +64,7 @@ int main(int argc, char *argv[], char *envp[])
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
 		execution_manager(node, program->envp);
+		// printf("Full cmd orig: %s\n", node->full_cmd_orig);
 		// write(1, "1 \n", 3);
 		// printf("Full cmd: %s\n", node->full_cmd);
 		// printf("Full path: %s\n_____\n", node->full_path);
