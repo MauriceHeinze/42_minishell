@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/14 13:49:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/14 17:40:52 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 	char	**cmd_paths;
 	char	**args;
 	char	**restored_envp;
+
+	printf("cmd: %s\n", node->full_cmd);
 
 	cmd_paths = get_cmd_paths(envpn);
 	restored_envp = restore_envp(envpn);
