@@ -23,8 +23,13 @@ char	**split_line(char *input_str)
 	while (input_str[i] != '\0')
 	{
 		start = i;
-		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
+		while (!ft_strchr("\'\" 	;", input_str[i]) && input_str[i] != '\0')
 			i++;
+		if (input_str[i] == ';')
+		{
+			i++;
+			continue;
+		}
 		if (i > start)
 		{
 			words[no_word++] = ft_substr(input_str, start, i - start);
