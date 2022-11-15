@@ -24,11 +24,11 @@ char	*expand_variables(char *input_str)
 	{
 		if (input_str[i] == '\'')
 			i = skip_quote(input_str, i);
-		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || ft_isalnum(input_str[i + 1]) || input_str[i + 1] == '_'))
+		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || ft_strchr("?_", input_str[i + 1])))
 		{
 			i++;
 			start = i;
-			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || input_str[i] == '_'))
+			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || ft_strchr("?_", input_str[i])))
 				i++;
 			input_str = expand_variable(input_str, start, i);
 			// printf("called!\n");
