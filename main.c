@@ -52,12 +52,6 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
-		// while (words[i] != NULL)
-		// {
-		// 	printf("%s\n", words[i]);
-		// 	i++;
-		// }
-		// printf("==============\n");
 		words = split_subline(words);
 		// i = 0;
 		// while (words[i] != NULL)

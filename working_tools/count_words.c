@@ -21,7 +21,7 @@ static int	count_spaces(char *input_str)
 			i++;
 		else if (count == 1)
 		{
-			if (input_str[i] == ' ' || input_str[i] == '	')
+			if (input_str[i] == ' ' || input_str[i] == '	' || ((input_str[i] == '\'' || input_str[i] == '\"') && input_str[i + 1] != '\0'))
 			{
 				while (input_str[i] == ' ' || input_str[i] == '	')
 					i++;
