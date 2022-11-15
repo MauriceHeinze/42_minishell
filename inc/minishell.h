@@ -104,7 +104,8 @@ char	**get_cmd_paths(t_var *envp);
 void	free_nodes(t_program *program);
 
 // utils
-int	is_whitespace(char *input_str);
+int		is_whitespace(char *input_str);
+void	set_exit_code(int exit_code);
 
 # define OUTPUT 0;
 # define INPUT 1;

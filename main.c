@@ -40,12 +40,7 @@ int main(int argc, char *argv[], char *envp[])
 	if (!program)
 		return (0);
 	program->envp = store_env(envp);
-	add_env(program->envp, "Maurice", "Heinze");
-	// printf("env is %s\n", get_env(program->envp, "Maurice"));
-	// printf("env is %s\n", get_env(program->envp, "USER"));
-
-	// printf("not_splitted is %s\n", program->envp->not_splitted);
-	// start shell
+	set_exit_code(0);
 	setup_term();
 	while (1)
 	{

@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_whitespace.c                                    :+:      :+:    :+:   */
+/*   set_exit_code.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 18:55:52 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/15 18:55:53 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/15 19:04:26 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	is_whitespace(char *input_str)
+void	set_exit_code(int exit_code)
 {
-	int	i;
+	char *exit_code_str;
 
-	i = 0;
-
-	while (input_str[i] == ' ' || input_str[i] == '	')
-		i++;
-	if (input_str[i] == '\0')
-		return (1);
-	else
-		return (0);
+	exit_code_str = ft_itoa(exit_code);
+	add_env(program->envp, "?", ft_strdup(exit_code_str));
+	free(exit_code_str);
 }
