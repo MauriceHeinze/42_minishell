@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/14 18:18:18 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/15 20:27:54 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,47 +20,73 @@
 // If n is true do not output the trailing newline
 // If str is empty printf nothing an do not throw error
 // Example "echo ; -n ; -n ; 1 2  3 ; 1 ; 2 ; 3"
-void	echo(char *str)
+void	echo(char *str, int fd)
 {
 	char	*check;
 	int		quotes;
-	int		inside_quotes;
+	// Should be devioded into in signel and in double quotes
+	int		inside_single_quotes;
+	int		inside_double_quotes;
 	int		n;
+	int		num_n;
 
 	check = str;
 	quotes = 0;
 	n = 0;
-	inside_quotes = 0;
-	while (*check != '\0')
+	num_n = 0;
+	inside_single_quotes = 0;
+	inside_double_quotes = 0;
+	// if (dup2(fd, 2) < 0)
+	// 	perror("Dup 2 builtin error");
+	// while (*check != '\0')
+	// {
+	// 	if (*check == '\"')
+	// 		quotes += 1;
+	// 	check++;
+	// }
+	// if (quotes%2 > 0)
+	// 	perror("Uneven quotes");
+	while ((ft_strncmp(&(str[num_n]), "-", 1) == 0))
 	{
-		if (*check == '\"')
-			quotes += 1;
-		check++;
-	}
-	if (quotes%2 > 0)
-		perror("Uneven quotes");
-	while ((ft_strncmp(str, "-n ; ", 5) == 0))
-	{
-		str += 5;
-		n = 1;
+		num_n += 1;
+		if((ft_strncmp(&(str[num_n]), "n", 1) != 0))
+			break;
+		while ((ft_strncmp(&(str[num_n]), "n", 1) == 0))
+			num_n += 1;
+		if((ft_strncmp(&(str[num_n]), " ", 1) != 0))
+			break;
+		else
+		{
+			str += num_n + 1;
+			num_n = 0;
+			n = 1;
+		}		
 	}
 	while (*str != '\0')
 	{
-		if (*str == '\"')
+		if (*str == '\"' && !inside_single_quotes)
 		{
-			if (inside_quotes)
-				inside_quotes = 0;
-			if (!inside_quotes)
-				inside_quotes = 1;
+			if (inside_double_quotes)
+				inside_double_quotes = 0;
+			else if (!inside_double_quotes)
+				inside_double_quotes = 1;
 			str++;
 		}
-		else if (*str == ';' && !inside_quotes)
+		else if (!inside_double_quotes && *str == '\'')
+		{
+			if (inside_single_quotes)
+				inside_single_quotes = 0;
+			else if (!inside_single_quotes)
+				inside_single_quotes = 1;
+			str++;
+		}
+		else if (*str == ';' && !inside_single_quotes && !inside_double_quotes)
 			str += 2;
 		else
-			write(1, str++, 1);
+			write(fd, str++, 1);
 	}
 	if (!n)
-		write(1, "\n", 1);
+		write(fd, "\n", 1);
 }
 
 // What about variables like $USER?
@@ -75,14 +101,14 @@ void	cd(char *dir)
 }
 
 // Print the full filename of the current working directory.
-void	pwd()
+void	pwd(int fd)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		perror("getcwd failed");
-	ft_putstr_fd(cwd, 1, NULL);
-	write(1, "\n", 1);
+	ft_putstr_fd(cwd, fd, NULL);
+	write(fd, "\n", 1);
 }
 
 void	export(char *export, t_var *envp)
@@ -114,35 +140,36 @@ void	unset(char *remove, t_var *envp)
 	remove_env(envp, remove);
 }
 
-void	env(t_var *envp)
+void	env(t_var *envp, int fd)
 {
 	t_var	*temp;
 
 	temp = envp;
 	while(temp != NULL)
 	{
-		write(1, temp->not_splitted, ft_strlen(temp->not_splitted));
-		write(1, "\n", 1);
+		write(fd, temp->not_splitted, ft_strlen(temp->not_splitted));
+		write(fd, "\n", 1);
 		temp = temp->next;
 	}
 }
 
-void	builtin_caller(t_node *node, t_var *envp)
+void	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		cd(&(node->full_cmd[ft_strlen("cd") + 3]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
-		echo(&(node->full_cmd[ft_strlen("echo") + 3]));
+		echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->builtin_fd_out);
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
-		pwd();
+		pwd(executor->builtin_fd_out);
 	else if (ft_strncmp(node->full_cmd, "export", ft_strlen("export")) == 0)
 		export(&(node->full_cmd[ft_strlen("export") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "unset", ft_strlen("unset")) == 0)
 		unset(&(node->full_cmd[ft_strlen("unset") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
-		env(envp);
+		env(envp, executor->builtin_fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
 		exit(0);
 	else
 		perror("builtin not found");
+	// close(executor->builtin_fd_out);
 }

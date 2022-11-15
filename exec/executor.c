@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/15 13:48:53 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/15 19:28:49 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,46 @@ void	fd_manager_output(t_node *node, t_exec	*executor)
 	}
 }
 
+void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
+{
+	t_fd	*fd_temp;
+	t_fd	*fd_former;
+	int		found_fd;
+
+	fd_temp = node->fd;
+	fd_former = NULL;
+	found_fd = 0;
+	while (fd_temp != NULL)
+	{
+		if (fd_temp->io == 1)
+			fd_temp = fd_temp->next;
+		else
+		{
+			found_fd = 1;
+			if (fd_temp->mode == MODE_FILE)
+				fd_temp->fd = open(fd_temp->meta, O_TRUNC | O_CREAT | O_RDWR, 000644);
+			else if (fd_temp->mode == MODE_APPEND)
+				fd_temp->fd = open(fd_temp->meta, O_APPEND | O_CREAT | O_RDWR, 000644);
+			if (fd_former != NULL)
+				close(fd_former->fd);
+			fd_former = fd_temp;
+			fd_temp = fd_temp->next;
+		}
+	}
+	if (found_fd == 0)
+		executor->builtin_fd_out = 1;
+	else
+		executor->builtin_fd_out = fd_former->fd;
+	if (node->next != NULL)
+	{
+		close(executor->pipe[0]);
+	// if (dup2(executor->builtin_fd_out, executor->pipe[1]) < 0)
+	// 	perror("Dup pipe builtin error");
+	}
+}
+
+
+
 void	process_executor(t_node *node, t_exec *executor, t_var *envp)
 {
 	fd_manager_output(node, executor);
@@ -164,9 +204,9 @@ void	process_executor(t_node *node, t_exec *executor, t_var *envp)
 
 void	buildin_executor(t_node *node, t_exec *executor, t_var *envp)
 {
-	fd_manager_output(node, executor);
+	fd_manager_output_builtin(node, executor);
 	fd_manager_input(node, executor);
-	builtin_caller(node, envp);
+	builtin_caller(node, executor, envp);
 }
 
 void heredoc_handler(t_exec *executor, t_node *node_tmp)
@@ -210,6 +250,7 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 		if (pipe(executor->pipe) < 0)
 			perror("Pipe error");
 	}
+	executor->builtin_fd_out = 0;
 }
 
 // env -i plus call let occure a seg vault - call was "env -i ./a.out"
