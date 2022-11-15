@@ -1,0 +1,13 @@
+Makefile
+a.out.dSYM
+cat
+exec
+executor
+inc
+main.c
+main.o
+main_maurice.c
+minishell
+readline
+utils
+working_tools

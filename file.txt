@@ -1,16 +1,0 @@
-hallo
-Full cmd: echo ; "hallo"
-Orig cmd: echo "hallo"
-[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $
-[?2004l[?2004hminishell $ss[?2004l
-minishell $[?2004h[?2004l
-minishell $[?2004h[?2004l
-minishell $[?2004h[?2004l
-minishell $[?2004h[?2004l

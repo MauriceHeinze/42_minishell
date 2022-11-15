@@ -8,13 +8,13 @@
 # include <signal.h>
 # include "../readline/readline.h"
 # include "../readline/history.h"
+# include "./libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <termios.h>
 # include <sys/ioctl.h>
-# include "../libft/libft.h"
 
 
 typedef struct s_fd {
