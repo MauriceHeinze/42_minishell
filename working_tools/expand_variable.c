@@ -22,7 +22,7 @@ char	*expand_variables(char *input_str)
 	{
 		if (input_str[i] == '\'')
 			i = skip_quote(input_str, i);
-		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || input_str[i + 1] == '_'))
+		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || ft_isalnum(input_str[i + 1]) || input_str[i + 1] == '_'))
 		{
 			i++;
 			start = i;
