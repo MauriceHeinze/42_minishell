@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/14 18:11:56 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/15 13:48:53 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,12 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 	char	**args;
 	char	**restored_envp;
 
-	printf("cmd: %s\n", node->full_cmd);
-
 	cmd_paths = get_cmd_paths(envpn);
 	restored_envp = restore_envp(envpn);
 	args = ft_split(node->full_cmd_orig, ' ');
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 		perror("CMD - command not found");
+	exit(0);
 }
 
 void heredoc(t_exec	*executor)
@@ -218,9 +217,7 @@ int	execution_manager (t_node *node, t_var *envp)
 {
 	t_exec	executor;
 	t_node	*node_tmp;
-	// int		err;
 
-	// write(1, "2 \n", 3);
 	node_tmp = node;
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
@@ -235,15 +232,10 @@ int	execution_manager (t_node *node, t_var *envp)
 				perror("Fork failed");
 			if (node->pid == 0)
 				process_executor(node, &executor, envp);
-			else
-				executor.pid_old = node->pid;
+			executor.pid_old = node->pid;
 			waitpid(executor.pid_old, &(executor.status), 0);
 		}
-		// wait(&err);
 		node = node->next;
 	}
-	// waitid(node->pid, 0, NULL);
-	// write(1, "3 \n", 3);
-	// Should the final input and output fds be closed here? If so there shoudl be input and output fd vars in the executor
 	return (WEXITSTATUS(executor.status));
 }
