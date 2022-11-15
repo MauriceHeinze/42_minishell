@@ -77,6 +77,8 @@ char	**split_subline(char **splitted_line)
 			while (splitted_line[i][k] != '\0')
 			{
 				start = k;
+				if (splitted_line[i][k] == '\"' || splitted_line[i][k] == '\'')
+					k = skip_quote(splitted_line[i], k);
 				while (!ft_strchr("|<>&", splitted_line[i][k]) && splitted_line[i][k] != '\0')
 					k++;
 				if (k > start)

@@ -52,18 +52,25 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
+		// while (words[i] != NULL)
+		// {
+		// 	printf("%s\n", words[i]);
+		// 	i++;
+		// }
+		// printf("==============\n");
 		words = split_subline(words);
+		// i = 0;
+		// while (words[i] != NULL)
+		// {
+		// 	printf("%s\n", words[i]);
+		// 	i++;
+		// }
 		program->tokens = words;
 		i = 0;
 		program->cmd_line = line;
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
-		// while (program->tokens[i] != NULL)
-		// {
-		// 	printf("%s\n", program->tokens[i]);
-		// 	i++;
-		// }
 		execution_manager(node, program->envp);
 		// write(1, "1 \n", 3);
 		// printf("Full cmd: %s\n", node->full_cmd);
