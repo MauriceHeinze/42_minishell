@@ -92,7 +92,7 @@ t_var	*setup_var_node(void);
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);
-void    remove_env(t_var *env, char *name);
+void	remove_env(t_var *env, char *name);
 void	rl_replace_line (const char *text, int clear_undo);
 
 
@@ -102,6 +102,9 @@ char	**get_cmd_paths(t_var *envp);
 
 // free
 void	free_nodes(t_program *program);
+
+// utils
+int	is_whitespace(char *input_str);
 
 # define OUTPUT 0;
 # define INPUT 1;

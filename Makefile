@@ -22,6 +22,7 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/str_remove_word.c			\
 			./working_tools/track_history.c				\
 			./working_tools/signal_handler.c			\
+			./working_tools/is_whitespace.c				\
 			./inc/libft.a 								\
 
 CLIENT = main.c $(SOURCES)
