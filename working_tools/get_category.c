@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/19 21:34:25 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:09:03 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		is_command(char *word)
 	return (0);
 }
 
-static int		is_operator(char *word)
+int		is_operator(char *word)
 {
 	if (ft_strcmp(word, ">") == 0)
 		return (ARROW_RIGHT);
@@ -48,10 +48,7 @@ static int		is_operator(char *word)
 	else if (ft_strcmp(word, "&&") == 0)
 		return (AND);
 	else if (ft_strcmp(word, "NULL") == 0)
-	{
-		// printf("Here\n");
 		return (EXIT);
-	}
 	return (0);
 }
 

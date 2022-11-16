@@ -53,7 +53,7 @@ int main(int argc, char *argv[], char *envp[])
 		line = expand_variables(line);
 		words = split_line(line);
 		words = split_subline(words);
-		// i = 0;
+		i = 0;
 		// while (words[i] != NULL)
 		// {
 		// 	printf("%s\n", words[i]);
@@ -61,6 +61,9 @@ int main(int argc, char *argv[], char *envp[])
 		// }
 		program->tokens = words;
 		i = 0;
+		if (!check_syntax(program->tokens))
+			continue ;
+		// printf("here!\n");
 		program->cmd_line = line;
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;

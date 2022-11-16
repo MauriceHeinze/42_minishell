@@ -107,6 +107,14 @@ void	free_nodes(t_program *program);
 int		is_whitespace(char *input_str);
 void	set_exit_code(int exit_code);
 
+// syntax checker
+int		check_syntax(char **tokens);
+int		is_operator(char *word);
+
+// exit
+void	exit_shell(int error_code);
+void	print_error(int error);
+
 # define OUTPUT 0;
 # define INPUT 1;
 
@@ -142,5 +150,26 @@ void	set_exit_code(int exit_code);
 # define MODE_STDIN 10200
 # define MODE_APPEND 10300
 # define MODE_PIPE 10400
+
+// ERROR CODES
+# define SINGLE_QUOTE_MISSING		1
+# define DOUBLE_QUOTE_MISSING		2
+# define REDIR_SYNTAX_ERROR			3
+# define EXIT_ERROR					4
+# define CMD_ERROR					5
+# define EXIT_ARG_ERROR				6
+# define INVALID_PATH				7
+# define EXPORT_ERROR				8
+# define OLDPWD_ERROR				9
+# define UNSET_ERROR				10
+# define PATH_ERROR					11
+# define PERMISSION_ERROR			12
+# define EMPTY_KEY_ERROR			13
+# define ENV_ERROR			        14
+
+# define CMD_NOT_FOUND				127
+# define INVALID_EXIT_ARG			255
+# define TERMINATED_BY_CTRL_C		130
+# define PIPE_SYNTAX_ERROR			258
 
 #endif

@@ -24,6 +24,9 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/signal_handler.c			\
 			./working_tools/is_whitespace.c				\
 			./working_tools/set_exit_code.c				\
+			./working_tools/check_syntax.c				\
+			./working_tools/exit_shell.c				\
+			./working_tools/error_message.c				\
 			./inc/libft.a 								\
 
 CLIENT = main.c $(SOURCES)
