@@ -10,6 +10,18 @@
             "request": "attach",
             "program": "/Users/mauriceheinze/Google Drive/42Heilbronn/Projects/minishell/a.out",
             "MIMode": "lldb"
+        },
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/minishell",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
         }
     ]
 }

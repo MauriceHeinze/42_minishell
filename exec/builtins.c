@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/16 11:39:50 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:53:14 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	echo(char *str, int fd)
 	num_n = 0;
 	inside_single_quotes = 0;
 	inside_double_quotes = 0;
+	if (str == NULL)
+		return ;
 	while ((ft_strncmp(&(str[num_n]), "-", 1) == 0))
 	{
 		num_n += 1;
@@ -90,7 +92,7 @@ void	cd(t_var *envp, char *dir)
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		perror("getcwd failed");
-	if (*dir == '\0')
+	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)
 			perror("chdir failed");
@@ -100,10 +102,12 @@ void	cd(t_var *envp, char *dir)
 		if (chdir (dir) == -1)
 			perror("chdir failed");
 	}
-	add_env(envp, "OLDPWD", cwd);
+	if (add_env(envp, "OLDPWD", cwd) == NULL)
+		perror("add_env failed");
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		perror("getcwd failed");
-	add_env(envp, "PWD", cwd);
+	if (add_env(envp, "PWD", cwd) == NULL)
+		perror("add_env failed");
 }
 
 // Print the full filename of the current working directory.
@@ -126,9 +130,11 @@ void	export(char *export, t_var *envp)
 
 	length_content = 0;
 	length_name = 0;
+	if (export == NULL)
+		return ;
 	while(export[length_name] != '\0' && export[length_name] != '=')
 		length_name++;
-	if (export[length_name] != '=')
+	if (export[length_name] != '\0' && export[length_name] != '=')
 		perror("Bad assignment");
 	name = malloc(sizeof(char) * (length_name + 1));
 	ft_strlcpy(name, export, length_name + 1);
@@ -177,6 +183,6 @@ void	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 		exit(0);
 	else
 		perror("builtin not found");
-	if (executor->builtin_fd_out != 1 || executor->builtin_fd_out != 2 || executor->builtin_fd_out != 0)
+	if (executor->builtin_fd_out != 1 && executor->builtin_fd_out != 2 && executor->builtin_fd_out != 0)
 		close(executor->builtin_fd_out);
 }
