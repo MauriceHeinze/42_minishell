@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/16 15:47:38 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/16 17:02:48 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	special_error(int error)
 
 void	exec_error(int error, char *s)
 {
+	set_exit_code(error);
 	if (error == EXPORT_ERROR)
 		printf("minishell: export: `%s': not a valid identifier\n", s);
 	else if (error == EXIT_ARG_ERROR)
