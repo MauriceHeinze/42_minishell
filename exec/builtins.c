@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/15 20:27:54 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/16 11:34:58 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,54 +36,50 @@ void	echo(char *str, int fd)
 	num_n = 0;
 	inside_single_quotes = 0;
 	inside_double_quotes = 0;
-	// if (dup2(fd, 2) < 0)
-	// 	perror("Dup 2 builtin error");
-	// while (*check != '\0')
-	// {
-	// 	if (*check == '\"')
-	// 		quotes += 1;
-	// 	check++;
-	// }
-	// if (quotes%2 > 0)
-	// 	perror("Uneven quotes");
-	while ((ft_strncmp(&(str[num_n]), "-", 1) == 0))
+	if (str != NULL)
 	{
-		num_n += 1;
-		if((ft_strncmp(&(str[num_n]), "n", 1) != 0))
-			break;
-		while ((ft_strncmp(&(str[num_n]), "n", 1) == 0))
+		while ((ft_strncmp(&(str[num_n]), "-", 1) == 0))
+		{
 			num_n += 1;
-		if((ft_strncmp(&(str[num_n]), " ", 1) != 0))
-			break;
-		else
-		{
-			str += num_n + 1;
-			num_n = 0;
-			n = 1;
-		}		
+			if((ft_strncmp(&(str[num_n]), "n", 1) != 0))
+				break;
+			while ((ft_strncmp(&(str[num_n]), "n", 1) == 0))
+				num_n += 1;
+			if((ft_strncmp(&(str[num_n]), " ", 1) != 0))
+				break;
+			else
+			{
+				str += num_n + 1;
+				num_n = 0;
+				n = 1;
+			}		
+		}
 	}
-	while (*str != '\0')
+	if (str != NULL)
 	{
-		if (*str == '\"' && !inside_single_quotes)
+		while (*str != '\0')
 		{
-			if (inside_double_quotes)
-				inside_double_quotes = 0;
-			else if (!inside_double_quotes)
-				inside_double_quotes = 1;
-			str++;
+			if (*str == '\"' && !inside_single_quotes)
+			{
+				if (inside_double_quotes)
+					inside_double_quotes = 0;
+				else if (!inside_double_quotes)
+					inside_double_quotes = 1;
+				str++;
+			}
+			else if (!inside_double_quotes && *str == '\'')
+			{
+				if (inside_single_quotes)
+					inside_single_quotes = 0;
+				else if (!inside_single_quotes)
+					inside_single_quotes = 1;
+				str++;
+			}
+			else if (*str == ';' && !inside_single_quotes && !inside_double_quotes)
+				str += 2;
+			else
+				write(fd, str++, 1);
 		}
-		else if (!inside_double_quotes && *str == '\'')
-		{
-			if (inside_single_quotes)
-				inside_single_quotes = 0;
-			else if (!inside_single_quotes)
-				inside_single_quotes = 1;
-			str++;
-		}
-		else if (*str == ';' && !inside_single_quotes && !inside_double_quotes)
-			str += 2;
-		else
-			write(fd, str++, 1);
 	}
 	if (!n)
 		write(fd, "\n", 1);
@@ -94,10 +90,26 @@ void	echo(char *str, int fd)
 // Relative paths can use . to stay in the current dir and .. to go one dir up
 // WHat error management is needed? e.g. dir not found
 // does stringcompare recognize the null temrinator int the string? This is a must
-void	cd(char *dir)
+void	cd(t_var *envp, char *dir)
 {
-	if (chdir (dir) == -1)
-		perror("chdir failed");
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, PATH_MAX) == NULL)
+		perror("getcwd failed");
+	if (*dir == '\0')
+	{
+		if (chdir (get_env(envp, "HOME")) == -1)
+			perror("chdir failed");
+	}
+	else
+	{
+		if (chdir (dir) == -1)
+			perror("chdir failed");
+	}
+	add_env(envp, "OLDPWD", cwd);
+	if (getcwd(cwd, PATH_MAX) == NULL)
+		perror("getcwd failed");
+	add_env(envp, "PWD", cwd);
 }
 
 // Print the full filename of the current working directory.
@@ -156,7 +168,7 @@ void	env(t_var *envp, int fd)
 void	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
-		cd(&(node->full_cmd[ft_strlen("cd") + 3]));
+		cd(envp, &(node->full_cmd[ft_strlen("cd") + 3]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
 		echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->builtin_fd_out);
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
@@ -171,5 +183,6 @@ void	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 		exit(0);
 	else
 		perror("builtin not found");
-	// close(executor->builtin_fd_out);
+	if (executor->builtin_fd_out != 1 || executor->builtin_fd_out != 2 \\ executor->builtin_fd_out != 0)
+		close(executor->builtin_fd_out);
 }
