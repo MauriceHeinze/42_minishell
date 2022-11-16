@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/16 15:38:12 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/16 15:47:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ static int	quotes_closed(char *token)
 		if (i != ft_strlen(token))
 		{
 			if (quote == '\'')
-				print_error(SINGLE_QUOTE_MISSING);
+				special_error(SINGLE_QUOTE_MISSING);
 			else if (quote == '\"')
-				print_error(DOUBLE_QUOTE_MISSING);
+				special_error(DOUBLE_QUOTE_MISSING);
 			return (0);
 		}
 	}

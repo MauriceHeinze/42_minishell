@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/16 15:21:18 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/16 15:47:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exit_shell(int error_code)
 {
 	set_exit_code(error_code);
-	print_error(error_code);
+	special_error(error_code);
 	// free all allocated resources
 		// free hdocs
 		// free tokens

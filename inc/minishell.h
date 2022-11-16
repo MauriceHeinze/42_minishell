@@ -113,7 +113,8 @@ int		is_operator(char *word);
 
 // exit
 void	exit_shell(int error_code);
-void	print_error(int error);
+void	special_error(int error);
+void	exec_error(int error, char *s);
 
 # define OUTPUT 0;
 # define INPUT 1;
