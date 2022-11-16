@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/16 13:53:14 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/16 16:11:14 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,24 +165,28 @@ void	env(t_var *envp, int fd)
 	}
 }
 
-void	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
+int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		cd(envp, &(node->full_cmd[ft_strlen("cd") + 3]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
-		echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->builtin_fd_out);
+		echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
-		pwd(executor->builtin_fd_out);
+		pwd(executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "export", ft_strlen("export")) == 0)
 		export(&(node->full_cmd[ft_strlen("export") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "unset", ft_strlen("unset")) == 0)
 		unset(&(node->full_cmd[ft_strlen("unset") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
-		env(envp, executor->builtin_fd_out);
+		env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
 		exit(0);
 	else
+	{
 		perror("builtin not found");
-	if (executor->builtin_fd_out != 1 && executor->builtin_fd_out != 2 && executor->builtin_fd_out != 0)
-		close(executor->builtin_fd_out);
+		return (EXIT_FAILURE);
+	}
+	if (executor->fd_out != 1 && executor->fd_out != 2 && executor->fd_out != 0)
+		close(executor->fd_out);
+	return (EXIT_SUCCESS);
 }
