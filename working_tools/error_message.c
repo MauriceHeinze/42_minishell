@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/16 17:02:48 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/17 15:02:30 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	special_error(int error)
 		printf("minishell: Syntax Error. Missing '\n");
 	else if (error == DOUBLE_QUOTE_MISSING)
 		printf("minishell: Syntax Error. Missing \"\n");
+	else if (error == SEMICOLON_USED)
+		printf("minishell: Syntax Error. Semicolons are not supported\n");
 	else if (error == EXIT_ERROR)
 		printf("minishell: exit: too many arguments\n");
 	else if (error == INVALID_PATH)

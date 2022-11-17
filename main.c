@@ -53,12 +53,12 @@ int main(int argc, char *argv[], char *envp[])
 		line = expand_variables(line);
 		words = split_line(line);
 		words = split_subline(words);
+		while (words[i] != NULL)
+		{
+			printf("%s\n", words[i]);
+			i++;
+		}
 		i = 0;
-		// while (words[i] != NULL)
-		// {
-		// 	printf("%s\n", words[i]);
-		// 	i++;
-		// }
 		program->tokens = words;
 		i = 0;
 		if (!check_syntax(program->tokens))
