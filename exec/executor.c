@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/16 19:00:06 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:08:05 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,8 +285,8 @@ int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 			perror("Fork failed");
 		if (node->pid == 0)
 			process_executor(node, executor, envp);
-		else
-			waitpid(node->pid, &(executor->status), 0);
+		// else
+		// 	waitpid(node->pid, &(executor->status), 0);
 	}
 	if (node->next != NULL)
 		exit_code = sub_exec(node->next, executor, envp);
@@ -298,6 +298,7 @@ int	execution_manager (t_node *node, t_var *envp)
 {
 	t_exec	executor;
 	t_node	*node_tmp;
+	int		i;
 
 	if (node == NULL || envp == NULL || node->full_path == NULL)
 		return (-1);
@@ -305,6 +306,11 @@ int	execution_manager (t_node *node, t_var *envp)
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
 	executor.status = sub_exec(node, &executor, envp);
+	i = 0;
+	while (i < executor.pipes)
+	{
+		wait(&(executor.status));
+	}
 	// while (node != NULL && executor.pid_old > 0)
 	// {
 	// 	if (ft_strcmp(node->full_path, "builtin") == 0)

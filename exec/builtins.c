@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/16 16:11:14 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:14:38 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	echo(char *str, int fd)
 			break;
 		while ((ft_strncmp(&(str[num_n]), "n", 1) == 0))
 			num_n += 1;
-		if((ft_strncmp(&(str[num_n]), " ", 1) != 0))
+		if((ft_strncmp(&(str[num_n]), ";", 1) != 0))
 			break;
 		else
 		{
-			str += num_n + 1;
+			str += num_n;
 			num_n = 0;
 			n = 1;
 		}		
@@ -73,7 +73,10 @@ void	echo(char *str, int fd)
 			str++;
 		}
 		else if (*str == ';' && !inside_single_quotes && !inside_double_quotes)
-			str += 2;
+		{
+			str++;
+			write(fd, " ", 1);
+		}
 		else
 			write(fd, str++, 1);
 	}
