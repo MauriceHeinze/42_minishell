@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/17 17:08:05 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/18 16:52:18 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,9 +273,6 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 
 int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 {
-	int	exit_code;
-
-	exit_code = 0;	
 	if (ft_strcmp(node->full_path, "builtin") == 0)
 		buildin_executor(node, executor, envp);
 	else
@@ -289,8 +286,8 @@ int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 		// 	waitpid(node->pid, &(executor->status), 0);
 	}
 	if (node->next != NULL)
-		exit_code = sub_exec(node->next, executor, envp);
-	return (WEXITSTATUS(exit_code));
+		sub_exec(node->next, executor, envp);
+	return (0);
 }
 
 // env -i plus call let occure a seg vault - call was "env -i ./a.out"
@@ -298,35 +295,24 @@ int	execution_manager (t_node *node, t_var *envp)
 {
 	t_exec	executor;
 	t_node	*node_tmp;
-	int		i;
 
 	if (node == NULL || envp == NULL || node->full_path == NULL)
 		return (-1);
 	node_tmp = node;
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
-	executor.status = sub_exec(node, &executor, envp);
-	i = 0;
-	while (i < executor.pipes)
+	executor.status = -1;
+	sub_exec(node, &executor, envp);
+	waitpid(-1, &(executor.status), 0);
+	if (!WIFSIGNALED(executor.status))
 	{
-		wait(&(executor.status));
+		set_exit_code(WEXITSTATUS(executor.status));
+		dprintf(2, "<EXIT: %d>", WEXITSTATUS(executor.status));
+	}	
+	else if (WIFSIGNALED(executor.status))
+	{
+		set_exit_code(WTERMSIG(executor.status) + 128);
+		dprintf(2, "<SIGN: %d>", WTERMSIG(executor.status) + 128);
 	}
-	// while (node != NULL && executor.pid_old > 0)
-	// {
-	// 	if (ft_strcmp(node->full_path, "builtin") == 0)
-	// 		buildin_executor(node, &executor, envp);
-	// 	else
-	// 	{
-	// 		node->pid = fork();
-	// 		if (node->pid == -1)
-	// 			perror("Fork failed");
-	// 		if (node->pid == 0)
-	// 			process_executor(node, &executor, envp);
-	// 		else
-	// 			waitpid(node->pid, &(executor.status), 0);
-	// 		executor.pid_old = node->pid;
-	// 	}
-	// 	node = node->next;
-	// }
-	return (executor.status);
+	return (0);
 }

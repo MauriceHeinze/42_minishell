@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/17 17:14:38 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/18 17:03:03 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // If n is true do not output the trailing newline
 // If str is empty printf nothing an do not throw error
 // Example "echo ; -n ; -n ; 1 2  3 ; 1 ; 2 ; 3"
-void	echo(char *str, int fd)
+int	echo(char *str, int fd)
 {
 	char	*check;
 	int		quotes;
@@ -37,7 +37,7 @@ void	echo(char *str, int fd)
 	inside_single_quotes = 0;
 	inside_double_quotes = 0;
 	if (str == NULL)
-		return ;
+		return (EXIT_SUCCESS);
 	while ((ft_strncmp(&(str[num_n]), "-", 1) == 0))
 	{
 		num_n += 1;
@@ -82,6 +82,7 @@ void	echo(char *str, int fd)
 	}
 	if (!n)
 		write(fd, "\n", 1);
+	return(EXIT_SUCCESS);
 }
 
 // What about variables like $USER?
@@ -89,21 +90,31 @@ void	echo(char *str, int fd)
 // Relative paths can use . to stay in the current dir and .. to go one dir up
 // WHat error management is needed? e.g. dir not found
 // does stringcompare recognize the null temrinator int the string? This is a must
-void	cd(t_var *envp, char *dir)
+int	cd(t_var *envp, char *dir)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
+	{
 		perror("getcwd failed");
+		return (EXIT_FAILURE);
+	}
+		
 	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)
+		{
 			perror("chdir failed");
+			return(EXIT_FAILURE);
+		}
 	}
 	else
 	{
 		if (chdir (dir) == -1)
+		{
 			perror("chdir failed");
+			return(EXIT_FAILURE);
+		}
 	}
 	if (add_env(envp, "OLDPWD", cwd) == NULL)
 		perror("add_env failed");
@@ -111,20 +122,25 @@ void	cd(t_var *envp, char *dir)
 		perror("getcwd failed");
 	if (add_env(envp, "PWD", cwd) == NULL)
 		perror("add_env failed");
+	return (EXIT_SUCCESS);
 }
 
 // Print the full filename of the current working directory.
-void	pwd(int fd)
+int	pwd(int fd)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
+	{
 		perror("getcwd failed");
+		return (EXIT_FAILURE);
+	}
 	ft_putstr_fd(cwd, fd, NULL);
 	write(fd, "\n", 1);
+	return (EXIT_SUCCESS);
 }
 
-void	export(char *export, t_var *envp)
+int	export(char *export, t_var *envp)
 {
 	int		length_name;
 	int		length_content;
@@ -134,7 +150,12 @@ void	export(char *export, t_var *envp)
 	length_content = 0;
 	length_name = 0;
 	if (export == NULL)
-		return ;
+		return (EXIT_SUCCESS);
+	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a' && *export <= 'z')))
+	{
+		perror("Not a valid identifier");
+		return (EXIT_FAILURE);
+	}
 	while(export[length_name] != '\0' && export[length_name] != '=')
 		length_name++;
 	if (export[length_name] != '\0' && export[length_name] != '=')
@@ -148,14 +169,16 @@ void	export(char *export, t_var *envp)
 	ft_strlcpy(content, &export[length_name + 1], length_content + 1);
 	content[length_content] = '\0';
 	add_env(envp, name, content);
+	return (EXIT_SUCCESS);
 }
 
-void	unset(char *remove, t_var *envp)
+int	unset(char *remove, t_var *envp)
 {
 	remove_env(envp, remove);
+	return (EXIT_SUCCESS);
 }
 
-void	env(t_var *envp, int fd)
+int	env(t_var *envp, int fd)
 {
 	t_var	*temp;
 
@@ -166,30 +189,31 @@ void	env(t_var *envp, int fd)
 		write(fd, "\n", 1);
 		temp = temp->next;
 	}
+	return (EXIT_SUCCESS);
 }
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
-		cd(envp, &(node->full_cmd[ft_strlen("cd") + 3]));
+		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 3]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
-		echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->fd_out);
+		executor->status = echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
-		pwd(executor->fd_out);
+		executor->status = pwd(executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "export", ft_strlen("export")) == 0)
-		export(&(node->full_cmd[ft_strlen("export") + 3]), envp);
+		executor->status = export(&(node->full_cmd[ft_strlen("export") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "unset", ft_strlen("unset")) == 0)
-		unset(&(node->full_cmd[ft_strlen("unset") + 3]), envp);
+		executor->status = unset(&(node->full_cmd[ft_strlen("unset") + 3]), envp);
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
-		env(envp, executor->fd_out);
+		executor->status = env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
 		exit(0);
 	else
 	{
 		perror("builtin not found");
-		return (EXIT_FAILURE);
+		executor->status = 1;
 	}
 	if (executor->fd_out != 1 && executor->fd_out != 2 && executor->fd_out != 0)
 		close(executor->fd_out);
-	return (EXIT_SUCCESS);
+	return (executor->status);
 }
