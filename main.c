@@ -52,17 +52,17 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
-		words = split_subline(words);
 		while (words[i] != NULL)
 		{
-			printf("%s\n", words[i]);
+			printf("%s;\n", words[i]);
 			i++;
 		}
+		words = split_subline(words);
 		i = 0;
 		program->tokens = words;
 		i = 0;
-		if (!check_syntax(program->tokens))
-			continue ;
+		// if (!check_syntax(program->tokens))
+		// 	continue ;
 		// printf("here!\n");
 		program->cmd_line = line;
 		program->nodes = fill_node(program);
@@ -70,16 +70,16 @@ int main(int argc, char *argv[], char *envp[])
 		t_fd *fd = node->fd;
 		execution_manager(node, program->envp);
 		// write(1, "1 \n", 3);
-		// printf("Full cmd: %s\n", node->full_cmd);
+		// printf("\n\nFull cmd: %s\n", node->full_cmd);
 		// printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// printf("Full path: %s\n_____\n", node->full_path);
 		// printf("Meta: %s\n_____\n", node->fd->meta);
-		// while (node != NULL)
-		// {
-	// 	// 	node = node->next;
-	// 	// 	// if (node)
-	// 	// 	// 	fd = node->fd;
-	// 	// }
+		while (node != NULL)
+		{
+			printf("\n\nFull cmd: %s\n", node->full_cmd);
+			printf("Orig cmd: %s\n", node->full_cmd_orig);
+			node = node->next;
+		}
 	}
 	return (0);
 }

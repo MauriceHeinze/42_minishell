@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/18 16:52:18 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/20 15:20:52 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@ int	execution_manager (t_node *node, t_var *envp)
 	{
 		set_exit_code(WEXITSTATUS(executor.status));
 		dprintf(2, "<EXIT: %d>", WEXITSTATUS(executor.status));
-	}	
+	}
 	else if (WIFSIGNALED(executor.status))
 	{
 		set_exit_code(WTERMSIG(executor.status) + 128);

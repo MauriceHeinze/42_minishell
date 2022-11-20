@@ -27,6 +27,7 @@ SOURCES = 	./working_tools/copy_quote.c				\
 			./working_tools/check_syntax.c				\
 			./working_tools/exit_shell.c				\
 			./working_tools/error_message.c				\
+			./working_tools/ft_realloc.c				\
 			./inc/libft.a 								\
 
 CLIENT = main.c $(SOURCES)

@@ -15,6 +15,7 @@ char	**split_line(char *input_str)
 	i = 0;
 	start = 0;
 	no_word = 0;
+	input_str = ft_strtrim(input_str, " 	");
 	total_words = count_words(input_str);
 	words = malloc(sizeof(char *) * (total_words + 1));
 	if (!words)
@@ -24,18 +25,32 @@ char	**split_line(char *input_str)
 		start = i;
 		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
 			i++;
+		// printf("Stopped at: %c\n", input_str[i]);
 		if (i > start)
 		{
+			if (ft_strchr(" 	", input_str[i]))
+					i++;
 			words[no_word++] = ft_substr(input_str, start, i - start);
 			continue;
 		}
 		if (input_str[i] == '\'' || input_str[i] == '\"')
 		{
-			i = i + quote_length(input_str[i], input_str, i) + 1;
-			words[no_word++] = ft_substr(input_str, start, i - start + 1);
+			if (input_str[i + quote_length(input_str[i], input_str, i) + 2] == ' ')
+			{
+				i = i + quote_length(input_str[i], input_str, i) + 2;
+				words[no_word++] = ft_substr(input_str, start, i - start + 1);
+			}
+			else
+			{
+				i = i + quote_length(input_str[i], input_str, i) + 1;
+				words[no_word++] = ft_substr(input_str, start, i - start + 1);
+			}
+			// printf("%d	|	%d\n", no_word, total_words);
 		}
 		i++;
 	}
+	printf("\n");
+	// echo hallo | echo "ciao" | echo 'hi'
 	i = 0;
 	words[total_words] = NULL;
 	return (words);

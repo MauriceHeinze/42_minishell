@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/17 15:01:48 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/20 15:48:15 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ static int	quotes_closed(char *token)
 	if (token[i] == '\'' || token[i] == '\"')
 	{
 		quote = token[i];
-		i = skip_quote(token, i);
-		if (i != ft_strlen(token))
+		i++;
+		while (token[i] && token[i] != quote)
+			i++;
+		if (quote == '\"' && token[i] != quote)
 		{
 			if (quote == '\'')
 				special_error(SINGLE_QUOTE_MISSING);

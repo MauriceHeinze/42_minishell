@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/18 17:03:03 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/11/20 15:22:14 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	echo(char *str, int fd)
 			str += num_n;
 			num_n = 0;
 			n = 1;
-		}		
+		}
 	}
 	while (*str != '\0')
 	{
@@ -99,7 +99,7 @@ int	cd(t_var *envp, char *dir)
 		perror("getcwd failed");
 		return (EXIT_FAILURE);
 	}
-		
+
 	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)

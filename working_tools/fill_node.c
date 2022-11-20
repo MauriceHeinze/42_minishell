@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/14 18:38:56 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:02:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 
 	// printf("pos: %d\n", (*pos));
 	// printf("1: %s\n", program->tokens[(*pos)]);
-	token = program->tokens[(*pos)];
+	token = ft_strtrim(program->tokens[(*pos)], " ");
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
 	// is undefined/not builtin
@@ -126,7 +126,7 @@ t_node	*fill_node(t_program *program)
 			// tokens[i] = remove_quotes(tokens[i]);
 			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, " ");
 			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, tokens[i]);
-			node->full_cmd = ft_strjoin(node->full_cmd, " ; ");
+			node->full_cmd = ft_strjoin(node->full_cmd, ";");
 			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
 			// printf("HERE -> Command:	%s \n", node->full_cmd);
 			i++;

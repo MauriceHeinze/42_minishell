@@ -2,6 +2,11 @@
     "files.associations": {
 		"minishell.h": "c",
 		"executor.h": "c",
-		"types.h": "c"
+		"types.h": "c",
+		"__bit_reference": "c",
+		"algorithm": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"unordered_map": "c"
 	}
 }

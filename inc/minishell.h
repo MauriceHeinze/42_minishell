@@ -103,6 +103,9 @@ char	**get_cmd_paths(t_var *envp);
 // free
 void	free_nodes(t_program *program);
 
+// alloc
+void		*ft_realloc(void *ptr, size_t size);
+
 // utils
 int		is_whitespace(char *input_str);
 void	set_exit_code(int exit_code);
