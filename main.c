@@ -52,17 +52,17 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
-		while (words[i] != NULL)
-		{
-			printf("%s;\n", words[i]);
-			i++;
-		}
+		// while (words[i] != NULL)
+		// {
+		// 	printf("%s;\n", words[i]);
+		// 	i++;
+		// }
 		words = split_subline(words);
 		i = 0;
 		program->tokens = words;
 		i = 0;
-		// if (!check_syntax(program->tokens))
-		// 	continue ;
+		if (!check_syntax(program->tokens))
+			continue ;
 		// printf("here!\n");
 		program->cmd_line = line;
 		program->nodes = fill_node(program);

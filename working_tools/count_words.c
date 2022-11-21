@@ -56,6 +56,7 @@ static int	count_spaces(char *input_str)
 // echo hallo | echo "ciao" | echo 'hi'test // 9
 // echo hallo echo "ciao" | echo welt'hi' | test // 10
 // echo hallo "'"Welt"'"
+// echo hallo "'""'$USER'""'"
 
 int	count_words(char *input_str)
 {

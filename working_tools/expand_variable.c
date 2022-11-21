@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-static char	*expand_variable(char *input_str, int start, int i)
+char	*expand_variable(char *input_str, int start, int i)
 {
 	char	*var_name;
 
@@ -17,13 +17,18 @@ char	*expand_variables(char *input_str)
 {
 	int		i;
 	int		start;
+	int		double_quote;
 
 	i = 0;
+	double_quote = 0;
 	// get number of chars of variables
 	while (input_str[i] != '\0')
 	{
-		if (input_str[i] == '\'')
+		if (input_str[i] == '\'' && double_quote == 0)
+		{
+			// printf("SKIP!\n");
 			i = skip_quote(input_str, i);
+		}
 		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || ft_strchr("?_", input_str[i + 1])))
 		{
 			i++;
@@ -45,7 +50,14 @@ char	*expand_variables(char *input_str)
 			start = 0;
 		}
 		else
+		{
+			if (input_str[i] == '\"' && double_quote == 0)
+				double_quote = 1;
+			else if (input_str[i] == '\"' && double_quote == 1)
+				double_quote = 0;
 			i++;
+			// printf("%c [%d]", input_str[i], i);
+		}
 	}
 	return (input_str);
 }

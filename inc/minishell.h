@@ -79,6 +79,7 @@ char	**split_subline(char **words);
 char	*remove_quotes(char *input_str);
 int		count_words_operators(char *input_str);
 char	*str_add(char *dest, char *src, int pos);
+char	*expand_variable(char *input_str, int start, int i);
 char	*expand_variables(char *input_str);
 char	*str_remove_word(char const *orig, unsigned int start, size_t len);
 int		skip_quote(char *input_str, int pos);
@@ -94,7 +95,6 @@ char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);
 void	remove_env(t_var *env, char *name);
 void	rl_replace_line (const char *text, int clear_undo);
-
 
 // Executor
 char	*get_cmd_path(char **paths, char *cmd);
