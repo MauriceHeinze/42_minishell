@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/20 15:22:14 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/21 17:10:46 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 // Echo the STRING(str) to standard output.
 // If n is true do not output the trailing newline
 // If str is empty printf nothing an do not throw error
-// Example "echo ; -n ; -n ; 1 2  3 ; 1 ; 2 ; 3"
+// Input: echo "'"Halli"'" "'" Hallo "'" Sowieso 
+// Output: ;Halli;" ;" ;Hallo ;" ;Sowieso
+// Full cmd: echo;"'";Halli;"'" ;"'" ;Hallo ;"'" ;Sowieso
 int	echo(char *str, int fd)
 {
 	char	*check;
@@ -73,10 +75,7 @@ int	echo(char *str, int fd)
 			str++;
 		}
 		else if (*str == ';' && !inside_single_quotes && !inside_double_quotes)
-		{
 			str++;
-			write(fd, " ", 1);
-		}
 		else
 			write(fd, str++, 1);
 	}
@@ -195,15 +194,15 @@ int	env(t_var *envp, int fd)
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
-		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 3]));
+		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
-		executor->status = echo(&(node->full_cmd[ft_strlen("echo") + 3]), executor->fd_out);
+		executor->status = echo(&(node->full_cmd[ft_strlen("echo") + 1]), executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
 		executor->status = pwd(executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "export", ft_strlen("export")) == 0)
-		executor->status = export(&(node->full_cmd[ft_strlen("export") + 3]), envp);
+		executor->status = export(&(node->full_cmd[ft_strlen("export") + 1]), envp);
 	else if (ft_strncmp(node->full_cmd, "unset", ft_strlen("unset")) == 0)
-		executor->status = unset(&(node->full_cmd[ft_strlen("unset") + 3]), envp);
+		executor->status = unset(&(node->full_cmd[ft_strlen("unset") + 1]), envp);
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
 		executor->status = env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
