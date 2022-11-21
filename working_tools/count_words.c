@@ -1,5 +1,7 @@
 #include "../inc/minishell.h"
 
+// echo hallo echo "ciao" | echo welt'hi' | test
+
 static int	count_spaces(char *input_str)
 {
 	int	i;
@@ -17,21 +19,23 @@ static int	count_spaces(char *input_str)
 		{
 			if (i > 0 && !ft_strchr(" 	", input_str[i - 1])) // if previous char isn't a space
 			{
-				// printf("4: counted up at	%c at pos %d\n", input_str[i], i);
+				// printf("4: counted up at	%c at pos %d [no_spaces: %d\n", input_str[i], i, no_spaces);
 				no_spaces++;
-				i++;
+				if (!ft_strchr("\"\'", input_str[i]))
+					i++;
 			}
 			i = skip_quote(input_str, i); // jumps to char after quote
-
 			if (!ft_strchr(" 	", input_str[i])) // if this char is no space, count up
 			{
-				// printf("1: counted up at	%c at pos %d\n", input_str[i], i);
+				// printf("1: counted up at	%c at pos %d [no_spaces: %d\n", input_str[i], i, no_spaces);
 				no_spaces++;
 			}
 		}
 		if (ft_strchr(" 	", input_str[i])) // if char is space, count up
 		{
-			// printf("2: counted up at	%c at pos	%d\n", input_str[i], i + 1);
+			while (input_str[i + 1] == ' ')
+				i++;
+			// printf("2: counted up at	%c at pos %d [no_spaces: %d\n", input_str[i], i, no_spaces);
 			if (input_str[i + 1] == '\0')
 				break;
 			no_spaces++;
@@ -40,16 +44,18 @@ static int	count_spaces(char *input_str)
 	}
 	if (input_str[i] == '\0')
 	{
-		// printf("3: counted up at	%c at pos	%d\n", input_str[i], i + 1);
+		// printf("3: counted up at	%c at pos %d [no_spaces: %d\n", input_str[i], i, no_spaces);
 		no_spaces++;
 	}
-	printf("Number of words:	%d\n", no_spaces);
+	// printf("Number of words: %d\n", no_spaces);
 	return (no_spaces);
 }
 // echo hallo | echo "ciao" | echo hi // 8
 // echo hallo | echo "ciao" | echo 'hi' // 8
 // echo hallo | echo "ciao" | echo welt'hi'  // 9
 // echo hallo | echo "ciao" | echo 'hi'test // 9
+// echo hallo echo "ciao" | echo welt'hi' | test // 10
+// echo hallo "'"Welt"'"
 
 int	count_words(char *input_str)
 {
