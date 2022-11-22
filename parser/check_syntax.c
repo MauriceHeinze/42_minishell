@@ -6,15 +6,11 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/20 15:48:15 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/22 15:29:52 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-/* Check if file can be opened/created in read mode */
-
-/* Check if file can be opened/created in write mode */
 
 /* Check if operator is followed by word that is not an operator */
 static int	valid_operator(char **tokens)

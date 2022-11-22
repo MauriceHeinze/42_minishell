@@ -1,33 +1,27 @@
 CLIENT_NAME = minishell
-SOURCES = 	./working_tools/copy_quote.c				\
-			./executor/get_cmd_path.c					\
-			./exec/executor.c							\
+SOURCES = 	./env/store_env.c							\
 			./exec/builtins.c							\
-			./working_tools/count_operators.c			\
-			./working_tools/count_words.c				\
-			./working_tools/expand_variable.c			\
-			./working_tools/fill_fd.c					\
-			./working_tools/fill_node.c					\
-			./working_tools/ft_substr_backslash.c		\
-			./working_tools/ft_tokenizer.c				\
-			./working_tools/get_category.c				\
-			./working_tools/quote_length.c				\
-			./working_tools/remove_quotes.c				\
-			./working_tools/skip_quote.c				\
-			./working_tools/special_char.c				\
-			./working_tools/split_line.c				\
-			./working_tools/split_subline.c				\
-			./working_tools/store_env.c					\
-			./working_tools/str_add.c					\
-			./working_tools/str_remove_word.c			\
-			./working_tools/track_history.c				\
-			./working_tools/signal_handler.c			\
-			./working_tools/is_whitespace.c				\
-			./working_tools/set_exit_code.c				\
-			./working_tools/check_syntax.c				\
-			./working_tools/exit_shell.c				\
-			./working_tools/error_message.c				\
-			./working_tools/ft_realloc.c				\
+			./exec/executor.c							\
+			./exit/error_message.c						\
+			./exit/exit_shell.c							\
+			./linked_list/fill_fd.c						\
+			./linked_list/fill_node.c					\
+			./linked_list/free_nodes.c					\
+			./parser/check_syntax.c						\
+			./parser/expand_variable.c					\
+			./parser/split_line.c						\
+			./parser/split_subline.c					\
+			./parser_helper/count_words.c				\
+			./parser_helper/get_category.c				\
+			./parser_helper/quotes.c					\
+			./parser_helper/str_add.c					\
+			./parser_helper/str_remove.c				\
+			./readline_helper/is_whitespace.c			\
+			./readline_helper/track_history.c			\
+			./utils/count_operators.c					\
+			./utils/get_cmd_path.c						\
+			./utils/remove_quotes.c						\
+			./utils/signal_handler.c					\
 			./inc/libft.a 								\
 
 CLIENT = main.c $(SOURCES)

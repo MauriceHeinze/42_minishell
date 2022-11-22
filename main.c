@@ -74,12 +74,12 @@ int main(int argc, char *argv[], char *envp[])
 		// printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// printf("Full path: %s\n_____\n", node->full_path);
 		// printf("Meta: %s\n_____\n", node->fd->meta);
-		while (node != NULL)
-		{
-			printf("\n\nFull cmd: %s\n", node->full_cmd);
-			printf("Orig cmd: %s\n", node->full_cmd_orig);
-			node = node->next;
-		}
+		// while (node != NULL)
+		// {
+		// 	printf("\n\nFull cmd: %s\n", node->full_cmd);
+		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
+		// 	node = node->next;
+		// }
 	}
 	return (0);
 }
