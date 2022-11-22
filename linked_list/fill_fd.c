@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fill_FD.c                                          :+:      :+:    :+:   */
+/*   fill_fd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/23 15:46:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:12:12 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 	int		token;
 
 	token = get_category(program->tokens[(*pos)]);
-
-	// if (token < ARROW_LEFT || token > DOUBLE_ARROW_RIGHT)
-	// 	return ;
 	if (node->fd != NULL)
 	{
 		fd = node->fd;
@@ -67,10 +64,8 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		fd = node->fd;
 		head = fd;
 	}
-
 	if (token == ARROW_RIGHT) // > // don't forget to check if next element is not NULL
 	{
-		// infile infos don't change
 		(*pos)++;
 		fd->io = OUTPUT;
 		fd->mode = MODE_FILE;

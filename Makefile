@@ -1,9 +1,6 @@
 CLIENT_NAME = minishell
-SOURCES = 	./env/store_env.c							\
-			./exec/builtins.c							\
+SOURCES = 	./exec/builtins.c							\
 			./exec/executor.c							\
-			./exit/error_message.c						\
-			./exit/exit_shell.c							\
 			./linked_list/fill_fd.c						\
 			./linked_list/fill_node.c					\
 			./linked_list/free_nodes.c					\
@@ -16,12 +13,12 @@ SOURCES = 	./env/store_env.c							\
 			./parser_helper/quotes.c					\
 			./parser_helper/str_add.c					\
 			./parser_helper/str_remove.c				\
-			./readline_helper/is_whitespace.c			\
-			./readline_helper/track_history.c			\
 			./utils/count_operators.c					\
+			./utils/env_handler.c						\
+			./utils/exit_handler.c						\
 			./utils/get_cmd_path.c						\
-			./utils/remove_quotes.c						\
 			./utils/signal_handler.c					\
+			./utils/track_history.c						\
 			./inc/libft.a 								\
 
 CLIENT = main.c $(SOURCES)

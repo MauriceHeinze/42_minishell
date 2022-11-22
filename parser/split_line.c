@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   get_cmd_path.c									 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
+/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 // TODO
@@ -25,7 +37,6 @@ char	**split_line(char *input_str)
 		start = i;
 		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
 			i++;
-		// printf("Stopped at: %c\n", input_str[i]);
 		if (i > start)
 		{
 			if (ft_strchr(" 	", input_str[i]))
@@ -45,12 +56,9 @@ char	**split_line(char *input_str)
 				i = i + quote_length(input_str[i], input_str, i) + 1;
 				words[no_word++] = ft_substr(input_str, start, i - start + 1);
 			}
-			// printf("%d	|	%d\n", no_word, total_words);
 		}
 		i++;
 	}
-	printf("\n");
-	// echo hallo | echo "ciao" | echo 'hi'
 	i = 0;
 	words[total_words] = NULL;
 	return (words);

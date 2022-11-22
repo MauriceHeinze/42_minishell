@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   get_cmd_path.c									 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
+/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -15,7 +27,6 @@
 # include <sys/stat.h>
 # include <termios.h>
 # include <sys/ioctl.h>
-
 
 typedef struct s_fd {
 	int				io; // 0 stdin, 1 stdout
@@ -52,63 +63,44 @@ typedef struct s_program {
 
 t_program *program;
 
-typedef struct s_token {
-	char				*word;
-	int					category; // Use define function
-	struct s_token		*next;
-}				t_token;
-
-typedef struct s_cmd_line {
-	char				*cmd;
-	t_token				*word;
-	char				**args;
-	struct s_cmd_line	*next;
-}				t_cmd_line;
-
-
-// TOOLS
-int		get_category(char *word);
-char	special_char(char *input_str, int pos);
+// split
 char	**split_line(char *input_str);
-char	*copy_quote(char found_quote, char *input_str, int pos);
-int		quote_length(char found_quote, char *input_str, int pos);
-int		count_words(char *input_str);
-t_token	*tokenizer(char	**words);
-char	*ft_substr_backslash(char const *s, unsigned int start, size_t len);
 char	**split_subline(char **words);
+
+// readline
+void	track_history(char *line);
+void	rl_replace_line (const char *text, int clear_undo);
+
+// quotes
+int		quote_length(char found_quote, char *input_str, int pos);
+int		skip_quote(char *input_str, int pos);
 char	*remove_quotes(char *input_str);
-int		count_words_operators(char *input_str);
+
+// manipulate string
 char	*str_add(char *dest, char *src, int pos);
+char	*str_remove(char const *orig, unsigned int start, size_t len);
+
+// variables
 char	*expand_variable(char *input_str, int start, int i);
 char	*expand_variables(char *input_str);
-char	*str_remove(char const *orig, unsigned int start, size_t len);
-int		skip_quote(char *input_str, int pos);
-t_node	*fill_node(t_program *program);
-t_fd	*setup_fd(void);
-void	fill_fd(t_program *program, t_node *node, int *pos);
-void	setup_signal_handler(void);
-void	track_history(char *line);
-void	ctrl_c(void);
-t_var	*setup_var_node(void);
+
+// env
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);
 void	remove_env(t_var *env, char *name);
-void	rl_replace_line (const char *text, int clear_undo);
 
-// Executor
-char	*get_cmd_path(char **paths, char *cmd);
-char	**get_cmd_paths(t_var *envp);
+// signals
+void	setup_signal_handler(void);
+void	ctrl_c(void);
+
+// commands
+t_node	*fill_node(t_program *program);
+void	fill_fd(t_program *program, t_node *node, int *pos);
+t_fd	*setup_fd(void);
 
 // free
 void	free_nodes(t_program *program);
-
-// alloc
-void		*ft_realloc(void *ptr, size_t size);
-
-// utils
-int		is_whitespace(char *input_str);
-void	set_exit_code(int exit_code);
 
 // syntax checker
 int		check_syntax(char **tokens);
@@ -116,8 +108,17 @@ int		is_operator(char *word);
 
 // exit
 void	exit_shell(int error_code);
-void	special_error(int error);
+void	set_exit_code(int exit_code);
 void	exec_error(int error, char *s);
+void	special_error(int error);
+
+// utils
+int		count_words(char *input_str);
+int		count_words_operators(char *input_str);
+char	*get_cmd_path(char **paths, char *cmd);
+char	**get_cmd_paths(t_var *envp);
+int		get_category(char *word);
+int		is_whitespace(char *input_str);
 
 # define OUTPUT 0;
 # define INPUT 1;

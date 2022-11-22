@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   get_cmd_path.c									 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
+/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 static int	count_operator_helper(char *input_str)
@@ -69,17 +81,3 @@ int	count_words_operators(char *input_str)
 
 	return ((no_operators * 2) + 1 - additional_operators);
 }
-
-
-// printf("Should be 11:	%d\n", count_words_operators("x>x>x>x>x>x"));
-// printf("Should be 10:	%d\n", count_words_operators(">x>x>x>x>x"));
-// printf("Should be 9:	%d\n", count_words_operators("x>x>x>x>x"));
-// printf("Should be 8:	%d\n", count_words_operators(">x>x>x>x"));
-// printf("Should be 7:	%d\n", count_words_operators("x>x>x>x"));
-// printf("Should be 6:	%d\n", count_words_operators(">x>x>x"));
-// printf("Should be 5:	%d\n", count_words_operators("x>x>x"));
-// printf("Should be 4:	%d\n", count_words_operators(">x>x"));
-// printf("Should be 3:	%d\n", count_words_operators("x>x"));
-// printf("Should be 2:	%d\n", count_words_operators("x>"));
-// printf("Should be 1:	%d\n", count_words_operators(">"));
-// printf("Should be 0:	%d\n", count_words_operators(""));

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   get_cmd_path.c									 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
+/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
+/*																			*/
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 static void	free_split(char **words)
@@ -53,17 +65,12 @@ char	**split_subline(char **splitted_line)
 	int		no_word;
 	char	**words;
 
-	// printf("\n=============\nstart! \n");
 	i = 0;
 	no_word = 0;
 	start = 0;
-	// printf("1\n");
 	words = malloc(sizeof(char *) * get_total_words(splitted_line));
-	// printf("total words %d\n", get_total_words(splitted_line));
-	// printf("2\n");
 	if (!words)
 		return (NULL);
-	// printf("3\n");
 	while (splitted_line[i] != NULL)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
@@ -89,8 +96,6 @@ char	**split_subline(char **splitted_line)
 				{
 					start = k;
 					k += 2;
-					// printf("k	%d\n", k);
-					// printf("start	%d\n", start);
 					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
 				}
 				else if ((splitted_line[i][k] == '<') || (splitted_line[i][k]  == '>') || (splitted_line[i][k]  == '|'))
@@ -100,7 +105,6 @@ char	**split_subline(char **splitted_line)
 					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
 					if (splitted_line[i][k] == ' ')
 						k++;
-
 				}
 				else
 					k++;
@@ -108,15 +112,11 @@ char	**split_subline(char **splitted_line)
 		}
 		i++;
 	}
-	// printf("end! \n");
 	words[get_total_words(splitted_line) - 1] = NULL;
 	free_split(splitted_line);
 
 	i = 0;
 	while (splitted_line[i] != NULL)
-	{
-		// printf("%s \n", splitted_line[i]);
 		i++;
-	}
 	return (words);
 }

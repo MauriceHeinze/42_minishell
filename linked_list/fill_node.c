@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/20 16:02:25 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:14:29 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // >> output ist in appendmode -> cat text >> cat text1
 // check pipex manual
 
-t_node	*setup_node(void)
+static t_node	*setup_node(void)
 {
 	t_node	*node;
 
@@ -48,8 +48,6 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	char	*token;
 	char	**paths;
 
-	// printf("pos: %d\n", (*pos));
-	// printf("1: %s\n", program->tokens[(*pos)]);
 	token = ft_strtrim(program->tokens[(*pos)], " ");
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
@@ -87,8 +85,6 @@ t_node	*fill_node(t_program *program)
 	if (!head)
 		return (NULL);
 	node = head;
-	// printf("1: i is %d\n", i);
-	// printf("%s\n", program->cmd_line);
 	while (program->tokens[i] != NULL)
 	{
 		// if arrow, fill up fd list
@@ -99,51 +95,33 @@ t_node	*fill_node(t_program *program)
 		// if arrow, fill up fd list
 		if (get_category(tokens[i]) >= ARROW_LEFT && get_category(tokens[i]) <= DOUBLE_ARROW_RIGHT)
 		{
-			// printf("1. pos: %d\n", i);
 			fill_fd(program, node, &i);
-			// printf("2. pos: %d\n", i);
 			// first word is always command
 			if (tokens[i] == NULL || tokens[i + 1] == NULL)
 				break ;
 			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 				get_command(program, node, &i);
-			// printf("3. pos: %d\n-----------\n", i);
-			// printf("Command:	%s \n", node->full_cmd);
 		}
 		else
-		{
-			// printf("2. pos: %d\n", i);
 			get_command(program, node, &i);
-			// printf("3. pos: %d\n", i);
-			// printf("Command:	%s \n", node->full_cmd);
-		}
-		// printf("Token:	%s \n", tokens[i]);
 		// copy arguments until you find pipe or arrows
 		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 		{
 			if (tokens[i] == NULL)
 				return (head);
-			// tokens[i] = remove_quotes(tokens[i]);
 			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, " ");
 			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, tokens[i]);
 			node->full_cmd = ft_strjoin(node->full_cmd, ";");
 			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
-			// printf("HERE -> Command:	%s \n", node->full_cmd);
 			i++;
 		}
-		// printf("here!\n");
 		// if pipe is found, create new node
 		if (get_category(program->tokens[i]) == PIPE)
 		{
-			// printf("NEW NODE! %d\n-----------\n", i);
 			node->next = setup_node();
 			node = node->next;
 			i++;
 		}
 	}
-	// printf("\n2: i is %d\n", i);
-	// printf("%s\n", head->fd->outfile_meta);
-	// printf("%s\n", head->fd->next->outfile_meta);
-	// printf("%s\n", head->fd->next->next->outfile_meta);
 	return (head);
 }

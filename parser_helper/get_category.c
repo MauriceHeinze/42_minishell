@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/16 14:09:03 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:03:10 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@ int		is_operator(char *word)
 	else if (ft_strcmp(word, "NULL") == 0)
 		return (EXIT);
 	return (0);
+}
+
+int	is_whitespace(char *input_str)
+{
+	int	i;
+
+	i = 0;
+	while (input_str[i] == ' ' || input_str[i] == '	')
+		i++;
+	if (input_str[i] == '\0')
+		return (1);
+	else
+		return (0);
 }
 
 int		get_category(char *word)
