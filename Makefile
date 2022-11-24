@@ -1,4 +1,4 @@
-CLIENT_NAME = minishell
+NAME = minishell
 SOURCES = 	./exec/builtins.c							\
 			./exec/executor.c							\
 			./linked_list/fill_fd.c						\
@@ -19,7 +19,7 @@ SOURCES = 	./exec/builtins.c							\
 			./utils/get_cmd_path.c						\
 			./utils/signal_handler.c					\
 			./utils/track_history.c						\
-			./inc/libft.a 								\
+			./inc/libft.a
 
 CLIENT = main.c $(SOURCES)
 
@@ -28,21 +28,33 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 HDR = ./inc/minishell.h
 CC = cc -g
 # FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
-FLAGS = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
+CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
+CFLAGSLINUX = -lreadline
 RM = rm -f
 
-all: $(CLIENT_NAME)
-$(CLIENT_NAME): $(HDR) $(CLIENTOBJ)
-	$(CC) $(FLAGS) $(CLIENTOBJ) -o $(CLIENT_NAME)
+all: $(NAME)
+
+$(NAME): $(HDR) $(CLIENTOBJ)
+	make -C ./libft
+	$(CC) $(CFLAGSMAC) $(CLIENTOBJ) ./libft/libft.a -o $(NAME)
+
+allLinux: nameLinux
+
+nameLinux: $(HDR) $(CLIENTOBJ)
+	make -C ./libft
+	$(CC) $(CLIENTOBJ) ./libft/libft.a $(CFLAGSLINUX) -o $(NAME)
 
 clean:
+	make fclean -C ./libft
 	$(RM) *.o
 	$(RM) */*.o
 	$(RM) *.out
 
 fclean: clean
-	$(RM) $(CLIENT_NAME)
+	$(RM) $(NAME)
 
 re:	fclean all
+
+rel: fclean allLinux
 
 .PHONY: all clean fclean

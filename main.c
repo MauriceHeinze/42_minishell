@@ -42,13 +42,13 @@ int main(int argc, char *argv[], char *envp[])
 	program->envp = store_env(envp);
 	set_exit_code(0);
 	setup_term();
-	while (1)
-	{
+	// while (1)
+	// {
 		line = readline("minishell $");
-		if (!line)
-			break ;
-		if (ft_strlen(line) == 0 || is_whitespace(line))
-			continue ;
+		// if (!line)
+		// 	break ;
+		// if (ft_strlen(line) == 0 || is_whitespace(line))
+		// 	continue ;
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
@@ -56,8 +56,8 @@ int main(int argc, char *argv[], char *envp[])
 		i = 0;
 		program->tokens = words;
 		i = 0;
-		if (!check_syntax(program->tokens))
-			continue ;
+		// if (!check_syntax(program->tokens))
+		// 	continue ;
 		program->cmd_line = line;
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[], char *envp[])
 		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// 	node = node->next;
 		// }
-	}
+	// }
 	return (0);
 }
 
