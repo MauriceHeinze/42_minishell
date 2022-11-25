@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/24 19:06:12 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:35:00 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 	cmd_paths = get_cmd_paths(envpn);
 	restored_envp = restore_envp(envpn);
 	args = ft_split(node->full_cmd_orig, ' ');
+	// if (executor->fd_in != 0)
+			// close(executor->fd_in);
+	// dprintf(2, "<path: %s>\n<args[2]: %s>\n<args[1]: %s>\n", get_cmd_path(cmd_paths, *args), args[2], args[1]);
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 	{
 		perror("CMD - command not found");
@@ -61,6 +64,10 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 			close(executor->fd_in);
 		exit(127);
 	}
+		// 	free(restored_envp);
+		// if (executor->fd_out != 1 && executor->fd_out != 2)
+		// 	close(executor->fd_out);
+
 }
 
 void heredoc(t_exec	*executor)
@@ -125,8 +132,11 @@ void	fd_manager_input(t_node *node, t_exec *executor)
 	}
 	if (found_fd == 0 && node != executor->first_node)
 	{
+		{
 		if (dup2(executor->pipe[0], 0) < 0)
 			perror("Dup 2 input pipe error");
+		executor->fd_in = executor->pipe[0];
+		}
 	}
 }
 
@@ -141,6 +151,12 @@ void	fd_manager_output(t_node *node, t_exec	*executor)
 	fd_temp = node->fd;
 	fd_former = NULL;
 	found_fd = 0;
+	// if (node != executor->first_node)
+	// {
+	// 	if(dup2(executor->fd_out_original, 1) < 0)
+	// 		perror("Dup 2 restore output error");
+	// 	close(executor->fd_out_original);
+	// }
 	while (fd_temp != NULL)
 	{
 		if (fd_temp->io == 1)
@@ -165,6 +181,7 @@ void	fd_manager_output(t_node *node, t_exec	*executor)
 	{
 		if (dup2(executor->pipe[1], 1) < 0)
 			perror("Dup 2 output pipe error");
+		executor->fd_out = executor->pipe[1];
 	}
 }
 
@@ -193,15 +210,22 @@ void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
 			if (fd_former != NULL)
 				close(fd_former->fd);
 			fd_former = fd_temp;
+			executor->fd_out = fd_temp->fd;
 			fd_temp = fd_temp->next;
 		}
 	}
-	if (found_fd == 0)
-		executor->fd_out = 1;
-	else
-		executor->fd_out = fd_former->fd;
-	if (node->next != NULL)
-		close(executor->pipe[0]);
+	// if (found_fd == 0)
+	// 	executor->fd_out = 1;
+	if (found_fd == 0 && node->next != NULL)
+	{
+		if (dup2(executor->pipe[1], 1) < 0)
+			perror("Dup 2 output pipe error");
+		executor->fd_out = executor->pipe[1];
+	}
+	// else if (found_fd == 1)
+	// 	executor->fd_out = fd_former->fd;
+	// if (node->next != NULL)
+	// 	close(executor->pipe[0]);
 }
 
 void	process_executor(t_node *node, t_exec *executor, t_var *envp)
@@ -258,6 +282,10 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	executor->status = 0;
 	executor->heredoc = -1;
 	executor->first_node = node;
+	executor->fd_out = 1;
+	executor->fd_in = 0;
+	executor->fd_out_original = dup(1);
+	executor->fd_in_original = dup(0);
 	while (node_tmp->next != NULL)
 	{
 		executor->pipes += 1;
@@ -268,7 +296,6 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 		if (pipe(executor->pipe) < 0)
 			perror("Pipe error");
 	}
-	executor->fd_out = 0;
 }
 
 int sub_exec(t_node *node, t_exec *executor, t_var *envp)
@@ -301,7 +328,6 @@ int	execution_manager (t_node *node, t_var *envp)
 	node_tmp = node;
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
-	executor.status = -1;
 	sub_exec(node, &executor, envp);
 	waitpid(-1, &(executor.status), 0);
 	if (!WIFSIGNALED(executor.status))
@@ -314,5 +340,10 @@ int	execution_manager (t_node *node, t_var *envp)
 		set_exit_code(WTERMSIG(executor.status) + 128);
 		// dprintf(2, "<SIGN: %d>", WTERMSIG(executor.status) + 128);
 	}
+	// if (executor.pipes > 0)
+	// {
+	// 	close(executor.pipe[1]);
+	// 	close(executor.pipe[0]);
+	// }
 	return (0);
 }
