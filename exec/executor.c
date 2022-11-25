@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/20 15:20:52 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/24 19:06:12 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,12 +307,12 @@ int	execution_manager (t_node *node, t_var *envp)
 	if (!WIFSIGNALED(executor.status))
 	{
 		set_exit_code(WEXITSTATUS(executor.status));
-		dprintf(2, "<EXIT: %d>", WEXITSTATUS(executor.status));
+		// dprintf(2, "<EXIT: %d>", WEXITSTATUS(executor.status));
 	}
 	else if (WIFSIGNALED(executor.status))
 	{
 		set_exit_code(WTERMSIG(executor.status) + 128);
-		dprintf(2, "<SIGN: %d>", WTERMSIG(executor.status) + 128);
+		// dprintf(2, "<SIGN: %d>", WTERMSIG(executor.status) + 128);
 	}
 	return (0);
 }

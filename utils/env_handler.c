@@ -84,6 +84,7 @@ t_var	*store_env(char *env[])
 t_var	*add_env(t_var *env, char *name, char* content)
 {
 	t_var   *head;
+	char   *tmp;
 	int	 exists;
 
 	head = env;
@@ -102,11 +103,13 @@ t_var	*add_env(t_var *env, char *name, char* content)
 	}
 	if (exists)
 	{
+		// free(env->name);
 		// free(env->content);
-		// free(env->not_splitted);
+		free(env->not_splitted);
 		env->content = content;
-		env->not_splitted = ft_strjoin(name, "=");
-		env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+		tmp = ft_strjoin(name, "=");
+		env->not_splitted = ft_strjoin(tmp, env->content);
+		free(tmp);
 	}
 	else
 	{
@@ -114,8 +117,9 @@ t_var	*add_env(t_var *env, char *name, char* content)
 		env = env->next;
 		env->name = name;
 		env->content = content;
-		env->not_splitted = ft_strjoin(name, "=");
-		env->not_splitted = ft_strjoin(env->not_splitted, env->content);
+		tmp = ft_strjoin(name, "=");
+		env->not_splitted = ft_strjoin(tmp, env->content);
+		free(tmp);
 	}
 	return (head);
 }

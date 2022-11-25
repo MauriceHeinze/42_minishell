@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/22 16:14:29 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:09:05 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_node	*fill_node(t_program *program)
 	t_node	*head;
 	t_node	*node;
 	char	**tokens;
+	char	*tmp;
 
 	head = NULL;
 	tokens = program->tokens;
@@ -109,10 +110,12 @@ t_node	*fill_node(t_program *program)
 		{
 			if (tokens[i] == NULL)
 				return (head);
-			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, " ");
-			node->full_cmd_orig = ft_strjoin(node->full_cmd_orig, tokens[i]);
-			node->full_cmd = ft_strjoin(node->full_cmd, ";");
-			node->full_cmd = ft_strjoin(node->full_cmd, tokens[i]);
+			tmp = ft_strjoin(node->full_cmd_orig, " ");
+			node->full_cmd_orig = ft_strjoin(tmp, tokens[i]);
+			free(tmp);
+			tmp = ft_strjoin(node->full_cmd, ";");
+			node->full_cmd = ft_strjoin(tmp, tokens[i]);
+			free(tmp);
 			i++;
 		}
 		// if pipe is found, create new node
