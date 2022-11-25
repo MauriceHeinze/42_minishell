@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/21 17:10:46 by ralf             ###   ########.fr       */
+/*   Updated: 2022/11/25 12:15:55 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	echo(char *str, int fd)
 {
 	char	*check;
 	int		quotes;
-	// Should be devioded into in signel and in double quotes
 	int		inside_single_quotes;
 	int		inside_double_quotes;
 	int		n;
@@ -193,6 +192,8 @@ int	env(t_var *envp, int fd)
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
+	// if (executor->fd_in != 0)
+	// 	close(executor->fd_in);
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
@@ -206,13 +207,47 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
 		executor->status = env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
-		exit(0);
+		printf("EXIT");
 	else
 	{
 		perror("builtin not found");
 		executor->status = 1;
 	}
-	if (executor->fd_out != 1 && executor->fd_out != 2 && executor->fd_out != 0)
-		close(executor->fd_out);
+	if (!(executor->fd_out == 1))
+	{
+		if (executor->fd_out == executor->pipe[1])
+		{
+			// close(executor->fd_out);
+			if(dup2(executor->fd_out_original, 1) < 0)
+				perror("Dup 2 restore output error");
+			close(executor->fd_out_original);
+			executor->fd_out = 1;
+			executor->fd_out_original = dup(1);
+		}
+		else
+		{
+			close(executor->fd_out);
+			executor->fd_out = 1;
+		}
+	}
+	if (!(executor->fd_in == 0))
+	{
+		if (executor->fd_in == executor->pipe[0])
+		{
+			// close(executor->fd_in);
+			if(dup2(executor->fd_in_original, 0) < 0)
+				perror("Dup 2 restore output error");
+			close(executor->fd_in_original);
+			executor->fd_in = 0;
+			executor->fd_in_original = dup(0);
+			// if (pipe(executor->pipe) < 0)
+			// 	perror("Pipe error");
+		}
+		else
+		{
+			close(executor->fd_in);
+			executor->fd_in = 0;
+		}			
+	}	
 	return (executor->status);
 }
