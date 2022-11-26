@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/25 16:09:05 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/26 18:43:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	if (category == UNDEFINED || category == WORD)
 	{
 		paths = get_cmd_paths(program->envp);
-		node->full_cmd_orig = token;
+		node->full_cmd_orig = ft_strdup(token);
 		node->full_path = get_cmd_path(paths, token);
 		free(paths);
 		(*pos)++;
@@ -63,11 +63,12 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	// is builtin
 	else if (category > UNDEFINED && category <= EXIT)
 	{
-		node->full_cmd = token;
-		node->full_cmd_orig = token;
+		node->full_cmd = ft_strdup(token);;
+		node->full_cmd_orig = ft_strdup(token);;
 		node->full_path = "builtin";
 		(*pos)++;
 	}
+	free(token);
 	return (0);
 }
 

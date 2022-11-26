@@ -75,6 +75,7 @@ char	**split_subline(char **splitted_line)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
 		{
+			//dub this
 			words[no_word] = splitted_line[i];
 			no_word++;
 		}
@@ -89,9 +90,7 @@ char	**split_subline(char **splitted_line)
 				while (!ft_strchr("|<>&", splitted_line[i][k]) && splitted_line[i][k] != '\0')
 					k++;
 				if (k > start)
-				{
 					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
-				}
 				if (double_operator_found(splitted_line[i][k], splitted_line[i][k + 1]))
 				{
 					start = k;
@@ -114,9 +113,5 @@ char	**split_subline(char **splitted_line)
 	}
 	words[get_total_words(splitted_line) - 1] = NULL;
 	free_split(splitted_line);
-
-	i = 0;
-	while (splitted_line[i] != NULL)
-		i++;
 	return (words);
 }

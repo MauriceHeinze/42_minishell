@@ -23,13 +23,16 @@ char	**split_line(char *input_str)
 	int		no_word;
 	int		total_words;
 	char	**words;
+	char	*tmp;
 
 	i = 0;
 	start = 0;
 	no_word = 0;
-	input_str = ft_strtrim(input_str, " 	");
+	tmp = ft_strtrim(input_str, " 	");
+	free(input_str);
+	input_str = tmp;
 	total_words = count_words(input_str);
-	words = malloc(sizeof(char *) * (total_words + 1));
+	words = malloc(sizeof(char *) * (total_words));
 	if (!words)
 		return (NULL);
 	while (input_str[i] != '\0')
@@ -40,7 +43,7 @@ char	**split_line(char *input_str)
 		if (i > start)
 		{
 			if (ft_strchr(" 	", input_str[i]))
-					i++;
+				i++;
 			words[no_word++] = ft_substr(input_str, start, i - start);
 			continue;
 		}
@@ -59,7 +62,7 @@ char	**split_line(char *input_str)
 		}
 		i++;
 	}
-	i = 0;
+	free(input_str);
 	words[total_words] = NULL;
 	return (words);
 }

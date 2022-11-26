@@ -20,17 +20,18 @@ static void	free_split(char **words)
 	i = 0;
 	while (words[i] != NULL)
 	{
-		words[i] = NULL;
 		free(words[i]);
+		words[i] = NULL;
 		i++;
 	}
-	words = NULL;
 	free(words);
+	words = NULL;
 }
 
 int main(int argc, char *argv[], char *envp[])
 {
 	char	**words;
+	char	**subwords;
 	char	*line;
 	int		i;
 
@@ -52,17 +53,24 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
-		words = split_subline(words);
-		i = 0;
-		program->tokens = words;
-		i = 0;
+		subwords = split_subline(words);
+		// i = 0;
+		// while (subwords[i])
+		// {
+		// 	printf("%s \n", subwords[i]);
+		// 	i++;
+		// }
+		// free_split(words);
+		// exit(1);
 		// if (!check_syntax(program->tokens))
 		// 	continue ;
+		program->tokens = subwords;
 		program->cmd_line = line;
 		program->nodes = fill_node(program);
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
 		execution_manager(node, program->envp);
+		free_split(program->tokens);
 		// while (node != NULL)
 		// {
 		// 	printf("\n\nFull cmd: %s\n", node->full_cmd);

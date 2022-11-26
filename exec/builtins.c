@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/25 16:35:13 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/26 18:37:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
 	// if (executor->fd_in != 0)
 	// 	close(executor->fd_in);
+	// printf("full_cmd: %s\n", node->full_cmd);
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
