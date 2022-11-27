@@ -72,6 +72,7 @@ int main(int argc, char *argv[], char *envp[])
 		}
 		free_program_loop();
 	// }
+	free_env();
 	return (0);
 }
 

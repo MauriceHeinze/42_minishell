@@ -166,19 +166,33 @@ char	*get_env(t_var *env, char *name)
 	return (NULL);
 }
 
-static void	free_fds(t_node *node)
-{
-	t_fd *fd;
-	t_fd *tmp_fd;
+// void	free_nodes(t_program *program)
+// {
+// 	t_node *node;
+// 	t_node *tmp_node;
 
-	while (fd != NULL)
-	{
-		fd = node->fd;
-		tmp_fd = fd->next;
-		free(fd);
-		fd = tmp_fd;
-	}
-}
+// 	while (node != NULL)
+// 	{
+// 		node = program->nodes;
+// 		tmp_node = program->nodes->next;
+// 		free_fds(node);
+// 		free(node);
+// 		node = tmp_node;
+// 	}
+// }
+
+// void freeList(struct node* head)
+// {
+//    struct node* tmp;
+
+//    while (head != NULL)
+//     {
+//        tmp = head;
+//        head = head->next;
+//        free(tmp);
+//     }
+
+// }
 
 void	free_env(void)
 {
@@ -186,14 +200,13 @@ void	free_env(void)
 	t_var *tmp_envp;
 
 	envp = program->envp;
-	tmp_envp = program->envp->next;
 	while (envp != NULL)
 	{
-		free(envp->name);
-		free(envp->content);
-		free(envp->not_splitted);
-		tmp_envp = envp->next;
-		free(envp->next);
-		envp = tmp_envp;
+		tmp_envp = envp;
+		envp = envp->next;
+		// free(tmp_envp->name);
+		// free(tmp_envp->content);
+		free(tmp_envp->not_splitted);
+		free(tmp_envp);
 	}
 }
