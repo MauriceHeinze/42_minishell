@@ -4,6 +4,7 @@ SOURCES = 	./exec/builtins.c							\
 			./linked_list/fill_fd.c						\
 			./linked_list/fill_node.c					\
 			./linked_list/free_nodes.c					\
+			./linked_list/free.c						\
 			./parser/check_syntax.c						\
 			./parser/expand_variable.c					\
 			./parser/split_line.c						\

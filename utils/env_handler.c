@@ -165,3 +165,33 @@ char	*get_env(t_var *env, char *name)
 	}
 	return (NULL);
 }
+
+static void	free_fds(t_node *node)
+{
+	t_fd *fd;
+	t_fd *tmp_fd;
+
+	while (fd != NULL)
+	{
+		fd = node->fd;
+		tmp_fd = fd->next;
+		free(fd);
+		fd = tmp_fd;
+	}
+}
+
+void	free_envp()
+{
+	t_var *envp;
+	t_var *tmp_envp;
+
+	while (envp != NULL)
+	{
+		envp = program->envp;
+		tmp_envp = program->envp->next;
+		free(envp->name);
+		free(envp->content);
+		free(envp->not_splitted);
+		envp = tmp_envp;
+	}
+}

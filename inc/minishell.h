@@ -101,6 +101,7 @@ t_fd	*setup_fd(void);
 
 // free
 void	free_nodes(t_program *program);
+void	free_split(char **words);
 
 // syntax checker
 int		check_syntax(char **tokens);

@@ -11,21 +11,16 @@ static void setup_term(void)
 	setup_signal_handler();
 }
 
-static void	free_split(char **words)
+static void	free_program_loop()
 {
-	int	i;
+	int		i;
 
-	if (words == NULL)
-		return ;
+	t_node	*node;
 	i = 0;
-	while (words[i] != NULL)
-	{
-		free(words[i]);
-		words[i] = NULL;
-		i++;
-	}
-	free(words);
-	words = NULL;
+	// free(program->cmd_line);
+	free_split(program->tokens);
+	// node = program->nodes;
+	free_nodes(program);
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -53,14 +48,13 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		line = expand_variables(line);
 		words = split_line(line);
-		subwords = split_subline(words);
 		// i = 0;
-		// while (subwords[i])
+		// while (words[i])
 		// {
-		// 	printf("%s \n", subwords[i]);
+		// 	printf("%s \n", words[i]);
 		// 	i++;
 		// }
-		// free_split(words);
+		subwords = split_subline(words);
 		// exit(1);
 		// if (!check_syntax(program->tokens))
 		// 	continue ;
@@ -70,13 +64,14 @@ int main(int argc, char *argv[], char *envp[])
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
 		execution_manager(node, program->envp);
-		free_split(program->tokens);
-		// while (node != NULL)
-		// {
-		// 	printf("\n\nFull cmd: %s\n", node->full_cmd);
-		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
-		// 	node = node->next;
-		// }
+		// free_program_loop();
+		printf("-------------->\n");
+		while (node != NULL)
+		{
+			printf("\nFull cmd: %s\n", node->full_cmd);
+			printf("Orig cmd: %s\n", node->full_cmd_orig);
+			node = node->next;
+		}
 	// }
 	return (0);
 }

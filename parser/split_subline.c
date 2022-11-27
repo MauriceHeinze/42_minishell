@@ -12,23 +12,6 @@
 
 #include "../inc/minishell.h"
 
-static void	free_split(char **words)
-{
-	int	i;
-
-	if (words == NULL)
-		return ;
-	i = 0;
-	while (words[i] != NULL)
-	{
-		words[i] = NULL;
-		free(words[i]);
-		i++;
-	}
-	words = NULL;
-	free(words);
-}
-
 static int	double_operator_found(char a, char b)
 {
 	if (a == '<' && b == '<')
@@ -112,6 +95,5 @@ char	**split_subline(char **splitted_line)
 		i++;
 	}
 	words[get_total_words(splitted_line) - 1] = NULL;
-	free_split(splitted_line);
 	return (words);
 }
