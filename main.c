@@ -54,7 +54,6 @@ int main(int argc, char *argv[], char *envp[])
 		// 	printf("%s \n", words[i]);
 		// 	i++;
 		// }
-		// exit(1);
 		// if (!check_syntax(program->tokens))
 		// 	continue ;
 		program->tokens = subwords;
@@ -70,6 +69,7 @@ int main(int argc, char *argv[], char *envp[])
 			printf("Orig cmd: %s\n", node->full_cmd_orig);
 			node = node->next;
 		}
+		exit(1);
 		free_program_loop();
 	// }
 	free_env();

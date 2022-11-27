@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/27 18:07:53 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/27 19:07:11 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*get_cmd_path(char **paths, char *cmd)
 		free(command);
 		paths++;
 	}
+	free(cmd);
 	return (NULL);
 }
 

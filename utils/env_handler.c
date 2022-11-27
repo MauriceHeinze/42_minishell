@@ -166,34 +166,6 @@ char	*get_env(t_var *env, char *name)
 	return (NULL);
 }
 
-// void	free_nodes(t_program *program)
-// {
-// 	t_node *node;
-// 	t_node *tmp_node;
-
-// 	while (node != NULL)
-// 	{
-// 		node = program->nodes;
-// 		tmp_node = program->nodes->next;
-// 		free_fds(node);
-// 		free(node);
-// 		node = tmp_node;
-// 	}
-// }
-
-// void freeList(struct node* head)
-// {
-//    struct node* tmp;
-
-//    while (head != NULL)
-//     {
-//        tmp = head;
-//        head = head->next;
-//        free(tmp);
-//     }
-
-// }
-
 void	free_env(void)
 {
 	t_var *envp;
