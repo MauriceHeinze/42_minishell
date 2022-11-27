@@ -14,7 +14,7 @@ static void setup_term(void)
 static void	free_program_loop()
 {
 	free_split(program->tokens);
-	free_nodes();
+	// free_nodes(); // not working with linux
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -55,6 +55,8 @@ int main(int argc, char *argv[], char *envp[])
 		program->tokens = subwords;
 		program->nodes = fill_node(program);
 		execution_manager(program->nodes, program->envp);
+		// free_split(words); // results in double free
+		// free_split(subwords);
 		// printf("--------TEST--------->\n");
 		// t_node *node = program->nodes;
 		// t_fd *fd = node->fd;

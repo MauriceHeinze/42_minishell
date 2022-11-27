@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/27 19:07:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/27 21:32:58 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 {
 	int 	category;
 	char	*token;
+	char	*token_dup;
 	char	**paths;
 
 	token = ft_strtrim(program->tokens[(*pos)], " ");
@@ -113,10 +114,10 @@ t_node	*fill_node(t_program *program)
 				return (head);
 			tmp = ft_strjoin(node->full_cmd_orig, " ");
 			node->full_cmd_orig = ft_strjoin(tmp, tokens[i]);
-			// free(tmp);
+			free(tmp);
 			tmp = ft_strjoin(node->full_cmd, ";");
 			node->full_cmd = ft_strjoin(tmp, tokens[i]);
-			// free(tmp);
+			free(tmp);
 			i++;
 		}
 		// if pipe is found, create new node

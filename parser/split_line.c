@@ -33,7 +33,7 @@ char	**split_line(char *input_str)
 	free(input_str);
 	input_str = tmp;
 	total_words = count_words(input_str);
-	words = malloc(sizeof(char *) * (total_words + 1));
+	words = malloc(sizeof(char *) * (total_words + 1)); // leak gets fixed by freeing return value in main loop
 	if (!words)
 		return (NULL);
 	while (input_str[i] != '\0')
