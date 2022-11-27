@@ -33,40 +33,39 @@ int main(int argc, char *argv[], char *envp[])
 	program->envp = store_env(envp);
 	set_exit_code(0);
 	setup_term();
-	// while (1)
-	// {
+	while (1)
+	{
 		line = readline("minishell $");
-		// if (!line)
-		// 	break ;
-		// if (ft_strlen(line) == 0 || is_whitespace(line))
-		// 	continue ;
+		if (!line)
+			break ;
+		if (ft_strlen(line) == 0 || is_whitespace(line))
+			continue ;
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
 		subwords = split_subline(words);
+		if (!check_syntax(subwords))
+			continue ;
 		// i = 0;
 		// while (words[i])
 		// {
 		// 	printf("%s \n", words[i]);
 		// 	i++;
 		// }
-		// if (!check_syntax(program->tokens))
-		// 	continue ;
 		program->tokens = subwords;
 		program->nodes = fill_node(program);
 		execution_manager(program->nodes, program->envp);
-		// free_program_loop();
-		printf("--------TEST--------->\n");
-		t_node *node = program->nodes;
-		t_fd *fd = node->fd;
-		while (node != NULL)
-		{
-			printf("\nFull cmd: %s\n", node->full_cmd);
-			printf("Orig cmd: %s\n", node->full_cmd_orig);
-			node = node->next;
-		}
+		// printf("--------TEST--------->\n");
+		// t_node *node = program->nodes;
+		// t_fd *fd = node->fd;
+		// while (node != NULL)
+		// {
+		// 	printf("\nFull cmd: %s\n", node->full_cmd);
+		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
+		// 	node = node->next;
+		// }
 		free_program_loop();
-	// }
+	}
 	free_env();
 	return (0);
 }
