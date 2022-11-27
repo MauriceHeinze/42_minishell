@@ -72,6 +72,7 @@ int main(int argc, char *argv[], char *envp[])
 			printf("Orig cmd: %s\n", node->full_cmd_orig);
 			node = node->next;
 		}
+		free_program_loop();
 	// }
 	return (0);
 }
