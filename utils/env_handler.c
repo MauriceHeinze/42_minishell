@@ -180,18 +180,20 @@ static void	free_fds(t_node *node)
 	}
 }
 
-void	free_envp()
+void	free_env(void)
 {
 	t_var *envp;
 	t_var *tmp_envp;
 
+	envp = program->envp;
+	tmp_envp = program->envp->next;
 	while (envp != NULL)
 	{
-		envp = program->envp;
-		tmp_envp = program->envp->next;
 		free(envp->name);
 		free(envp->content);
 		free(envp->not_splitted);
+		tmp_envp = envp->next;
+		free(envp->next);
 		envp = tmp_envp;
 	}
 }

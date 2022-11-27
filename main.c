@@ -17,9 +17,7 @@ static void	free_program_loop()
 
 	t_node	*node;
 	i = 0;
-	// free(program->cmd_line);
 	free_split(program->tokens);
-	// node = program->nodes;
 	free_nodes(program);
 }
 
@@ -28,6 +26,7 @@ int main(int argc, char *argv[], char *envp[])
 	char	**words;
 	char	**subwords;
 	char	*line;
+	char	*expanded_line;
 	int		i;
 
 	i = 0;
@@ -46,26 +45,25 @@ int main(int argc, char *argv[], char *envp[])
 		// if (ft_strlen(line) == 0 || is_whitespace(line))
 		// 	continue ;
 		track_history(line);
-		line = expand_variables(line);
-		words = split_line(line);
+		expanded_line = expand_variables(line);
+		words = split_line(expanded_line);
+		subwords = split_subline(words);
 		// i = 0;
 		// while (words[i])
 		// {
 		// 	printf("%s \n", words[i]);
 		// 	i++;
 		// }
-		subwords = split_subline(words);
 		// exit(1);
 		// if (!check_syntax(program->tokens))
 		// 	continue ;
 		program->tokens = subwords;
-		program->cmd_line = line;
 		program->nodes = fill_node(program);
+		execution_manager(program->nodes, program->envp);
+		// free_program_loop();
+		printf("--------TEST--------->\n");
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
-		execution_manager(node, program->envp);
-		// free_program_loop();
-		printf("-------------->\n");
 		while (node != NULL)
 		{
 			printf("\nFull cmd: %s\n", node->full_cmd);

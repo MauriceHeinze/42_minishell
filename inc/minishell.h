@@ -56,7 +56,6 @@ typedef struct s_var {
 typedef struct s_program {
 	t_var			*envp;
 	int				status;
-	char			*cmd_line;
 	char			**tokens;
 	t_node			*nodes;
 }				t_program;
@@ -89,6 +88,7 @@ t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);
 void	remove_env(t_var *env, char *name);
+void	free_env(void);
 
 // signals
 void	setup_signal_handler(void);
