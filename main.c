@@ -13,12 +13,8 @@ static void setup_term(void)
 
 static void	free_program_loop()
 {
-	int		i;
-
-	t_node	*node;
-	i = 0;
 	free_split(program->tokens);
-	free_nodes(program);
+	free_nodes();
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -69,7 +65,6 @@ int main(int argc, char *argv[], char *envp[])
 			printf("Orig cmd: %s\n", node->full_cmd_orig);
 			node = node->next;
 		}
-		exit(1);
 		free_program_loop();
 	// }
 	free_env();

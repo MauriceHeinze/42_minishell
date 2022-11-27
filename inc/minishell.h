@@ -100,7 +100,7 @@ void	fill_fd(t_program *program, t_node *node, int *pos);
 t_fd	*setup_fd(void);
 
 // free
-void	free_nodes(t_program *program);
+void	free_nodes(void);
 void	free_split(char **words);
 
 // syntax checker
