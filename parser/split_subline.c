@@ -58,8 +58,9 @@ char	**split_subline(char **splitted_line)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
 		{
-			//dub this
-			words[no_word] = splitted_line[i];
+			words[no_word] = ft_strdup(splitted_line[i]);
+			if (!words)
+				return (NULL);
 			no_word++;
 		}
 		else

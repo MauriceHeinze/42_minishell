@@ -14,7 +14,7 @@ static void setup_term(void)
 static void	free_program_loop()
 {
 	free_split(program->tokens);
-	// free_nodes(); // not working with linux
+	free_nodes(); // not working with linux
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -46,19 +46,22 @@ int main(int argc, char *argv[], char *envp[])
 		subwords = split_subline(words);
 		if (!check_syntax(subwords))
 			continue ;
-		// i = 0;
-		// while (words[i])
-		// {
-		// 	printf("%s \n", words[i]);
-		// 	i++;
-		// }
 		program->tokens = subwords;
 		program->nodes = fill_node(program);
 		execution_manager(program->nodes, program->envp);
-		// free_split(words); // results in double free
+		free_split(words); // results in double free
+		words = NULL;
+		subwords = NULL;
+		i = 0;
+		while (program->tokens[i])
+		{
+			printf("%s \n", program->tokens[i]);
+			i++;
+		}
 		// free_split(subwords);
 		// free(expanded_line); // frees twice somehow, Linux dislikes it
 		free(line);
+		// printf("1 ==========>\n");
 		// printf("--------TEST--------->\n");
 		// t_node *node = program->nodes;
 		// t_fd *fd = node->fd;
@@ -68,7 +71,9 @@ int main(int argc, char *argv[], char *envp[])
 		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// 	node = node->next;
 		// }
+		// printf("2 ==========>\n");
 		free_program_loop();
+		system("leaks minishell");
 	}
 	free_env();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/27 19:26:23 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/28 20:28:24 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,16 @@ void	free_nodes(void)
 	{
 		tmp_node = node;
 		node = node->next;
-		free_fds(node);
-		free(node);
+		free_fds(tmp_node);
+		free(tmp_node->full_cmd);
+		tmp_node->full_cmd = NULL;
+		free(tmp_node->full_cmd_orig);
+		tmp_node->full_cmd_orig = NULL;
+		if (ft_strcmp(tmp_node->full_path, "builtin"))
+		{
+			free(tmp_node->full_path);
+			tmp_node->full_path = NULL;
+		}
+		free(tmp_node);
 	}
 }
