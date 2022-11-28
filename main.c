@@ -57,6 +57,8 @@ int main(int argc, char *argv[], char *envp[])
 		execution_manager(program->nodes, program->envp);
 		// free_split(words); // results in double free
 		// free_split(subwords);
+		// free(expanded_line); // frees twice somehow, Linux dislikes it
+		free(line);
 		// printf("--------TEST--------->\n");
 		// t_node *node = program->nodes;
 		// t_fd *fd = node->fd;

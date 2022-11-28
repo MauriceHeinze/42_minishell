@@ -20,23 +20,9 @@ static t_var	*setup_var_node(void)
 	if (!var)
 		return (NULL);
 
-	var->name = NULL;
-	var->content = NULL;
-	var->next = NULL;
-	return (var);
-}
-
-static t_var	*setup_node(void)
-{
-	t_var	*var;
-
-	var = malloc(sizeof(t_var));
-	if (!var)
-		return (NULL);
-
-	var->name = NULL;
-	var->content = NULL;
-	var->not_splitted = NULL;
+	var->name = "";
+	var->content = "";
+	var->not_splitted = "";
 	var->next = NULL;
 	return (var);
 }
@@ -49,7 +35,7 @@ t_var	*store_env(char *env[])
 	int	 i;
 	int	 k;
 
-	var = setup_node();
+	var = setup_var_node();
 	head = var;
 	last_pos = 0;
 	i = 0;
@@ -72,7 +58,7 @@ t_var	*store_env(char *env[])
 		var->content = ft_substr(env[i], last_pos, k);
 		if (env[i + 1] != NULL)
 		{
-			var->next = setup_node();
+			var->next = setup_var_node();
 			var = var->next;
 		}
 		i++;
@@ -113,7 +99,7 @@ t_var	*add_env(t_var *env, char *name, char* content)
 	}
 	else
 	{
-		env->next = setup_node();
+		env->next = setup_var_node();
 		env = env->next;
 		env->name = name;
 		env->content = content;
@@ -171,14 +157,19 @@ void	free_env(void)
 	t_var *envp;
 	t_var *tmp_envp;
 
+	int i = 0;
+
 	envp = program->envp;
 	while (envp != NULL)
 	{
 		tmp_envp = envp;
 		envp = envp->next;
-		// free(tmp_envp->name);
-		// free(tmp_envp->content);
+		if (envp == NULL)
+			break;
+		free(tmp_envp->name);
+		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
 		free(tmp_envp);
+		i++;
 	}
 }
