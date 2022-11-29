@@ -29,6 +29,7 @@ char	*expand_variables(char *input_str)
 	int		i;
 	int		start;
 	int		double_quote;
+	char	*tmp;
 
 	i = 0;
 	double_quote = 0;
@@ -51,8 +52,16 @@ char	*expand_variables(char *input_str)
 		{
 			i++;
 			start = i;
-			input_str = str_remove(input_str, start, i - start + 1);
-			input_str = str_add(input_str, get_env(program->envp, "HOME"), start);
+			tmp = str_remove(input_str, start, i - start + 1);
+			free(input_str);
+			input_str = NULL;
+			input_str = ft_strdup(tmp);
+			free(tmp);
+			tmp = NULL;
+			tmp = str_add(input_str, get_env(program->envp, "HOME"), start);
+			free(input_str);
+			input_str = NULL;
+			input_str = ft_strdup(tmp);
 			i = 0;
 			start = 0;
 		}

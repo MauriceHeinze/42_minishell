@@ -52,15 +52,15 @@ int main(int argc, char *argv[], char *envp[])
 		free_split(words); // results in double free
 		words = NULL;
 		subwords = NULL;
-		i = 0;
-		while (program->tokens[i])
-		{
-			printf("%s \n", program->tokens[i]);
-			i++;
-		}
+		// i = 0;
+		// while (program->tokens[i])
+		// {
+		// 	printf("%s \n", program->tokens[i]);
+		// 	i++;
+		// }
 		// free_split(subwords);
 		// free(expanded_line); // frees twice somehow, Linux dislikes it
-		free(line);
+		printf("==========>\n");
 		// printf("1 ==========>\n");
 		// printf("--------TEST--------->\n");
 		// t_node *node = program->nodes;
