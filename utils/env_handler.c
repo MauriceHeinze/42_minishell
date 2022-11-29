@@ -171,8 +171,6 @@ void	free_env(void)
 	{
 		tmp_envp = envp;
 		envp = envp->next;
-		// if (envp == NULL)
-		// 	break;
 		free(tmp_envp->name);
 		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
