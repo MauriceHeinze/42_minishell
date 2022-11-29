@@ -15,11 +15,22 @@
 char	*expand_variable(char *input_str, int start, int i)
 {
 	char	*var_name;
+	char	*tmp;
 
 	var_name = ft_substr(input_str, start, i - start);
-	input_str = str_remove(input_str, start, i - start + 1);
+	tmp = str_remove(input_str, start, i - start + 1);
+	free(input_str);
+	input_str = NULL;
+	input_str = ft_strdup(tmp);
+	free(tmp);
+	tmp = NULL;
 	if (get_env(program->envp, var_name))
-		input_str = str_add(input_str, get_env(program->envp, var_name), start);
+	{
+		tmp = str_add(input_str, get_env(program->envp, var_name), start);
+		free(input_str);
+		input_str = NULL;
+		input_str = tmp;
+	}
 	free(var_name);
 	return (input_str);
 }
@@ -44,7 +55,11 @@ char	*expand_variables(char *input_str)
 			start = i;
 			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || ft_strchr("?_", input_str[i])))
 				i++;
-			input_str = expand_variable(input_str, start, i);
+			tmp = expand_variable(input_str, start, i);
+			// printf("1 ==========>\n");
+			// printf("2 ==========>\n");
+			input_str = tmp;
+			// printf("3 ==========>\n");
 			i = 0;
 			start = 0;
 		}

@@ -28,14 +28,22 @@ char	**split_line(char *input_str)
 	i = 0;
 	start = 0;
 	no_word = 0;
-	input_str = ft_strtrim(input_str, " 	");
+	// input_str = ft_strtrim(input_str, " 	");
 	tmp = ft_strtrim(input_str, " 	");
+	if (!tmp)
+	{
+		free(input_str);
+		return (NULL);
+	}
 	free(input_str);
 	input_str = tmp;
 	total_words = count_words(input_str);
 	words = malloc(sizeof(char *) * (total_words + 1)); // leak gets fixed by freeing return value in main loop
 	if (!words)
+	{
+		free(input_str);
 		return (NULL);
+	}
 	while (input_str[i] != '\0')
 	{
 		start = i;

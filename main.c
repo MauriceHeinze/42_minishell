@@ -60,7 +60,7 @@ int main(int argc, char *argv[], char *envp[])
 		// }
 		// free_split(subwords);
 		// free(expanded_line); // frees twice somehow, Linux dislikes it
-		printf("==========>\n");
+		// printf("==========>\n");
 		// printf("1 ==========>\n");
 		// printf("--------TEST--------->\n");
 		// t_node *node = program->nodes;
@@ -73,6 +73,10 @@ int main(int argc, char *argv[], char *envp[])
 		// }
 		// printf("2 ==========>\n");
 		free_program_loop();
+		// free(line);
+		// printf("exp: %s\n", expanded_line);
+		// free(expanded_line);
+		// expanded_line = NULL;
 		system("leaks minishell");
 	}
 	free_env();
