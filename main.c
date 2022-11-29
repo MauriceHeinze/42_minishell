@@ -77,8 +77,8 @@ int main(int argc, char *argv[], char *envp[])
 		// printf("exp: %s\n", expanded_line);
 		// free(expanded_line);
 		// expanded_line = NULL;
-		system("leaks minishell");
 	}
 	free_env();
+	system("leaks minishell");
 	return (0);
 }

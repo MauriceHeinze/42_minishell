@@ -29,11 +29,11 @@ static t_var	*setup_var_node(void)
 
 t_var	*store_env(char *env[])
 {
-	t_var   *var;
-	t_var   *head;
-	int	 last_pos;
-	int	 i;
-	int	 k;
+	t_var	*var;
+	t_var	*head;
+	int		last_pos;
+	int		i;
+	int		k;
 
 	var = setup_var_node();
 	head = var;
@@ -121,7 +121,10 @@ void	remove_env(t_var *env, char *name)
 	if (ft_strcmp(env->name, name) == 0) // found it!
 	{
 		head = env->next;
-		// free(env);
+		free(env->name);
+		free(env->content);
+		free(env->not_splitted);
+		free(env);
 		program->envp = head;
 	}
 	// check next elements
@@ -135,6 +138,10 @@ void	remove_env(t_var *env, char *name)
 			// remove next node
 			// set pointer to next node
 			env->next = tmp->next;
+			free(tmp->name);
+			free(tmp->content);
+			free(tmp->not_splitted);
+			free(tmp);
 		}
 		env = env->next;
 	}
@@ -164,8 +171,8 @@ void	free_env(void)
 	{
 		tmp_envp = envp;
 		envp = envp->next;
-		if (envp == NULL)
-			break;
+		// if (envp == NULL)
+		// 	break;
 		free(tmp_envp->name);
 		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
