@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 18:16:30 by ralf             ###   ########.fr       */
+/*   Updated: 2022/11/30 20:12:05 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	exec_error(int error, char *s)
 		printf("minishell: %s: Permission denied\n", s);
 	else if (error == EMPTY_KEY_ERROR)
 		printf("minishell: cd: %s not set\n", s);
+	else if (error == EXIT_NUM_ERROR)
+		printf("minishell: exit: too many arguments\n");	
 }
 
 void	set_exit_code(int exit_code)

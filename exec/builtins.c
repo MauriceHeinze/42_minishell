@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 18:33:38 by ralf             ###   ########.fr       */
+/*   Updated: 2022/11/30 20:10:59 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,12 @@ void	exit_pre_handler(t_node *node, int fd)
 				check_input++;
 			else
 			{
-				ft_putstr_fd("exit\n", fd, NULL);	
+				ft_putstr_fd("exit\n", fd, NULL);
+				if (*check_input == ' ')
+				{
+					exec_error(EXIT_NUM_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
+					return;
+				}
 				exec_error(EXIT_ARG_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
 				exit_shell(255);
 			}
