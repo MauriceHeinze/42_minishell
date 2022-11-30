@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 17:01:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 18:16:30 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,10 @@ void	set_exit_code(int exit_code)
 
 void	exit_shell(int error_code)
 {
-	printf("exit\n");
 	free_split(program->tokens);
 	if (program->nodes->full_cmd != NULL)
 		free_nodes();
 	free_env();
-	system("leaks minishell");
+	// system("leaks minishell");
 	exit(error_code);
 }
