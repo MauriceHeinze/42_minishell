@@ -91,7 +91,6 @@ t_var	*add_env(t_var *env, char *name, char* content)
 	{
 		free(env->name);
 		env->name = name;
-		// free(env->content);
 		free(env->not_splitted);
 		env->content = content;
 		tmp = ft_strjoin(name, "=");
@@ -176,6 +175,5 @@ void	free_env(void)
 		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
 		free(tmp_envp);
-		i++;
 	}
 }
