@@ -173,6 +173,7 @@ int		is_whitespace(char *input_str);
 # define EMPTY_KEY_ERROR			13
 # define ENV_ERROR					14
 # define SEMICOLON_USED				15
+# define EXIT_NUM_ERROR				16
 
 # define CMD_NOT_FOUND				127
 # define INVALID_EXIT_ARG			255
