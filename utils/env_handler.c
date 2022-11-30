@@ -92,6 +92,7 @@ t_var	*add_env(t_var *env, char *name, char* content)
 		free(env->name);
 		env->name = name;
 		free(env->not_splitted);
+		free(env->content);
 		env->content = content;
 		tmp = ft_strjoin(name, "=");
 		env->not_splitted = ft_strjoin(tmp, env->content);
@@ -172,6 +173,7 @@ void	free_env(void)
 		tmp_envp = envp;
 		envp = envp->next;
 		free(tmp_envp->name);
+		// printf("\nFails at:\n name: %s\ncontent: %s\n", tmp_envp->next->name, tmp_envp->next->content);
 		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
 		free(tmp_envp);

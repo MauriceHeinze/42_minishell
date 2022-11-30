@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/29 17:42:23 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 14:32:09 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	set_exit_code(int exit_code)
 	program->status = exit_code;
 	exit_code_str = ft_itoa(exit_code);
 	add_env(program->envp, ft_strdup("?"), exit_code_str);
-	free(exit_code_str);
 }
 
 void	exit_shell(int error_code)
