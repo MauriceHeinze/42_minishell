@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/26 18:37:13 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 13:37:39 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,11 @@ int	cd(t_var *envp, char *dir)
 			return(EXIT_FAILURE);
 		}
 	}
-	if (add_env(envp, "OLDPWD", cwd) == NULL)
+	if (add_env(envp, ft_strdup("OLDPWD"), cwd) == NULL)
 		perror("add_env failed");
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		perror("getcwd failed");
-	if (add_env(envp, "PWD", cwd) == NULL)
+	if (add_env(envp, ft_strdup("PWD"), cwd) == NULL)
 		perror("add_env failed");
 	return (EXIT_SUCCESS);
 }

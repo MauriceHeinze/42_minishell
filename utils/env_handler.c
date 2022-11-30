@@ -89,7 +89,8 @@ t_var	*add_env(t_var *env, char *name, char* content)
 	}
 	if (exists)
 	{
-		// free(env->name);
+		free(env->name);
+		env->name = name;
 		// free(env->content);
 		free(env->not_splitted);
 		env->content = content;
