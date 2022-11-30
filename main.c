@@ -48,6 +48,13 @@ int main(int argc, char *argv[], char *envp[])
 			continue ;
 		program->tokens = subwords;
 		program->nodes = fill_node(program);
+		if (program->nodes == NULL)
+		{
+			free_program_loop();
+			free_split(words);
+			system("leaks minishell");
+			continue;
+		}
 		execution_manager(program->nodes, program->envp);
 		free_split(words); // results in double free
 		words = NULL;

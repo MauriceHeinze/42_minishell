@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 15:15:43 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 16:06:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 		paths = get_cmd_paths(program->envp);
 		node->full_cmd_orig = ft_strdup(token);
 		node->full_path = get_cmd_path(paths, token);
-		// check here if command is valid and if not restart loop
+		if (node->full_path == NULL)
+		{
+			free_split(paths);
+			return (1); // printf("Path is: %s\n", node->full_path);
+		}
 		free_split(paths);
 		(*pos)++;
 	}
@@ -104,10 +108,23 @@ t_node	*fill_node(t_program *program)
 			if (tokens[i] == NULL || tokens[i + 1] == NULL)
 				break ;
 			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
-				get_command(program, node, &i);
+			{
+				if (get_command(program, node, &i))
+				{
+					free(head);
+					return (NULL);
+				}
+			}
 		}
 		else
-			get_command(program, node, &i);
+		{
+			if (get_command(program, node, &i))
+			{
+				free(head->full_cmd_orig);
+				free(head);
+				return (NULL);
+			}
+		}
 		// copy arguments until you find pipe or arrows
 		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 		{
