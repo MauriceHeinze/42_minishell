@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/22 16:12:12 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 14:52:26 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 	t_fd	*fd;
 	t_fd	*head;
 	int		token;
+	char	*tmp;
 
 	token = get_category(program->tokens[(*pos)]);
 	if (node->fd != NULL)
@@ -69,8 +70,10 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = OUTPUT;
 		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
+		fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+		free(tmp);
+		tmp = NULL;
 		(*pos)++;
 	}
 	else if (token == ARROW_LEFT) // < stdin
@@ -78,8 +81,10 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = INPUT;
 		fd->mode = MODE_FILE;
-		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
+		fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+		free(tmp);
+		tmp = NULL;
 		(*pos)++;
 	}
 	else if (token == DOUBLE_ARROW_LEFT) // << HEREDOC
@@ -95,8 +100,10 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 		fd->io = OUTPUT;
 		fd->mode = MODE_APPEND;
-		fd->meta = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		fd->meta = ft_strjoin(fd->meta, program->tokens[(*pos)]);
+		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
+		fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+		free(tmp);
+		tmp = NULL;
 		(*pos)++;
 	}
 	fd = head;

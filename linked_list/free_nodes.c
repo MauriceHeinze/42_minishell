@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/28 20:28:24 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 14:49:19 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ static void	free_fds(t_node *node)
 	t_fd *fd;
 	t_fd *tmp_fd;
 
+	fd = node->fd;
 	while (fd != NULL)
 	{
-		fd = node->fd;
-		tmp_fd = fd->next;
-		free(fd);
-		fd = tmp_fd;
+		tmp_fd = fd;
+		fd = fd->next;
+		free(tmp_fd->meta);
+		tmp_fd->meta = NULL;
+		free(tmp_fd);
 	}
 }
 
