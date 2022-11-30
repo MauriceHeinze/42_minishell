@@ -72,6 +72,6 @@ char	**split_line(char *input_str)
 		i++;
 	}
 	free(input_str);
-	words[total_words] = NULL;
+	words[no_word] = NULL;
 	return (words);
 }

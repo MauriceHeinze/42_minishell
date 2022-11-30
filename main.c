@@ -43,7 +43,12 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
-		printf("==========ERROR====>\n");
+		// i = 0;
+		// while (words[i])
+		// {
+		// 	printf("%s \n", words[i]);
+		// 	i++;
+		// }
 		subwords = split_subline(words);
 		if (!check_syntax(subwords))
 			continue ;
