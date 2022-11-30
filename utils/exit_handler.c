@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 15:27:03 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 17:01:11 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ void	exit_shell(int error_code)
 		free_nodes();
 	free_env();
 	system("leaks minishell");
-	exit(0);
+	exit(error_code);
 }

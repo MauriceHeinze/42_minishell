@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 16:06:13 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 17:32:35 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ t_node	*fill_node(t_program *program)
 			{
 				if (get_command(program, node, &i))
 				{
+					free(head->full_cmd_orig);
 					free(head);
 					return (NULL);
 				}

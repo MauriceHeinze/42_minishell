@@ -48,7 +48,12 @@ char	*expand_variables(char *input_str)
 	while (input_str[i] != '\0')
 	{
 		if (input_str[i] == '\'' && double_quote == 0)
+		{
 			i = skip_quote(input_str, i);
+			i++;
+			if (!input_str[i])
+				break ;
+		}
 		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1]) || ft_strchr("?_", input_str[i + 1])))
 		{
 			i++;
@@ -56,10 +61,7 @@ char	*expand_variables(char *input_str)
 			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || ft_strchr("?_", input_str[i])))
 				i++;
 			tmp = expand_variable(input_str, start, i);
-			// printf("1 ==========>\n");
-			// printf("2 ==========>\n");
 			input_str = tmp;
-			// printf("3 ==========>\n");
 			i = 0;
 			start = 0;
 		}

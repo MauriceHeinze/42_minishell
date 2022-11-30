@@ -43,6 +43,7 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
+		printf("==========ERROR====>\n");
 		subwords = split_subline(words);
 		if (!check_syntax(subwords))
 			continue ;
@@ -78,10 +79,11 @@ int main(int argc, char *argv[], char *envp[])
 		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// 	node = node->next;
 		// }
+		// free(expanded_line);
+		// expanded_line = NULL;
 		free_program_loop();
 		// free(line);
 		// printf("exp: %s\n", expanded_line);
-		// free(expanded_line);
 		// expanded_line = NULL;
 		// system("leaks minishell");
 	}
