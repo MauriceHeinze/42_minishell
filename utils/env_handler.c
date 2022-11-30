@@ -20,9 +20,9 @@ static t_var	*setup_var_node(void)
 	if (!var)
 		return (NULL);
 
-	var->name = "";
-	var->content = "";
-	var->not_splitted = "";
+	var->name = NULL;
+	var->content = NULL;
+	var->not_splitted = NULL;
 	var->next = NULL;
 	return (var);
 }

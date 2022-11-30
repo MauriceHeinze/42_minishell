@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 14:32:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:27:03 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,11 @@ void	set_exit_code(int exit_code)
 
 void	exit_shell(int error_code)
 {
-	set_exit_code(error_code);
-	special_error(error_code);
-	// free all allocated resources
-		// free hdocs
-		// free tokens
-		// free builtins
-		// free envp
-		// free all resources
-	exit(1);
+	printf("exit\n");
+	free_split(program->tokens);
+	if (program->nodes->full_cmd != NULL)
+		free_nodes();
+	free_env();
+	system("leaks minishell");
+	exit(0);
 }

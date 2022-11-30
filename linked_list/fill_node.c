@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/28 20:06:53 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:15:43 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static t_node	*setup_node(void)
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->full_cmd = "";
-	node->full_cmd_orig = "";
-	node->full_path = "";
+	node->full_cmd = NULL;
+	node->full_cmd_orig = NULL;
+	node->full_path = NULL;
 	node->pid = -1;
 	node->fd = NULL;
 	node->next = NULL;
@@ -58,6 +58,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 		paths = get_cmd_paths(program->envp);
 		node->full_cmd_orig = ft_strdup(token);
 		node->full_path = get_cmd_path(paths, token);
+		// check here if command is valid and if not restart loop
 		free_split(paths);
 		(*pos)++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 14:52:26 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:06:04 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_fd	*setup_fd(void)
 		return (NULL);
 	node->io = OUTPUT;
 	node->mode = -1;
-	node->meta = "";
+	node->meta = NULL;
 	node->fd = -1;
 	node->next = NULL;
 	return (node);

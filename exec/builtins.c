@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 13:46:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:27:36 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
 		executor->status = env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
-		printf("EXIT");
+		exit_shell(0);
 	else
 	{
 		perror("builtin not found");

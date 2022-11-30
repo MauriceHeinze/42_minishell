@@ -71,13 +71,12 @@ int main(int argc, char *argv[], char *envp[])
 		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
 		// 	node = node->next;
 		// }
-		// printf("2 ==========>\n");
 		free_program_loop();
 		// free(line);
 		// printf("exp: %s\n", expanded_line);
 		// free(expanded_line);
 		// expanded_line = NULL;
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	free_env();
 	system("leaks minishell");
