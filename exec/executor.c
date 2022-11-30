@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/25 16:35:00 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 21:42:48 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,8 +286,13 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	executor->fd_in = 0;
 	executor->fd_out_original = dup(1);
 	executor->fd_in_original = dup(0);
+	executor->child_processes = 0;
 	while (node_tmp->next != NULL)
 	{
+		if (ft_strcmp(node->full_path, "builtin") == 0)
+			executor->child_processes = 0;
+		else
+			executor->child_processes = 1;
 		executor->pipes += 1;
 		node_tmp = node_tmp->next;
 	}
@@ -329,21 +334,15 @@ int	execution_manager (t_node *node, t_var *envp)
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
 	sub_exec(node, &executor, envp);
-	waitpid(-1, &(executor.status), 0);
-	if (!WIFSIGNALED(executor.status))
+	if (executor.child_processes > 0)
 	{
-		set_exit_code(WEXITSTATUS(executor.status));
-		// dprintf(2, "<EXIT: %d>", WEXITSTATUS(executor.status));
+		waitpid(-1, &(executor.status), 0);
+		if (!WIFSIGNALED(executor.status))
+			set_exit_code(WEXITSTATUS(executor.status));
+		else if (WIFSIGNALED(executor.status))
+			set_exit_code(WTERMSIG(executor.status) + 128);
 	}
-	else if (WIFSIGNALED(executor.status))
-	{
-		set_exit_code(WTERMSIG(executor.status) + 128);
-		// dprintf(2, "<SIGN: %d>", WTERMSIG(executor.status) + 128);
-	}
-	// if (executor.pipes > 0)
-	// {
-	// 	close(executor.pipe[1]);
-	// 	close(executor.pipe[0]);
-	// }
+	else
+		set_exit_code(executor.status);
 	return (0);
 }

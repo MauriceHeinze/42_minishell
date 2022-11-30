@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 15:27:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 20:59:45 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,11 +190,49 @@ int	env(t_var *envp, int fd)
 	return (EXIT_SUCCESS);
 }
 
+int	exit_pre_handler(t_node *node, int fd)
+{
+	char	*check_input;
+	
+	if (ft_strlen("exit") == ft_strlen(node->full_cmd))
+	{
+		exit_shell(0);
+		ft_putstr_fd("exit\n", fd, NULL);	
+	}
+	else
+	{
+		check_input = &(node->full_cmd[ft_strlen("exit") + 1]);
+		if (*check_input == '+' || *check_input == '-')
+			check_input++;
+		while (*check_input != '\0')
+		{
+			if (*check_input >= '0' && *check_input <= '9')
+				check_input++;
+			else
+			{
+				ft_putstr_fd("exit\n", fd, NULL);
+				if (*check_input == ' ')
+				{
+					exec_error(EXIT_NUM_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
+					return (1);
+				}
+				exec_error(EXIT_ARG_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
+				exit_shell(255);
+			}
+		}
+		ft_putstr_fd("exit\n", fd, NULL);
+		exit_shell(ft_atoi(&(node->full_cmd[ft_strlen("exit") + 1])));
+	}
+	return(0);
+}
+
+
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
-	// if (executor->fd_in != 0)
-	// 	close(executor->fd_in);
-	// printf("full_cmd: %s\n", node->full_cmd);
+	// TEST ONLY!!!
+	// if (executor->fd_out == 1)
+	// 	executor->fd_out = 2;
+	
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
@@ -208,7 +246,7 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)
 		executor->status = env(envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "exit", ft_strlen("exit")) == 0)
-		exit_shell(0);
+		executor->status = exit_pre_handler(node, executor->fd_out);
 	else
 	{
 		perror("builtin not found");

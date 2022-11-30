@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 13:19:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/25 16:34:50 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/11/30 21:37:40 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_exec {
 	int		fd_in;
 	int		fd_out_original;
 	int		fd_in_original;
+	int		child_processes;
 
 }				t_exec;
 
