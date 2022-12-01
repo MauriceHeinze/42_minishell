@@ -6,11 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/08/05 21:37:24 by ybarbier          #+#    #+#             */
-/*   Updated: 2022/11/14 12:15:37 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/01 19:54:11 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
+#include "../inc/minishell.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int i;
 

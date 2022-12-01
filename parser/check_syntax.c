@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/22 15:29:52 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/01 20:10:10 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,24 @@ static int	valid_operator(char **tokens)
 
 	i = 0;
 	while (tokens[i])
+		i++;
+	printf("i is: %d\n", i);
+	while (tokens[i])
 	{
-		if (is_operator(tokens[i]) >= ARROW_LEFT && is_operator(tokens[i]) <= AND)
+		printf("1 ---\n");
+		if (is_operator(tokens[i]) >= ARROW_LEFT && is_operator(tokens[i]) <= PIPE)
 		{
+			printf("2 ---\n");
 			if (tokens[i + 1] == NULL)
 			{
+				printf("3 ---\n");
 				printf("minishell: syntax error near unexpected token `%s'\n", tokens[i]);
 				return (0);
 			}
-			if (is_operator(tokens[i + 1]) >= ARROW_LEFT && is_operator(tokens[i + 1]) <= AND)
+			printf("4 ---\n");
+			if (is_operator(tokens[i + 1]) >= ARROW_LEFT && is_operator(tokens[i + 1]) <= PIPE)
 			{
+				printf("5 ---\n");
 				printf("minishell: syntax error near unexpected token `%s'\n", tokens[i + 1]);
 				return (0);
 			}

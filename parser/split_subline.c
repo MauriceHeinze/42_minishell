@@ -34,11 +34,9 @@ static int	get_total_words(char **splitted_line)
 	total_words = 1;
 	while (splitted_line[i] != NULL)
 	{
-		// printf("========== 3. ERROR====>\n");
 		total_words += count_words_operators(splitted_line[i]);
 		i++;
 	}
-	// printf("========== 4. ERROR====>\n");
 	return (total_words);
 }
 
@@ -49,15 +47,14 @@ char	**split_subline(char **splitted_line)
 	int		start;
 	int		no_word;
 	char	**words;
+	int		total_words;
 
 	i = 0;
 	no_word = 0;
 	start = 0;
-	// printf("========== 2. ERROR====>\n");
 	words = malloc(sizeof(char *) * get_total_words(splitted_line));
 	if (!words)
 		return (NULL);
-	// printf("========== 5. ERROR====>\n");
 	while (splitted_line[i] != NULL)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
@@ -99,6 +96,6 @@ char	**split_subline(char **splitted_line)
 		}
 		i++;
 	}
-	words[get_total_words(splitted_line) - 1] = NULL;
+	words[no_word] = NULL;
 	return (words);
 }

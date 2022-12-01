@@ -43,20 +43,20 @@ int main(int argc, char *argv[], char *envp[])
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
+		subwords = split_subline(words);
 		// i = 0;
 		// while (words[i])
 		// {
 		// 	printf("%s \n", words[i]);
 		// 	i++;
 		// }
-		subwords = split_subline(words);
 		if (!check_syntax(subwords))
 			continue ;
 		program->tokens = subwords;
 		program->nodes = fill_node(program);
 		if (program->nodes == NULL)
 		{
-			printf("==== ERROR\n");
+			printf("minihsell: %s: command not found\n", program->tokens[0]);
 			free_split(program->tokens);
 			free_split(words);
 			// system("leaks minishell");
@@ -76,14 +76,14 @@ int main(int argc, char *argv[], char *envp[])
 		// printf("==========>\n");
 		// printf("1 ==========>\n");
 		// printf("--------TEST--------->\n");
-		t_node *node = program->nodes;
-		t_fd *fd = node->fd;
-		while (node != NULL)
-		{
-			printf("\nFull cmd: %s\n", node->full_cmd);
-			printf("Orig cmd: %s\n", node->full_cmd_orig);
-			node = node->next;
-		}
+		// t_node *node = program->nodes;
+		// t_fd *fd = node->fd;
+		// while (node != NULL)
+		// {
+		// 	printf("\nFull cmd: %s\n", node->full_cmd);
+		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
+		// 	node = node->next;
+		// }
 		// free(expanded_line);
 		// expanded_line = NULL;
 		free_program_loop();
