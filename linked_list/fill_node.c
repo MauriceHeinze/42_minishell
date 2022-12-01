@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 17:32:35 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/01 16:52:33 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	char	**paths;
 
 	token = ft_strtrim(program->tokens[(*pos)], " ");
+	// printf("token: %s\n", token);
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
 	// is undefined/not builtin
@@ -109,20 +110,24 @@ t_node	*fill_node(t_program *program)
 				break ;
 			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 			{
-				if (get_command(program, node, &i))
+				if (get_command(program, node, &i) == 1) // frees if 1
 				{
 					free(head->full_cmd_orig);
+					head->full_cmd_orig = NULL;
 					free(head);
+					head = NULL;
 					return (NULL);
 				}
 			}
 		}
 		else
 		{
-			if (get_command(program, node, &i))
+			if (get_command(program, node, &i) == 1)
 			{
 				free(head->full_cmd_orig);
+				head->full_cmd_orig = NULL;
 				free(head);
+				head = NULL;
 				return (NULL);
 			}
 		}

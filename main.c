@@ -56,34 +56,34 @@ int main(int argc, char *argv[], char *envp[])
 		program->nodes = fill_node(program);
 		if (program->nodes == NULL)
 		{
-			free_program_loop();
+			printf("==== ERROR\n");
+			free_split(program->tokens);
 			free_split(words);
-			system("leaks minishell");
+			// system("leaks minishell");
 			continue;
 		}
-		execution_manager(program->nodes, program->envp);
-		free_split(words); // results in double free
-		words = NULL;
-		subwords = NULL;
 		// i = 0;
 		// while (program->tokens[i])
 		// {
 		// 	printf("%s \n", program->tokens[i]);
 		// 	i++;
 		// }
+		execution_manager(program->nodes, program->envp);
+		free_split(words); // results in double free
+		words = NULL;
 		// free_split(subwords);
 		// free(expanded_line); // frees twice somehow, Linux dislikes it
 		// printf("==========>\n");
 		// printf("1 ==========>\n");
 		// printf("--------TEST--------->\n");
-		// t_node *node = program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s\n", node->full_cmd);
-		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
-		// 	node = node->next;
-		// }
+		t_node *node = program->nodes;
+		t_fd *fd = node->fd;
+		while (node != NULL)
+		{
+			printf("\nFull cmd: %s\n", node->full_cmd);
+			printf("Orig cmd: %s\n", node->full_cmd_orig);
+			node = node->next;
+		}
 		// free(expanded_line);
 		// expanded_line = NULL;
 		free_program_loop();
@@ -93,6 +93,8 @@ int main(int argc, char *argv[], char *envp[])
 		// system("leaks minishell");
 	}
 	free_env();
-	system("leaks minishell");
+	// system("leaks minishell");
 	return (0);
 }
+
+// echo hallo > file.txt

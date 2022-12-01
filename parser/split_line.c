@@ -28,8 +28,7 @@ char	**split_line(char *input_str)
 	i = 0;
 	start = 0;
 	no_word = 0;
-	// input_str = ft_strtrim(input_str, " 	");
-	tmp = ft_strtrim(input_str, " 	");
+	tmp = ft_strtrim(input_str, " ");
 	if (!tmp)
 	{
 		free(input_str);
@@ -38,25 +37,31 @@ char	**split_line(char *input_str)
 	free(input_str);
 	input_str = tmp;
 	total_words = count_words(input_str);
+	// printf("input = %s\n", input_str);
+	// printf("total_words = %d\n", total_words);
 	words = malloc(sizeof(char *) * (total_words + 1)); // leak gets fixed by freeing return value in main loop
 	if (!words)
 	{
 		free(input_str);
+		input_str = NULL;
 		return (NULL);
 	}
 	while (input_str[i] != '\0')
 	{
 		start = i;
-		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
+		while (input_str[i] != '\'' && input_str[i] != '\"' && input_str[i] != ' ' && input_str[i] != '\0')
 			i++;
 		if (i > start)
 		{
-			if (ft_strchr(" 	", input_str[i]))
+			if (input_str[i] == ' ')
 				i++;
-			words[no_word++] = ft_substr(input_str, start, i - start);
-			continue;
+			words[no_word] = ft_substr(input_str, start, i - start);
+			// printf("no word: %d\n", no_word);
+			// printf("word: %s [%d]\n", words[no_word], i);
+			no_word++;
+			// printf("\nchars: %c%c%c \n\n", input_str[i - 1], input_str[i], input_str[i + 1]);
 		}
-		if (input_str[i] == '\'' || input_str[i] == '\"')
+		else if (input_str[i] == '\'' || input_str[i] == '\"')
 		{
 			if (input_str[i + quote_length(input_str[i], input_str, i) + 2] == ' ')
 			{
@@ -68,10 +73,12 @@ char	**split_line(char *input_str)
 				i = i + quote_length(input_str[i], input_str, i) + 1;
 				words[no_word++] = ft_substr(input_str, start, i - start + 1);
 			}
+			i++;
 		}
-		i++;
 	}
-	free(input_str);
+	// printf("actual_words = %d\n", no_word);
+	free(tmp);
+	tmp = NULL;
 	words[no_word] = NULL;
 	return (words);
 }
