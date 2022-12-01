@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 20:59:45 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/01 17:16:54 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,11 @@ int	echo(char *str, int fd)
 			break;
 		while ((ft_strncmp(&(str[num_n]), "n", 1) == 0))
 			num_n += 1;
-		if((ft_strncmp(&(str[num_n]), ";", 1) != 0))
+		if((ft_strncmp(&(str[num_n]), " ;", 2) != 0))
 			break;
 		else
 		{
+			str += 2;
 			str += num_n;
 			num_n = 0;
 			n = 1;
