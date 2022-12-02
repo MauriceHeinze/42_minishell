@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/01 17:16:54 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 15:07:39 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	{
 		if (executor->fd_out == executor->pipe[1])
 		{
-			// close(executor->fd_out);
+			close(executor->fd_out);
 			if(dup2(executor->fd_out_original, 1) < 0)
 				perror("Dup 2 restore output error");
 			close(executor->fd_out_original);

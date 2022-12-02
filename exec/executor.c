@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/02 11:49:39 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 15:06:37 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 	restored_envp = restore_envp(envpn);
 	args = ft_split(node->full_cmd_orig, ' ');
 	// if (executor->fd_in != 0)
-			// close(executor->fd_in);
+	// 		close(executor->fd_in);
 	// dprintf(2, "<path: %s>\n<args[2]: %s>\n<args[1]: %s>\n", get_cmd_path(cmd_paths, *args), args[2], args[1]);
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 	{
@@ -289,11 +289,10 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	executor->child_processes = 0;
 	while (node_tmp != NULL)
 	{
-		if (ft_strcmp(node->full_path, "builtin") == 0)
-			executor->child_processes = 0;
-		else
+		if (ft_strcmp(node_tmp->full_path, "builtin") != 0)
 			executor->child_processes = 1;
-		executor->pipes += 1;
+		if (node_tmp->next != NULL)
+			executor->pipes += 1;
 		node_tmp = node_tmp->next;
 	}
 	if (executor->pipes > 0)
