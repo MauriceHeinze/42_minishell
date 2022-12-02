@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/02 11:34:57 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 11:41:32 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	set_exit_code(int exit_code)
 
 void	exit_shell(int error_code)
 {
-	printf("exit\n");
+	// printf("exit\n");
 	free_split(program->tokens);
 	if (program->nodes->full_cmd != NULL)
 		free_nodes();
