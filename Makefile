@@ -20,13 +20,15 @@ SOURCES = 	./exec/builtins.c							\
 			./utils/get_cmd_path.c						\
 			./utils/signal_handler.c					\
 			./utils/track_history.c						\
-			./inc/libft.a
+			./inc/libft.a								\
+			./get_next_line/get_next_line_utils.c		\
+			./get_next_line/get_next_line.c
 
 CLIENT = main.c $(SOURCES)
 
 CLIENTOBJ =	$(CLIENT:.c=.o)
 
-HDR = ./inc/minishell.h
+HDR = ./inc/minishell.h ./get_next_line/get_next_line.h
 CC = cc -g
 # FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
 CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap

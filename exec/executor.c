@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/02 15:06:37 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 18:08:58 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ int	execution_manager (t_node *node, t_var *envp)
 	sub_exec(node, &executor, envp);
 	if (executor.child_processes > 0)
 	{
-		waitpid(-1, &(executor.status), 0);
+		waitpid(-1, &(executor.status), 0); //needs to be in a while loop
 		if (!WIFSIGNALED(executor.status))
 			set_exit_code(WEXITSTATUS(executor.status));
 		else if (WIFSIGNALED(executor.status))

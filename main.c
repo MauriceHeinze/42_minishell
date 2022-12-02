@@ -35,7 +35,10 @@ int main(int argc, char *argv[], char *envp[])
 	setup_term();
 	while (1)
 	{
-		line = readline("minishell $");
+		if (isatty(STDIN_FILENO))
+			line = readline("minishell $");
+		else
+			line = get_next_line(0);
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0 || is_whitespace(line))

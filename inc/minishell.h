@@ -21,6 +21,7 @@
 # include "../readline/readline.h"
 # include "../readline/history.h"
 # include "./libft.h"
+# include "../get_next_line/get_next_line.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <sys/types.h>
@@ -57,6 +58,7 @@ typedef struct s_program {
 	t_var			*envp;
 	int				status;
 	char			**tokens;
+	char			**unfound_command;
 	t_node			*nodes;
 }				t_program;
 
