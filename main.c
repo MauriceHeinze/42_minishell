@@ -56,7 +56,7 @@ int main(int argc, char *argv[], char *envp[])
 		program->nodes = fill_node(program);
 		if (program->nodes == NULL)
 		{
-			printf("minihsell: %s: command not found\n", program->tokens[0]);
+			printf("minishell: %s: command not found\n", program->tokens[0]);
 			free_split(program->tokens);
 			free_split(words);
 			// system("leaks minishell");

@@ -53,15 +53,12 @@ char	**split_line(char *input_str)
 			i++;
 		if (i > start)
 		{
-			if (input_str[i] == ' ')
+			if (ft_strchr(" 	", input_str[i]))
 				i++;
-			words[no_word] = ft_substr(input_str, start, i - start);
-			// printf("no word: %d\n", no_word);
-			// printf("word: %s [%d]\n", words[no_word], i);
-			no_word++;
-			// printf("\nchars: %c%c%c \n\n", input_str[i - 1], input_str[i], input_str[i + 1]);
+			words[no_word++] = ft_substr(input_str, start, i - start);
+			continue;
 		}
-		else if (input_str[i] == '\'' || input_str[i] == '\"')
+		if (input_str[i] == '\'' || input_str[i] == '\"')
 		{
 			if (input_str[i + quote_length(input_str[i], input_str, i) + 2] == ' ')
 			{
@@ -73,8 +70,8 @@ char	**split_line(char *input_str)
 				i = i + quote_length(input_str[i], input_str, i) + 1;
 				words[no_word++] = ft_substr(input_str, start, i - start + 1);
 			}
-			i++;
 		}
+		i++;
 	}
 	// printf("actual_words = %d\n", no_word);
 	free(tmp);
