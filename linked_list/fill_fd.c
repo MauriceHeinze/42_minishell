@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 15:06:04 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/02 16:03:34 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		fd->mode = MODE_FILE;
 		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
 		fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+		free(tmp);
+		tmp = ft_strtrim(node->full_cmd, " ");
+		free(node->full_cmd);
+		node->full_cmd = ft_strdup(tmp);
 		free(tmp);
 		tmp = NULL;
 		(*pos)++;

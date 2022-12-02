@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/02 11:41:32 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 16:06:05 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	exec_error(int error, char *s)
 	else if (error == EMPTY_KEY_ERROR)
 		printf("minishell: cd: %s not set\n", s);
 	else if (error == EXIT_NUM_ERROR)
-		printf("minishell: exit: too many arguments\n");	
+		printf("minishell: exit: too many arguments\n");
 }
 
 void	set_exit_code(int exit_code)
@@ -65,11 +65,9 @@ void	set_exit_code(int exit_code)
 
 void	exit_shell(int error_code)
 {
-	// printf("exit\n");
 	free_split(program->tokens);
 	if (program->nodes->full_cmd != NULL)
 		free_nodes();
 	free_env();
-	system("leaks minishell");
 	exit(error_code);
 }

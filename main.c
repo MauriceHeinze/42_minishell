@@ -53,6 +53,11 @@ int main(int argc, char *argv[], char *envp[])
 		if (!check_syntax(subwords))
 			continue ;
 		program->tokens = subwords;
+		i = 0;
+		while (program->tokens[i])
+		{
+			i++;
+		}
 		program->nodes = fill_node(program);
 		if (program->nodes == NULL)
 		{
@@ -62,12 +67,6 @@ int main(int argc, char *argv[], char *envp[])
 			// system("leaks minishell");
 			continue;
 		}
-		// i = 0;
-		// while (program->tokens[i])
-		// {
-		// 	printf("%s \n", program->tokens[i]);
-		// 	i++;
-		// }
 		execution_manager(program->nodes, program->envp);
 		free_split(words); // results in double free
 		words = NULL;
@@ -80,8 +79,8 @@ int main(int argc, char *argv[], char *envp[])
 		// t_fd *fd = node->fd;
 		// while (node != NULL)
 		// {
-		// 	printf("\nFull cmd: %s\n", node->full_cmd);
-		// 	printf("Orig cmd: %s\n", node->full_cmd_orig);
+		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
+		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
 		// 	node = node->next;
 		// }
 		// free(expanded_line);
