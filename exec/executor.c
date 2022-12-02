@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/02 18:08:58 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/02 21:03:43 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ void	command_executor(t_node *node, t_exec *executor, t_var *envpn)
 	cmd_paths = get_cmd_paths(envpn);
 	restored_envp = restore_envp(envpn);
 	args = ft_split(node->full_cmd_orig, ' ');
+	// dprintf(2, "-------\nfd_out: %d, fd_in: %d\npipe1[1] %d, pipe1[0] %d\npipe2[1] %d, pipe2[0] %d\n-------", executor->fd_out, executor->fd_in, executor->pipe1[1], executor->pipe1[0], executor->pipe2[1], executor->pipe2[0]);
 	// if (executor->fd_in != 0)
 	// 		close(executor->fd_in);
+	// if (executor->fd_out != 1)
+	// 		close(executor->fd_out);
 	// dprintf(2, "<path: %s>\n<args[2]: %s>\n<args[1]: %s>\n", get_cmd_path(cmd_paths, *args), args[2], args[1]);
 	if (execve(get_cmd_path(cmd_paths, *args), args, restored_envp) == -1)
 	{
@@ -133,9 +136,9 @@ void	fd_manager_input(t_node *node, t_exec *executor)
 	if (found_fd == 0 && node != executor->first_node)
 	{
 		{
-		if (dup2(executor->pipe[0], 0) < 0)
+		if (dup2(executor->pipe_ptr[0], 0) < 0)
 			perror("Dup 2 input pipe error");
-		executor->fd_in = executor->pipe[0];
+		executor->fd_in = executor->pipe_ptr[0];
 		}
 	}
 }
@@ -179,9 +182,18 @@ void	fd_manager_output(t_node *node, t_exec	*executor)
 	}
 	if (found_fd == 0 && node->next != NULL)
 	{
-		if (dup2(executor->pipe[1], 1) < 0)
-			perror("Dup 2 output pipe error");
-		executor->fd_out = executor->pipe[1];
+		if (executor->pipe_ptr == executor->pipe1)
+		{
+			if (dup2(executor->pipe2[1], 1) < 0)
+				perror("Dup 2 output pipe error");
+			executor->fd_out = executor->pipe2[1];
+		}
+		else if (executor->pipe_ptr == executor->pipe2)
+		{
+			if (dup2(executor->pipe1[1], 1) < 0)
+				perror("Dup 2 output pipe error");
+			executor->fd_out = executor->pipe1[1];
+		}
 	}
 }
 
@@ -218,9 +230,9 @@ void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
 	// 	executor->fd_out = 1;
 	if (found_fd == 0 && node->next != NULL)
 	{
-		if (dup2(executor->pipe[1], 1) < 0)
+		if (dup2(executor->pipe_ptr[1], 1) < 0)
 			perror("Dup 2 output pipe error");
-		executor->fd_out = executor->pipe[1];
+		executor->fd_out = executor->pipe_ptr[1];
 	}
 	// else if (found_fd == 1)
 	// 	executor->fd_out = fd_former->fd;
@@ -230,6 +242,8 @@ void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
 
 void	process_executor(t_node *node, t_exec *executor, t_var *envp)
 {
+	// if (executor->fd_out != 1)
+	// 		close(executor->fd_out);
 	if (executor == NULL || node == NULL || envp == NULL)
 		return ;
 	fd_manager_output(node, executor);
@@ -297,8 +311,11 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	}
 	if (executor->pipes > 0)
 	{
-		if (pipe(executor->pipe) < 0)
+		if (pipe(executor->pipe1) < 0)
 			perror("Pipe error");
+		if (pipe(executor->pipe2) < 0)
+			perror("Pipe error");
+		executor->pipe_ptr = executor->pipe1;
 	}
 }
 
@@ -308,13 +325,22 @@ int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 		buildin_executor(node, executor, envp);
 	else
 	{
+		close(executor->pipe_ptr[1]);
 		node->pid = fork();
 		if (node->pid == -1)
 			perror("Fork failed");
 		if (node->pid == 0)
 			process_executor(node, executor, envp);
-		// else
-		// 	waitpid(node->pid, &(executor->status), 0);
+		else
+		{
+			close(executor->pipe_ptr[0]);
+			if (pipe(executor->pipe_ptr) < 0)
+				perror("Pipe error");
+			if (executor->pipe_ptr == executor->pipe1)
+				executor->pipe_ptr = executor->pipe2;
+			else if (executor->pipe_ptr == executor->pipe2)
+				executor->pipe_ptr = executor->pipe1;
+		}
 	}
 	if (node->next != NULL)
 		sub_exec(node->next, executor, envp);
@@ -335,7 +361,9 @@ int	execution_manager (t_node *node, t_var *envp)
 	sub_exec(node, &executor, envp);
 	if (executor.child_processes > 0)
 	{
-		waitpid(-1, &(executor.status), 0); //needs to be in a while loop
+		waitpid(-1, &(executor.status), 0);
+		// while (waitpid(-1, &(executor.status), 0) != -1) 
+		// 	continue;
 		if (!WIFSIGNALED(executor.status))
 			set_exit_code(WEXITSTATUS(executor.status));
 		else if (WIFSIGNALED(executor.status))

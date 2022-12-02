@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 13:19:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 21:37:40 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 17:59:25 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <limits.h>
 
 typedef struct s_exec {
-	int		pipe[2];
+	int		pipe1[2];
+	int		pipe2[2];
+	int		*pipe_ptr;
 	pid_t	*pids;
 	int		status;
 	int		heredoc;

@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/02 15:07:39 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 20:19:49 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,13 +227,27 @@ int	exit_pre_handler(t_node *node, int fd)
 	return(0);
 }
 
+int	check_following_builtin (t_node *node)
+{
+	t_node *node_tmp;
+	
+	if (node == NULL)
+		return (0);
+	node_tmp = node->next;
+	while (node_tmp != NULL)
+	{
+		if (ft_strcmp(node_tmp->full_path, "builtin") == 0)
+			return (1);
+		node_tmp = node_tmp->next;
+	}
+	return (0);
+}
+
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
-	// TEST ONLY!!!
-	// if (executor->fd_out == 1)
-	// 	executor->fd_out = 2;
-	
+	while (executor->pipes > 0 && read(executor->pipe_ptr[0], NULL, 1) > 0)
+		continue;
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
@@ -255,9 +269,10 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	}
 	if (!(executor->fd_out == 1))
 	{
-		if (executor->fd_out == executor->pipe[1])
+		if (executor->fd_out == executor->pipe_ptr[1])
 		{
-			close(executor->fd_out);
+			// while (read(executor->pipe_ptr[0], buffer, 1) > 0)
+			// 	continue;
 			if(dup2(executor->fd_out_original, 1) < 0)
 				perror("Dup 2 restore output error");
 			close(executor->fd_out_original);
@@ -272,9 +287,10 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	}
 	if (!(executor->fd_in == 0))
 	{
-		if (executor->fd_in == executor->pipe[0])
+		if (executor->fd_in == executor->pipe_ptr[0])
 		{
-			// close(executor->fd_in);
+			// if (check_following_builtin(node) == 0)
+			// 	close(executor->fd_in);
 			if(dup2(executor->fd_in_original, 0) < 0)
 				perror("Dup 2 restore output error");
 			close(executor->fd_in_original);
