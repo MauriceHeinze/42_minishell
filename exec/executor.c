@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/11/30 21:42:48 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/02 11:49:39 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	executor->fd_out_original = dup(1);
 	executor->fd_in_original = dup(0);
 	executor->child_processes = 0;
-	while (node_tmp->next != NULL)
+	while (node_tmp != NULL)
 	{
 		if (ft_strcmp(node->full_path, "builtin") == 0)
 			executor->child_processes = 0;
