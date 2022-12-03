@@ -41,7 +41,7 @@ int main(int argc, char *argv[], char *envp[])
 			line = get_next_line(0);
 		if (!line)
 			break ;
-		if (ft_strlen(line) == 0 || is_whitespace(line))
+		if (ft_strlen(line) == 0 || is_whitespace(line) || !ft_strcmp(line, "."))
 			continue ;
 		track_history(line);
 		expanded_line = expand_variables(line);
