@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/02 16:03:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/03 18:50:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_fd	*setup_fd(void)
 	return (node);
 }
 
-void	fill_fd(t_program *program, t_node *node, int *pos)
+int	fill_fd(t_program *program, t_node *node, int *pos)
 {
 	t_fd	*fd;
 	t_fd	*head;
@@ -49,6 +49,11 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 	char	*tmp;
 
 	token = get_category(program->tokens[(*pos)]);
+	if (token == ARROW_RIGHT || token == ARROW_LEFT || token == DOUBLE_ARROW_RIGHT || token == DOUBLE_ARROW_LEFT)
+	{
+		if (!program->tokens[(*pos + 1)])
+			return (0);
+	}
 	if (node->fd != NULL)
 	{
 		fd = node->fd;
@@ -111,4 +116,5 @@ void	fill_fd(t_program *program, t_node *node, int *pos)
 		(*pos)++;
 	}
 	fd = head;
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/02 23:47:56 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/03 20:25:32 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int	export(char *export, t_var *envp)
 			export += length_name + 1 + length_content + 2;
 		else
 			export += length_name + 1 + length_content;
-		
+
 	}
 	return (EXIT_SUCCESS);
 }
@@ -200,7 +200,7 @@ int	unset(char *remove, t_var *envp)
 	char	**remove_split;
 	int		i;
 	int		c;
-	
+
 	if(remove == NULL)
 		return (EXIT_SUCCESS);
 	i = 0;
@@ -239,11 +239,11 @@ int	env(t_var *envp, int fd)
 int	exit_pre_handler(t_node *node, int fd)
 {
 	char	*check_input;
-	
+
 	if (ft_strlen("exit") == ft_strlen(node->full_cmd))
 	{
 		exit_shell(0);
-		ft_putstr_fd("exit\n", fd, NULL);	
+		ft_putstr_fd("exit\n", fd, NULL);
 	}
 	else
 	{
@@ -275,7 +275,7 @@ int	exit_pre_handler(t_node *node, int fd)
 int	check_following_builtin (t_node *node)
 {
 	t_node *node_tmp;
-	
+
 	if (node == NULL)
 		return (0);
 	node_tmp = node->next;

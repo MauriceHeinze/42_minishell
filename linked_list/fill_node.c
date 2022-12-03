@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/01 16:52:33 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/03 18:51:35 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	char	*token_dup;
 	char	**paths;
 
-	token = ft_strtrim(program->tokens[(*pos)], " ");
 	// printf("token: %s\n", token);
+	token = ft_strtrim(program->tokens[(*pos)], " ");
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
 	// is undefined/not builtin
@@ -104,7 +104,8 @@ t_node	*fill_node(t_program *program)
 		// if arrow, fill up fd list
 		if (get_category(tokens[i]) >= ARROW_LEFT && get_category(tokens[i]) <= DOUBLE_ARROW_RIGHT)
 		{
-			fill_fd(program, node, &i);
+			if (!fill_fd(program, node, &i))
+				return (NULL);
 			// first word is always command
 			if (tokens[i] == NULL || tokens[i + 1] == NULL)
 				break ;

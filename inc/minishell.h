@@ -98,7 +98,7 @@ void	ctrl_c(void);
 
 // commands
 t_node	*fill_node(t_program *program);
-void	fill_fd(t_program *program, t_node *node, int *pos);
+int		fill_fd(t_program *program, t_node *node, int *pos);
 t_fd	*setup_fd(void);
 
 // free
