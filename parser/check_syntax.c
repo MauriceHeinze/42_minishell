@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/03 20:57:58 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/04 14:58:11 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,13 @@ static int	no_semicolon(char *token)
 	i = 0;
 	if (token[0] != '\'' && token[0] != '\"')
 	{
-		while (token[i] != ';' && token[i] != '\0')
-			i++;
-		if (ft_strlen(token) != i)
+		while (token[i] != '\0')
 		{
-			special_error(SEMICOLON_USED);
-			return (0);
+			if (token[i++] == ';')
+			{
+				special_error(SEMICOLON_USED);
+				return (0);
+			}
 		}
 	}
 	return (1);

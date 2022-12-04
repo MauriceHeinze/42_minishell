@@ -45,6 +45,7 @@ int main(int argc, char *argv[], char *envp[])
 			continue ;
 		track_history(line);
 		expanded_line = expand_variables(line);
+		printf("%s \n", expanded_line);
 		words = split_line(expanded_line);
 		subwords = split_subline(words);
 		// i = 0;
