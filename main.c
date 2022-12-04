@@ -77,11 +77,17 @@ int main(int argc, char *argv[], char *envp[])
 		// 	node = node->next;
 		// }
 		execution_manager(program->nodes, program->envp);
+		// i = 0;
+		// while (words[i])
+		// {
+		// 	printf("%s \n", words[i]);
+		// 	i++;
+		// }
 		// printf("2 ======>\n");
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	free_env();
 	// system("leaks minishell");

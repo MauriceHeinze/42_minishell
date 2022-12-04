@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/04 15:37:13 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:12:54 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ t_node	*fill_node(t_program *program)
 	t_node	*node;
 	char	**tokens;
 	char	*tmp;
+	char	*tmp_2;
 
 	head = NULL;
 	tokens = program->tokens;
@@ -138,13 +139,14 @@ t_node	*fill_node(t_program *program)
 		{
 			if (tokens[i] == NULL)
 				return (head);
-			tmp = ft_strjoin(node->full_cmd_orig, " ");
-			free(node->full_cmd_orig);
-			node->full_cmd_orig = ft_strjoin(tmp, remove_quotes(tokens[i]));
-			free(tmp);
 			tmp = ft_strjoin(node->full_cmd, ";");
 			free(node->full_cmd);
 			node->full_cmd = ft_strjoin(tmp, tokens[i]);
+			free(tmp);
+			tokens[i] = remove_quotes(tokens[i]);
+			tmp = ft_strjoin(node->full_cmd_orig, " ");
+			free(node->full_cmd_orig);
+			node->full_cmd_orig = ft_strjoin(tmp, tokens[i]);
 			free(tmp);
 			i++;
 		}

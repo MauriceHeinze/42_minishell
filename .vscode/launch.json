@@ -7,12 +7,9 @@
         {
             "name": "Launch",
             "type": "cppdbg",
-            "program": "${workspaceFolder}/minishell",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "request": "launch",
-            "MIMode": "lldb",
-			"externalConsole": true
+            "program": "${workspaceFolder}/minishell1",
+            "request": "attach",
+            "MIMode": "lldb"
         }
     ]
 }
