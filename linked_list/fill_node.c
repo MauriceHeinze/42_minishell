@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/04 15:33:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/04 15:37:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ t_node	*fill_node(t_program *program)
 				return (head);
 			tmp = ft_strjoin(node->full_cmd_orig, " ");
 			free(node->full_cmd_orig);
-			node->full_cmd_orig = ft_strjoin(tmp, tokens[i]);
+			node->full_cmd_orig = ft_strjoin(tmp, remove_quotes(tokens[i]));
 			free(tmp);
 			tmp = ft_strjoin(node->full_cmd, ";");
 			free(node->full_cmd);
