@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/03 18:51:35 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/04 15:33:19 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 {
 	int 	category;
 	char	*token;
-	char	*token_dup;
+	char	*tmp;
 	char	**paths;
 
 	// printf("token: %s\n", token);
-	token = ft_strtrim(program->tokens[(*pos)], " ");
+	tmp = ft_strtrim(program->tokens[(*pos)], " ");
+	token = remove_quotes(tmp);
 	category = get_category(token);
 	node->full_cmd = remove_quotes(token);
 	// is undefined/not builtin

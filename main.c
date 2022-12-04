@@ -45,7 +45,6 @@ int main(int argc, char *argv[], char *envp[])
 			continue ;
 		track_history(line);
 		expanded_line = expand_variables(line);
-		printf("%s \n", expanded_line);
 		words = split_line(expanded_line);
 		subwords = split_subline(words);
 		// i = 0;
@@ -66,39 +65,23 @@ int main(int argc, char *argv[], char *envp[])
 			// system("leaks minishell");
 			continue;
 		}
-		// printf("1 ======>\n");
 		// t_node *node = program->nodes;
 		// t_fd *fd = node->fd;
 		// while (node != NULL)
 		// {
 		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
 		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
+		// 	printf("fd is: %s|\n", node->fd);
+		// 	if (fd)
+		// 		printf("meta: %s\n", fd->meta);
 		// 	node = node->next;
 		// }
 		execution_manager(program->nodes, program->envp);
 		// printf("2 ======>\n");
 		free_split(words); // results in double free
 		words = NULL;
-		// free_split(subwords);
-		// free(expanded_line); // frees twice somehow, Linux dislikes it
-		// printf("==========>\n");
-		// printf("1 ==========>\n");
-		// printf("--------TEST--------->\n");
-		// t_node *node = program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
-		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
-		// 	node = node->next;
-		// }
-		// free(expanded_line);
-		// expanded_line = NULL;
 		free_program_loop();
-		// free(line);
-		// printf("exp: %s\n", expanded_line);
-		// expanded_line = NULL;
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	free_env();
 	// system("leaks minishell");
