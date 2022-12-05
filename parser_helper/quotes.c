@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/27 18:08:16 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/05 15:27:29 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,15 @@ int	quote_length(char found_quote, char *input_str, int pos)
 char	*remove_quotes(char *input_str)
 {
 	int	len;
-	char *shortend;
+	char *new_str;
 
 	len = ft_strlen(input_str) - 1;
 	if ((input_str[0] == '\'' && input_str[len] == '\'') ||
 		(input_str[0] == '\"' && input_str[len] == '\"'))
-	{
-		shortend = ft_substr(input_str, 1, len - 1);
-		free(input_str);
-		return (shortend);
-	}
-	return (input_str);
+		new_str = ft_substr(input_str, 1, len - 1);
+	else
+		new_str = ft_strdup(input_str);
+	return (new_str);
 }
 
 int	skip_quote(char *input_str, int pos)

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/04 18:12:54 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/05 16:23:47 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	// printf("token: %s\n", token);
 	tmp = ft_strtrim(program->tokens[(*pos)], " ");
 	token = remove_quotes(tmp);
+	free(tmp);
 	category = get_category(token);
-	node->full_cmd = remove_quotes(token);
-	// is undefined/not builtin
+	// is undefined/not builtin /bin/ls
+	node->full_cmd = ft_strdup(token);
 	if (category == UNDEFINED || category == WORD)
 	{
 		paths = get_cmd_paths(program->envp);
@@ -71,11 +72,11 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 	// is builtin
 	else if (category > UNDEFINED && category <= EXIT)
 	{
-		node->full_cmd = ft_strdup(token);
 		node->full_cmd_orig = ft_strdup(token);
 		node->full_path = "builtin";
-		free(token);
 		(*pos)++;
+		free(token);
+		token = NULL;
 	}
 	return (0);
 }
@@ -143,11 +144,12 @@ t_node	*fill_node(t_program *program)
 			free(node->full_cmd);
 			node->full_cmd = ft_strjoin(tmp, tokens[i]);
 			free(tmp);
-			tokens[i] = remove_quotes(tokens[i]);
+			tmp_2 = remove_quotes(tokens[i]);
 			tmp = ft_strjoin(node->full_cmd_orig, " ");
 			free(node->full_cmd_orig);
-			node->full_cmd_orig = ft_strjoin(tmp, tokens[i]);
+			node->full_cmd_orig = ft_strjoin(tmp, tmp_2);
 			free(tmp);
+			free(tmp_2);
 			i++;
 		}
 		// if pipe is found, create new node
