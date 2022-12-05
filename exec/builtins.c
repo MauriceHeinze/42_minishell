@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 13:48:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/05 16:15:37 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ int	echo(char *str, int fd)
 // does stringcompare recognize the null temrinator int the string? This is a must
 int	cd(t_var *envp, char *dir)
 {
+	char	**first_arg;
 	char	cwd[PATH_MAX];
 
+	first_arg = NULL;
 	if (getcwd(cwd, PATH_MAX) == NULL)
 	{
 		perror("getcwd failed");
@@ -109,7 +111,9 @@ int	cd(t_var *envp, char *dir)
 	}
 	else
 	{
-		if (chdir (dir) == -1)
+		first_arg = ft_split(dir, ' ');
+		char **double_ptr = first_arg;
+		if (chdir (*first_arg) == -1)
 		{
 			perror("chdir failed");
 			return(EXIT_FAILURE);
@@ -121,6 +125,13 @@ int	cd(t_var *envp, char *dir)
 		perror("getcwd failed");
 	if (add_env(envp, ft_strdup("PWD"), ft_strdup(cwd)) == NULL)
 		perror("add_env failed");
+	if (first_arg != NULL)
+	{
+		char **double_ptr = first_arg;
+		while(*first_arg != NULL)
+			free(*first_arg++);
+		free(double_ptr);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -145,35 +156,69 @@ int	export(char *export, t_var *envp)
 	int		length_content;
 	char	*name;
 	char	*content;
+	int 	exit_code;
 
-	length_content = 0;
-	length_name = 0;
+	exit_code = 0;
 	if (export == NULL)
 		return (EXIT_SUCCESS);
-	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a' && *export <= 'z')))
+	while (*export != '\0')
 	{
-		perror("Not a valid identifier");
-		return (EXIT_FAILURE);
+		length_content = 0;
+		length_name = 0;
+		while(export[length_name] != '\0' && export[length_name] != '=')
+			length_name++;
+		if (export[length_name] != '\0' && export[length_name] != '=')
+			perror("Bad assignment");
+		name = malloc(sizeof(char) * (length_name + 1));
+		ft_strlcpy(name, export, length_name + 1);
+		name[length_name] = '\0';
+		while(export[length_name + 1 + length_content] != '\0' && export[length_name + 1 + length_content] != ' ')
+			length_content++;
+		content = malloc(sizeof(char) * (length_content + 1));
+		ft_strlcpy(content, &export[length_name + 1], length_content + 1);
+		content[length_content] = '\0';
+		if (!((*name >= 'A' && *name <= 'Z') || (*name >= 'a' && *name <= 'z')))
+		{
+			exec_error(EXPORT_ERROR, NULL);
+			exit_code = 1;
+			free(name);
+			free(content);
+		}
+		else
+			add_env(envp, name, content);
+		if (export[length_name + 1 + length_content] != '\0')
+			export += length_name + 1 + length_content + 2;
+		else
+			export += length_name + 1 + length_content;
+		
 	}
-	while(export[length_name] != '\0' && export[length_name] != '=')
-		length_name++;
-	if (export[length_name] != '\0' && export[length_name] != '=')
-		perror("Bad assignment");
-	name = malloc(sizeof(char) * (length_name + 1));
-	ft_strlcpy(name, export, length_name + 1);
-	name[length_name] = '\0';
-	while(export[length_name + 1 + length_content] != '\0')
-		length_content++;
-	content = malloc(sizeof(char) * (length_content + 1));
-	ft_strlcpy(content, &export[length_name + 1], length_content + 1);
-	content[length_content] = '\0';
-	add_env(envp, name, content);
 	return (EXIT_SUCCESS);
 }
 
 int	unset(char *remove, t_var *envp)
 {
-	remove_env(envp, remove);
+	char	**remove_split;
+	int		i;
+	int		c;
+	
+	if(remove == NULL)
+		return (EXIT_SUCCESS);
+	i = 0;
+	remove_split = ft_split(remove, ';');
+	while(remove_split[i] != NULL)
+	{
+		c = 0;
+		while(remove_split[i][c] != '\0')
+		{
+			if (remove_split[i][c] == ' ')
+				remove_split[i][c] = '\0';
+			c++;
+		}
+		remove_env(envp, remove_split[i++]);
+	}
+	while(i >= 0)
+		free(remove_split[i--]);
+	free(remove_split);
 	return (EXIT_SUCCESS);
 }
 
@@ -194,11 +239,11 @@ int	env(t_var *envp, int fd)
 int	exit_pre_handler(t_node *node, int fd)
 {
 	char	*check_input;
-
+	
 	if (ft_strlen("exit") == ft_strlen(node->full_cmd))
 	{
 		exit_shell(0);
-		ft_putstr_fd("exit\n", fd, NULL);
+		ft_putstr_fd("exit\n", fd, NULL);	
 	}
 	else
 	{
@@ -227,13 +272,27 @@ int	exit_pre_handler(t_node *node, int fd)
 	return(0);
 }
 
+int	check_following_builtin (t_node *node)
+{
+	t_node *node_tmp;
+	
+	if (node == NULL)
+		return (0);
+	node_tmp = node->next;
+	while (node_tmp != NULL)
+	{
+		if (ft_strcmp(node_tmp->full_path, "builtin") == 0)
+			return (1);
+		node_tmp = node_tmp->next;
+	}
+	return (0);
+}
+
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 {
-	// TEST ONLY!!!
-	// if (executor->fd_out == 1)
-	// 	executor->fd_out = 2;
-
+	while (executor->pipes > 0 && read(executor->pipe[0], NULL, 1) > 0)
+		continue;
 	if (ft_strncmp(node->full_cmd, "cd", ft_strlen("cd")) == 0)
 		executor->status = cd(envp, &(node->full_cmd[ft_strlen("cd") + 1]));
 	else if (ft_strncmp(node->full_cmd, "echo", ft_strlen("echo")) == 0)
@@ -257,7 +316,8 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	{
 		if (executor->fd_out == executor->pipe[1])
 		{
-			close(executor->fd_out);
+			// while (read(executor->pipe_ptr[0], buffer, 1) > 0)
+			// 	continue;
 			if(dup2(executor->fd_out_original, 1) < 0)
 				perror("Dup 2 restore output error");
 			close(executor->fd_out_original);
@@ -274,7 +334,8 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	{
 		if (executor->fd_in == executor->pipe[0])
 		{
-			// close(executor->fd_in);
+			// if (check_following_builtin(node) == 0)
+			// 	close(executor->fd_in);
 			if(dup2(executor->fd_in_original, 0) < 0)
 				perror("Dup 2 restore output error");
 			close(executor->fd_in_original);

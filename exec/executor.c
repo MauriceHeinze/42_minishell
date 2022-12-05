@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 13:48:18 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/05 19:24:31 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,22 +302,93 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	}
 }
 
+void	free_call_stack(t_call	**call_stack)
+{
+	t_call	*ls;
+
+	while (*call_stack)
+	{
+		ls = (*call_stack)->next;
+		free(*call_stack);
+		*call_stack = ls;
+	}
+	*call_stack = NULL;
+	free(ls);
+}
+
+t_call	*gen_next_call_node(t_call *call_stack, t_node *first_node, t_node *last_node)
+{
+	t_call	*next_call_node;
+	t_node			*node_tmp;
+
+	node_tmp = first_node;
+	while (node_tmp->next != last_node)
+		node_tmp = node_tmp->next;
+	if (node_tmp != first_node)
+	{
+		next_call_node = malloc(sizeof(t_call));
+		next_call_node->node = node_tmp;
+		call_stack->next = next_call_node;
+		gen_next_call_node(next_call_node, first_node, node_tmp);
+	}
+	return (next_call_node);
+}
+
+t_call	*gen_call_stack(t_node *node)
+{
+	t_call	*call_stack;
+	t_node			*node_tmp;
+
+	if (node == NULL)
+		return NULL;
+	node_tmp = node;
+	while (node_tmp->next != NULL && ft_strcmp(node->next->full_path, "builtin") != 0)
+		node_tmp = node_tmp->next;
+	call_stack = malloc(sizeof(t_call));
+	call_stack->node = node_tmp;
+	if (call_stack->node != node)
+		gen_next_call_node(call_stack, node, node_tmp);
+	return (call_stack);
+}
+
+void	exec_call_stack(t_call	*call_stack, t_exec *executor, t_var *envp)
+{
+	if (call_stack != NULL)
+	{
+		call_stack->node->pid = fork();
+		if (call_stack->node->pid == -1)
+			perror("Fork failed");
+		if (call_stack->node->pid == 0)
+		{
+			if (call_stack->node->next != NULL)
+				exec_call_stack(call_stack->next, executor, envp);
+			process_executor(call_stack->node, executor, envp);
+		}
+		else
+			waitpid(call_stack->node->pid, NULL, 0);
+	}
+	
+}
+
 int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 {
+	t_call	*cs;
+	
 	if (ft_strcmp(node->full_path, "builtin") == 0)
+	{
 		buildin_executor(node, executor, envp);
+		node = node->next;
+	}
 	else
 	{
-		node->pid = fork();
-		if (node->pid == -1)
-			perror("Fork failed");
-		if (node->pid == 0)
-			process_executor(node, executor, envp);
-		// else
-		// 	waitpid(node->pid, &(executor->status), 0);
+		cs = gen_call_stack(node);
+		exec_call_stack(cs, executor, envp);
+		free_call_stack(&cs); // has to be freed reursively
+		while (node != NULL && ft_strcmp(node->full_path, "builtin") != 0)
+			node = node->next;
 	}
-	if (node->next != NULL)
-		sub_exec(node->next, executor, envp);
+	if (node != NULL)
+		sub_exec(node, executor, envp);
 	return (0);
 }
 
@@ -329,6 +400,8 @@ int	execution_manager (t_node *node, t_var *envp)
 
 	if (node == NULL || envp == NULL || node->full_path == NULL)
 		return (-1);
+	if (node->full_path == NULL)
+		perror("command not found");
 	node_tmp = node;
 	init_exec_manager(&executor, node);
 	heredoc_handler(&executor, node);
@@ -343,5 +416,6 @@ int	execution_manager (t_node *node, t_var *envp)
 	}
 	else
 		set_exit_code(executor.status);
+	exit (0);
 	return (0);
 }

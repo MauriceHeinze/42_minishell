@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 13:19:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 13:48:24 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/05 17:24:04 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ typedef struct s_exec {
 	int		child_processes;
 
 }				t_exec;
+
+typedef struct s_call{
+	t_node			*node;
+	struct s_call 	*next;
+}				t_call;
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp);
 
