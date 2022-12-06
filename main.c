@@ -36,7 +36,7 @@ int main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			line = readline("minishell $");
+			line = readline("minishell $ ");
 		else
 			line = get_next_line(0);
 		if (!line)
