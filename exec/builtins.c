@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 16:15:37 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 18:21:08 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,50 +150,107 @@ int	pwd(int fd)
 	return (EXIT_SUCCESS);
 }
 
-int	export(char *export, t_var *envp)
+char *export_content(char *export)
+{
+	int		length_content;
+	char	*content;
+	
+	length_content = 0;
+	if (export[length_content] == '\0' && export[length_content] == ' ' && export[length_content] == ';')
+		perror("blala");
+	while(export[length_content] != '\0' && export[length_content] != ' ' && export[length_content] != ';')
+		length_content++;
+	content = malloc(sizeof(char) * (length_content + 1));
+	ft_strlcpy(content, export, length_content + 1);
+	content[length_content] = '\0';
+	return(content);	
+}
+
+int	export_print(t_var *envp, int fd)
+{
+	t_var	*temp;
+
+	temp = envp;
+	while(temp != NULL)
+	{
+		write(fd, "declare -x ", 11);
+		write(fd, temp->name, ft_strlen(temp->name));
+		if (temp->content != NULL)
+		{
+			write(fd, "=\"", 2);
+			write(fd, temp->content, ft_strlen(temp->content));
+			write(fd, "\"", 1);
+		}
+		write(fd, "\n", 1);
+		temp = temp->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
+
+int	export_name(char *export, t_var *envp)
 {
 	int		length_name;
-	int		length_content;
 	char	*name;
 	char	*content;
+	
+	content = NULL;
+	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a' && *export <= 'z')))
+	{
+		exec_error(EXPORT_ERROR, NULL);
+		return (EXIT_FAILURE);
+	}
+	else
+	{		
+		length_name = 0;
+		while(export[length_name] != '\0' && export[length_name] != '=' && export[length_name] != ' ' && export[length_name] != ';')
+			length_name++;
+		name = malloc(sizeof(char) * (length_name + 1));
+		ft_strlcpy(name, export, length_name + 1);
+		name[length_name] = '\0';
+		if (export[length_name] == '=')
+			content = export_content(&(export[length_name + 1]));
+		add_env(envp, name, content);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	length_until_semicolon (char *str)
+{
+	int	length;
+
+	length = 0;
+	while (str[length] != '\0' && str[length] != ';')
+		length++;
+	if (str[length] == ';')
+		length++;
+	return (length);
+}
+
+int	export_handler(char *export, t_var *envp, int fd)
+{
 	int 	exit_code;
 
 	exit_code = 0;
 	if (export == NULL)
-		return (EXIT_SUCCESS);
-	while (*export != '\0')
+		return (exit_code);
+	else if (*export == '\0')
+		export_print(envp, fd);
+	else
 	{
-		length_content = 0;
-		length_name = 0;
-		while(export[length_name] != '\0' && export[length_name] != '=')
-			length_name++;
-		if (export[length_name] != '\0' && export[length_name] != '=')
-			perror("Bad assignment");
-		name = malloc(sizeof(char) * (length_name + 1));
-		ft_strlcpy(name, export, length_name + 1);
-		name[length_name] = '\0';
-		while(export[length_name + 1 + length_content] != '\0' && export[length_name + 1 + length_content] != ' ')
-			length_content++;
-		content = malloc(sizeof(char) * (length_content + 1));
-		ft_strlcpy(content, &export[length_name + 1], length_content + 1);
-		content[length_content] = '\0';
-		if (!((*name >= 'A' && *name <= 'Z') || (*name >= 'a' && *name <= 'z')))
+		while (*export != '\0')
 		{
-			exec_error(EXPORT_ERROR, NULL);
-			exit_code = 1;
-			free(name);
-			free(content);
-		}
-		else
-			add_env(envp, name, content);
-		if (export[length_name + 1 + length_content] != '\0')
-			export += length_name + 1 + length_content + 2;
-		else
-			export += length_name + 1 + length_content;
-		
+			if (exit_code == 0)
+				exit_code = export_name(export, envp);
+			else
+				export_name(export, envp);
+			export = export + length_until_semicolon(export);
+		}	
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }
+
+
 
 int	unset(char *remove, t_var *envp)
 {
@@ -229,7 +286,12 @@ int	env(t_var *envp, int fd)
 	temp = envp;
 	while(temp != NULL)
 	{
-		write(fd, temp->not_splitted, ft_strlen(temp->not_splitted));
+		write(fd, temp->name, ft_strlen(temp->name));
+		if (temp->content != NULL)
+		{
+			write(fd, "=", 1);
+			write(fd, temp->content, ft_strlen(temp->content));
+		}
 		write(fd, "\n", 1);
 		temp = temp->next;
 	}
@@ -300,7 +362,7 @@ int	builtin_caller(t_node *node, t_exec *executor, t_var *envp)
 	else if (ft_strncmp(node->full_cmd, "pwd", ft_strlen("pwd")) == 0)
 		executor->status = pwd(executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "export", ft_strlen("export")) == 0)
-		executor->status = export(&(node->full_cmd[ft_strlen("export") + 1]), envp);
+		executor->status = export_handler(&(node->full_cmd[ft_strlen("export") + 1]), envp, executor->fd_out);
 	else if (ft_strncmp(node->full_cmd, "unset", ft_strlen("unset")) == 0)
 		executor->status = unset(&(node->full_cmd[ft_strlen("unset") + 1]), envp);
 	else if (ft_strncmp(node->full_cmd, "env", ft_strlen("env")) == 0)

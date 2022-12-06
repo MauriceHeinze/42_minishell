@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/06 14:56:24 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:39:11 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
 		else
 		{
 			found_fd = 1;
+			dprintf(2, "<%s>", fd_temp->meta);
 			if (fd_temp->mode == MODE_FILE)
 				fd_temp->fd = open(fd_temp->meta, O_TRUNC | O_CREAT | O_RDWR, 000644);
 			else if (fd_temp->mode == MODE_APPEND)
@@ -287,6 +288,7 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	executor->fd_out_original = dup(1);
 	executor->fd_in_original = dup(0);
 	executor->child_processes = 0;
+	executor->cs = NULL;
 	while (node_tmp != NULL)
 	{
 		if (ft_strcmp(node_tmp->full_path, "builtin") != 0)
@@ -302,18 +304,21 @@ void	init_exec_manager(t_exec *executor, t_node *node)
 	}
 }
 
-void	free_call_stack(t_call	**call_stack)
+void	free_call_stack(t_call	*call_stack)
 {
 	t_call	*ls;
 
-	while (*call_stack)
+	ls = NULL;
+	while (call_stack != NULL)
 	{
-		ls = (*call_stack)->next;
-		free(*call_stack);
-		*call_stack = ls;
+		ls = call_stack->next;
+		call_stack->next = NULL;
+		call_stack->next = NULL;
+		free(call_stack);
+		call_stack = ls;
 	}
-	*call_stack = NULL;
-	free(ls);
+	// *call_stack = NULL;
+	// free(ls);
 }
 
 t_call	*gen_next_call_node(t_call *call_stack, t_node *first_node, t_node *last_node)
@@ -346,6 +351,7 @@ t_call	*gen_call_stack(t_node *node)
 		node_tmp = node_tmp->next;
 	call_stack = malloc(sizeof(t_call));
 	call_stack->node = node_tmp;
+	call_stack->next = NULL;
 	if (call_stack->node != node)
 		gen_next_call_node(call_stack, node, node_tmp);
 	return (call_stack);
@@ -365,31 +371,31 @@ void	exec_call_stack(t_call	*call_stack, t_exec *executor, t_var *envp)
 			process_executor(call_stack->node, executor, envp);
 		}
 		else
-			waitpid(call_stack->node->pid, NULL, 0);
+			waitpid(-1, NULL, 0);
 	}
-
+	
 }
 
 int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 {
-	t_call	*cs;
-
-	if (ft_strcmp(node->full_path, "builtin") == 0)
+	while(node != NULL)
 	{
-		buildin_executor(node, executor, envp);
-		node = node->next;
-	}
-	else
-	{
-		cs = gen_call_stack(node);
-		exec_call_stack(cs, executor, envp);
-		free_call_stack(&cs); // has to be freed reursively
-		while (node != NULL && ft_strcmp(node->full_path, "builtin") != 0)
+		if (ft_strcmp(node->full_path, "builtin") == 0)
+		{
+			buildin_executor(node, executor, envp);
 			node = node->next;
+		}
+		else
+		{
+			if (executor->cs != NULL)
+				free_call_stack(executor->cs);
+			executor->cs = gen_call_stack(node);
+			exec_call_stack(executor->cs, executor, envp);
+			while (node != NULL && ft_strcmp(node->full_path, "builtin") != 0)
+				node = node->next;
+		}
 	}
-	if (node != NULL)
-		sub_exec(node, executor, envp);
-	return (0);
+	return (0); //wrong exit code
 }
 
 // env -i plus call let occure a seg vault - call was "env -i ./a.out"

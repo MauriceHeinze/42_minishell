@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 13:19:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 17:24:04 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 17:59:36 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 # include <sys/types.h>
 # include <limits.h>
+
+
+typedef struct s_call{
+	t_node			*node;
+	struct s_call 	*next;
+}				t_call;
 
 typedef struct s_exec {
 	int		pipe[2];
@@ -30,13 +36,11 @@ typedef struct s_exec {
 	int		fd_out_original;
 	int		fd_in_original;
 	int		child_processes;
+	struct s_call	*cs;
 
 }				t_exec;
 
-typedef struct s_call{
-	t_node			*node;
-	struct s_call 	*next;
-}				t_call;
+
 
 int	builtin_caller(t_node *node, t_exec *executor, t_var *envp);
 
