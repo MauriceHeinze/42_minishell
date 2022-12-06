@@ -1,18 +1,18 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   get_cmd_path.c									 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
-/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   count_words.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/06 14:23:48 by mheinze           #+#    #+#             */
+/*   Updated: 2022/12/06 14:24:21 by mheinze          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	count_words(char *input_str)
+int	count_words(char *str)
 {
 	int	i;
 	int	start;
@@ -21,28 +21,28 @@ int	count_words(char *input_str)
 	start = 0;
 	i = 0;
 	no_word = 0;
-	while (input_str[i] != '\0')
+	while (str[i] != '\0')
 	{
 		start = i;
-		while (!ft_strchr("\'\" 	", input_str[i]) && input_str[i] != '\0')
+		while (!ft_strchr("\'\" 	", str[i]) && str[i] != '\0')
 			i++;
 		if (i > start)
 		{
-			if (ft_strchr(" 	", input_str[i]))
+			if (ft_strchr(" 	", str[i]))
 				i++;
 			no_word++;
-			continue;
+			continue ;
 		}
-		if (input_str[i] == '\'' || input_str[i] == '\"')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			if (input_str[i + quote_length(input_str[i], input_str, i) + 2] == ' ')
+			if (str[i + quote_length(str[i], str, i) + 2] == ' ')
 			{
-				i = i + quote_length(input_str[i], input_str, i) + 2;
+				i = i + quote_length(str[i], str, i) + 2;
 				no_word++;
 			}
 			else
 			{
-				i = i + quote_length(input_str[i], input_str, i) + 1;
+				i = i + quote_length(str[i], str, i) + 1;
 				no_word++;
 			}
 		}

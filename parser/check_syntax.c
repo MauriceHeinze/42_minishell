@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/04 14:58:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:30:01 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	valid_operator(char **tokens)
 	return (1);
 }
 
-/* Check if quotes are closed */
 static int	quotes_closed(char *token)
 {
 	int		i;
@@ -68,7 +67,6 @@ static int	quotes_closed(char *token)
 	return (1);
 }
 
-/* Check if semicolon was used */
 static int	no_semicolon(char *token)
 {
 	int		i;
@@ -88,14 +86,13 @@ static int	no_semicolon(char *token)
 	return (1);
 }
 
-/* Check syntax */
 int	check_syntax(char **tokens)
 {
 	int	i;
 
 	i = 0;
 	if (!valid_operator(tokens))
-			return (0);
+		return (0);
 	while (tokens[i])
 	{
 		if (!no_semicolon(tokens[i]))

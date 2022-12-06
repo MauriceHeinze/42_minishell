@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/14 14:08:53 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:31:06 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ static void	signal_interrupt(int sig)
 
 void	setup_signal_handler(void)
 {
-	signal(SIGQUIT, SIG_IGN); /* Ctrl-\ */
-	signal(SIGINT, signal_interrupt); /* Ctrl-C */
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_interrupt);
 }

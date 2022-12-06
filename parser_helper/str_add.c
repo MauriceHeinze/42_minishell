@@ -30,13 +30,10 @@ char	*str_add(char *orig, char *new_part, int pos)
 	copy = malloc(sizeof(char) * max_len);
 	if (!copy || !orig)
 		return (NULL);
-	// copy original until pos reached
 	while (orig[orig_i] != '\0' && (i < max_len && i < pos))
 		copy[i++] = orig[orig_i++];
-	// copy new_part
 	while (new_part[new_part_i] != '\0')
 		copy[i++] = new_part[new_part_i++];
-	// copy original until end is reached
 	while (orig[orig_i] != '\0')
 		copy[i++] = orig[orig_i++];
 	copy[i] = '\0';

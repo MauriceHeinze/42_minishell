@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/03 21:04:15 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:31:39 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exec_error(int error, char *s)
 
 void	set_exit_code(int exit_code)
 {
-	char *exit_code_str;
+	char	*exit_code_str;
 
 	program->status = exit_code;
 	exit_code_str = ft_itoa(exit_code);

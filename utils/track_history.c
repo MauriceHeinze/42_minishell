@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/10/17 17:09:59 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:30:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	track_history(char *line)
 {
-	if (line == NULL)
-		exit(0); // exit shell
 	if (line[0] != '\0')
 		add_history(line);
 }

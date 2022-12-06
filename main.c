@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/06 14:12:18 by mheinze           #+#    #+#             */
+/*   Updated: 2022/12/06 14:53:07 by mheinze          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./inc/minishell.h"
 #include "./exec/executor.h"
 
-static void setup_term(void)
+static void	setup_term(void)
 {
 	struct termios	t;
 
@@ -11,22 +23,19 @@ static void setup_term(void)
 	setup_signal_handler();
 }
 
-static void	free_program_loop()
+static void	free_program_loop(void)
 {
 	free_split(program->tokens);
-	free_nodes(); // not working with linux
+	free_nodes();
 }
 
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	char	**words;
 	char	**subwords;
 	char	*line;
 	char	*expanded_line;
-	int		i;
 
-	i = 0;
-	// setup program
 	program = malloc(sizeof(t_program));
 	if (!program)
 		return (0);
@@ -35,24 +44,15 @@ int main(int argc, char *argv[], char *envp[])
 	setup_term();
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			line = readline("minishell $ ");
-		else
-			line = get_next_line(0);
+		line = readline("minishell $ ");
 		if (!line)
 			break ;
-		if (ft_strlen(line) == 0 || is_whitespace(line) || !ft_strcmp(line, "."))
+		if (ft_strlen(line) == 0 || is_whitespace(line))
 			continue ;
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
 		subwords = split_subline(words);
-		// i = 0;
-		// while (words[i])
-		// {
-		// 	printf("%s \n", words[i]);
-		// 	i++;
-		// }
 		if (!check_syntax(subwords))
 			continue ;
 		program->tokens = subwords;
@@ -62,30 +62,14 @@ int main(int argc, char *argv[], char *envp[])
 			printf("minishell: %s: command not found\n", program->tokens[0]);
 			free_split(program->tokens);
 			free_split(words);
-			// system("leaks minishell");
-			continue;
+			continue ;
 		}
-		// t_node *node = program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
-		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
-		// 	printf("fd is: %s|\n", node->fd);
-		// 	if (fd)
-		// 		printf("meta: %s\n", fd->meta);
-		// 	node = node->next;
-		// }
-		// printf("1 ======>\n");
 		execution_manager(program->nodes, program->envp);
-		free_split(words); // results in double free
+		printf("======== HERE >>>\n");
+		free_split(words);
 		words = NULL;
 		free_program_loop();
-		// system("leaks minishell");
 	}
 	free_env();
-	// system("leaks minishell");
 	return (0);
 }
-
-// echo hallo > file.txt

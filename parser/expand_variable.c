@@ -44,7 +44,6 @@ char	*expand_variables(char *input_str)
 
 	i = 0;
 	double_quote = 0;
-	// get number of chars of variables
 	while (input_str[i] != '\0')
 	{
 		if (input_str[i] == '\'' && double_quote == 0)
@@ -58,7 +57,8 @@ char	*expand_variables(char *input_str)
 		{
 			i++;
 			start = i;
-			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i]) || ft_isalnum(input_str[i]) || ft_strchr("?_", input_str[i])))
+			while (input_str[i] != '\0' && input_str[i] != '/' && (ft_isalpha(input_str[i])
+					|| ft_isalnum(input_str[i]) || ft_strchr("?_", input_str[i])))
 				i++;
 			tmp = expand_variable(input_str, start, i);
 			input_str = tmp;

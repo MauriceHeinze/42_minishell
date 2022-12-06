@@ -82,7 +82,7 @@ char	**split_subline(char **splitted_line)
 					k += 2;
 					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
 				}
-				else if ((splitted_line[i][k] == '<') || (splitted_line[i][k]  == '>') || (splitted_line[i][k]  == '|'))
+				else if ((splitted_line[i][k] == '<') || (splitted_line[i][k] == '>') || (splitted_line[i][k] == '|'))
 				{
 					start = k;
 					k++;

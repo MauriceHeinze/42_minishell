@@ -65,7 +65,7 @@ typedef struct s_program {
 t_program *program;
 
 // split
-char	**split_line(char *input_str);
+char	**split_line(char *str);
 char	**split_subline(char **words);
 
 // readline
@@ -116,7 +116,7 @@ void	exec_error(int error, char *s);
 void	special_error(int error);
 
 // utils
-int		count_words(char *input_str);
+int		count_words(char *str);
 int		count_words_operators(char *input_str);
 char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(t_var *envp);

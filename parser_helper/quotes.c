@@ -6,20 +6,8 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/05 15:27:29 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:22:44 by mheinze          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   get_cmd_path.c									 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
-/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
-/*																			*/
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
@@ -41,12 +29,12 @@ int	quote_length(char found_quote, char *input_str, int pos)
 
 char	*remove_quotes(char *input_str)
 {
-	int	len;
-	char *new_str;
+	int		len;
+	char	*new_str;
 
 	len = ft_strlen(input_str) - 1;
-	if ((input_str[0] == '\'' && input_str[len] == '\'') ||
-		(input_str[0] == '\"' && input_str[len] == '\"'))
+	if ((input_str[0] == '\'' && input_str[len] == '\'')
+		|| (input_str[0] == '\"' && input_str[len] == '\"'))
 		new_str = ft_substr(input_str, 1, len - 1);
 	else
 		new_str = ft_strdup(input_str);

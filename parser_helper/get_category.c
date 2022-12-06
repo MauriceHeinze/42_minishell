@@ -6,13 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:07:17 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/01 20:22:36 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:23:20 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int		is_command(char *word)
+static int	is_command(char *word)
 {
 	if (ft_strcmp(word, "echo") == 0)
 		return (ECHO_CMD);
@@ -31,7 +31,7 @@ static int		is_command(char *word)
 	return (0);
 }
 
-int		is_operator(char *word)
+int	is_operator(char *word)
 {
 	if (ft_strcmp(word, ">") == 0)
 		return (ARROW_RIGHT);
@@ -65,7 +65,7 @@ int	is_whitespace(char *input_str)
 		return (0);
 }
 
-int		get_category(char *word)
+int	get_category(char *word)
 {
 	if (word == NULL)
 		return (0);

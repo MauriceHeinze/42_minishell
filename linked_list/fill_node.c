@@ -6,25 +6,11 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/05 16:23:47 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:19:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// char				*full_cmd; // e.g. echo, cd etc.
-// char				*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
-// int				pid; // default -1, is set by executor
-// int				infile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-// char				*infile_meta; // full path name || delimiter | NULL || pipe id
-// int				outfile_mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. pipe
-// char				*outfile_meta; // full path name || delimiter || pipe id
-
-// < redirection fd ist nicht stdin, sondern fd
-// > redirection fd ist nicht stdout, sondern fd
-// << redirection fd ist nicht stdin, sondern heredoc
-// >> output ist in appendmode -> cat text >> cat text1
-// check pipex manual
 
 static t_node	*setup_node(void)
 {
@@ -44,17 +30,15 @@ static t_node	*setup_node(void)
 
 int	get_command(t_program *program, t_node	*node, int *pos)
 {
-	int 	category;
+	int		category;
 	char	*token;
 	char	*tmp;
 	char	**paths;
 
-	// printf("token: %s\n", token);
 	tmp = ft_strtrim(program->tokens[(*pos)], " ");
 	token = remove_quotes(tmp);
 	free(tmp);
 	category = get_category(token);
-	// is undefined/not builtin /bin/ls
 	node->full_cmd = ft_strdup(token);
 	if (category == UNDEFINED || category == WORD)
 	{
@@ -64,12 +48,11 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 		if (node->full_path == NULL)
 		{
 			free_split(paths);
-			return (1); // printf("Path is: %s\n", node->full_path);
+			return (1);
 		}
 		free_split(paths);
 		(*pos)++;
 	}
-	// is builtin
 	else if (category > UNDEFINED && category <= EXIT)
 	{
 		node->full_cmd_orig = ft_strdup(token);
@@ -99,22 +82,15 @@ t_node	*fill_node(t_program *program)
 	node = head;
 	while (program->tokens[i] != NULL)
 	{
-		// if arrow, fill up fd list
-		// first word is always command
-		// copy arguments until you find pipe or arrows
-		// if pipe is found, create new node
-
-		// if arrow, fill up fd list
 		if (get_category(tokens[i]) >= ARROW_LEFT && get_category(tokens[i]) <= DOUBLE_ARROW_RIGHT)
 		{
 			if (!fill_fd(program, node, &i))
 				return (NULL);
-			// first word is always command
 			if (tokens[i] == NULL || tokens[i + 1] == NULL)
 				break ;
 			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 			{
-				if (get_command(program, node, &i) == 1) // frees if 1
+				if (get_command(program, node, &i) == 1)
 				{
 					free(head->full_cmd_orig);
 					head->full_cmd_orig = NULL;
@@ -135,7 +111,6 @@ t_node	*fill_node(t_program *program)
 				return (NULL);
 			}
 		}
-		// copy arguments until you find pipe or arrows
 		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
 		{
 			if (tokens[i] == NULL)
@@ -152,7 +127,6 @@ t_node	*fill_node(t_program *program)
 			free(tmp_2);
 			i++;
 		}
-		// if pipe is found, create new node
 		if (get_category(program->tokens[i]) == PIPE)
 		{
 			node->next = setup_node();

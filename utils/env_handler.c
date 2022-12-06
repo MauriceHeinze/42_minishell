@@ -19,7 +19,6 @@ static t_var	*setup_var_node(void)
 	var = malloc(sizeof(t_var));
 	if (!var)
 		return (NULL);
-
 	var->name = NULL;
 	var->content = NULL;
 	var->not_splitted = NULL;
@@ -66,12 +65,11 @@ t_var	*store_env(char *env[])
 	return (head);
 }
 
-// TODO: Add check for double
-t_var	*add_env(t_var *env, char *name, char* content)
+t_var	*add_env(t_var *env, char *name, char *content)
 {
-	t_var   *head;
-	char   *tmp;
-	int	 exists;
+	t_var	*head;
+	char	*tmp;
+	int		exists;
 
 	head = env;
 	exists = 0;
@@ -80,12 +78,12 @@ t_var	*add_env(t_var *env, char *name, char* content)
 		if (ft_strcmp(env->name, name) == 0)
 		{
 			exists = 1;
-			break;
+			break ;
 		}
 		if (env->next)
 			env = env->next;
 		else
-			break;
+			break ;
 	}
 	if (exists)
 	{
@@ -113,13 +111,11 @@ t_var	*add_env(t_var *env, char *name, char* content)
 
 void	remove_env(t_var *env, char *name)
 {
-	t_var *head;
-	t_var *tmp;
+	t_var	*head;
+	t_var	*tmp;
 
 	head = env;
-
-	// check first element
-	if (ft_strcmp(env->name, name) == 0) // found it!
+	if (ft_strcmp(env->name, name) == 0)
 	{
 		head = env->next;
 		free(env->name);
@@ -128,16 +124,13 @@ void	remove_env(t_var *env, char *name)
 		free(env);
 		program->envp = head;
 	}
-	// check next elements
 	while (env)
 	{
 		if (!env->next)
-			break;
-		if (ft_strcmp(env->next->name, name) == 0) // found it!
+			break ;
+		if (ft_strcmp(env->next->name, name) == 0)
 		{
 			tmp = env->next;
-			// remove next node
-			// set pointer to next node
 			env->next = tmp->next;
 			free(tmp->name);
 			free(tmp->content);
@@ -162,10 +155,8 @@ char	*get_env(t_var *env, char *name)
 
 void	free_env(void)
 {
-	t_var *envp;
-	t_var *tmp_envp;
-
-	int i = 0;
+	t_var	*envp;
+	t_var	*tmp_envp;
 
 	envp = program->envp;
 	while (envp != NULL)
@@ -173,7 +164,6 @@ void	free_env(void)
 		tmp_envp = envp;
 		envp = envp->next;
 		free(tmp_envp->name);
-		// printf("\nFails at:\n name: %s\ncontent: %s\n", tmp_envp->next->name, tmp_envp->next->content);
 		free(tmp_envp->content);
 		free(tmp_envp->not_splitted);
 		free(tmp_envp);
