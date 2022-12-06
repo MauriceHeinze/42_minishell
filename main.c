@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:12:18 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 14:55:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 20:15:36 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	main(int argc, char *argv[], char *envp[])
 		free_split(words);
 		words = NULL;
 		free_program_loop();
+		system("leaks minishell");
 	}
 	free_env();
 	return (0);

@@ -123,6 +123,7 @@ char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(t_var *envp);
 int		get_category(char *word);
 int		is_whitespace(char *input_str);
+void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 
 # define OUTPUT 0;
 # define INPUT 1;

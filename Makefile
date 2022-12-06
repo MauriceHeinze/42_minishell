@@ -1,27 +1,31 @@
 NAME = minishell
-SOURCES = 	./env/add_env.c								\
-			./exec/builtins.c							\
-			./exec/executor.c							\
-			./linked_list/fill_fd.c						\
-			./linked_list/fill_node.c					\
-			./linked_list/free_nodes.c					\
-			./linked_list/free.c						\
-			./parser/check_syntax.c						\
-			./parser/expand_variable.c					\
-			./parser/split_line.c						\
-			./parser/split_subline.c					\
-			./parser_helper/count_words.c				\
-			./parser_helper/get_category.c				\
-			./parser_helper/quotes.c					\
-			./parser_helper/str_add.c					\
-			./parser_helper/str_remove.c				\
-			./utils/count_operators.c					\
-			./utils/env_handler.c						\
-			./utils/exit_handler.c						\
-			./utils/get_cmd_path.c						\
-			./utils/signal_handler.c					\
-			./utils/track_history.c						\
-			./get_next_line/get_next_line_utils.c		\
+SOURCES = 	./env/add_env.c							\
+			./env/store_env.c						\
+			./env/remove_env.c						\
+			./env/setup_fd.c						\
+			./exec/builtins.c						\
+			./exec/executor.c						\
+			./linked_list/fill_fd.c					\
+			./linked_list/fill_node.c				\
+			./linked_list/free_nodes.c				\
+			./linked_list/free.c					\
+			./parser/check_syntax.c					\
+			./parser/expand_variable.c				\
+			./parser/split_line.c					\
+			./parser/split_subline.c				\
+			./parser_helper/count_words.c			\
+			./parser_helper/get_category.c			\
+			./parser_helper/quotes.c				\
+			./parser_helper/str_add.c				\
+			./parser_helper/str_remove.c			\
+			./utils/count_operators.c				\
+			./utils/env_handler.c					\
+			./utils/exit_handler.c					\
+			./utils/fd_handle_redirections.c		\
+			./utils/get_cmd_path.c					\
+			./utils/signal_handler.c				\
+			./utils/track_history.c					\
+			./get_next_line/get_next_line_utils.c	\
 			./get_next_line/get_next_line.c
 
 CLIENT = main.c $(SOURCES)
