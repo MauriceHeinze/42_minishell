@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/06 18:21:08 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 19:52:24 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,17 @@ int	cd(t_var *envp, char *dir)
 		perror("getcwd failed");
 		return (EXIT_FAILURE);
 	}
-
 	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)
+		{
+			perror("chdir failed");
+			return(EXIT_FAILURE);
+		}
+	}
+	else if (ft_strcmp(dir, "-") == 0)
+	{
+		if (chdir (get_env(envp, "OLDPWD")) == -1)
 		{
 			perror("chdir failed");
 			return(EXIT_FAILURE);
