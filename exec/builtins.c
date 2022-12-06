@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/06 18:21:08 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 20:48:19 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,17 @@ int	cd(t_var *envp, char *dir)
 		perror("getcwd failed");
 		return (EXIT_FAILURE);
 	}
-
 	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)
+		{
+			perror("chdir failed");
+			return(EXIT_FAILURE);
+		}
+	}
+	else if (ft_strcmp(dir, "-") == 0)
+	{
+		if (chdir (get_env(envp, "OLDPWD")) == -1)
 		{
 			perror("chdir failed");
 			return(EXIT_FAILURE);
@@ -154,7 +161,7 @@ char *export_content(char *export)
 {
 	int		length_content;
 	char	*content;
-	
+
 	length_content = 0;
 	if (export[length_content] == '\0' && export[length_content] == ' ' && export[length_content] == ';')
 		perror("blala");
@@ -163,7 +170,7 @@ char *export_content(char *export)
 	content = malloc(sizeof(char) * (length_content + 1));
 	ft_strlcpy(content, export, length_content + 1);
 	content[length_content] = '\0';
-	return(content);	
+	return(content);
 }
 
 int	export_print(t_var *envp, int fd)
@@ -193,7 +200,7 @@ int	export_name(char *export, t_var *envp)
 	int		length_name;
 	char	*name;
 	char	*content;
-	
+
 	content = NULL;
 	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a' && *export <= 'z')))
 	{
@@ -201,7 +208,7 @@ int	export_name(char *export, t_var *envp)
 		return (EXIT_FAILURE);
 	}
 	else
-	{		
+	{
 		length_name = 0;
 		while(export[length_name] != '\0' && export[length_name] != '=' && export[length_name] != ' ' && export[length_name] != ';')
 			length_name++;
@@ -245,7 +252,7 @@ int	export_handler(char *export, t_var *envp, int fd)
 			else
 				export_name(export, envp);
 			export = export + length_until_semicolon(export);
-		}	
+		}
 	}
 	return (exit_code);
 }
@@ -257,7 +264,7 @@ int	unset(char *remove, t_var *envp)
 	char	**remove_split;
 	int		i;
 	int		c;
-	
+
 	if(remove == NULL)
 		return (EXIT_SUCCESS);
 	i = 0;
@@ -301,11 +308,11 @@ int	env(t_var *envp, int fd)
 int	exit_pre_handler(t_node *node, int fd)
 {
 	char	*check_input;
-	
+
 	if (ft_strlen("exit") == ft_strlen(node->full_cmd))
 	{
 		exit_shell(0);
-		ft_putstr_fd("exit\n", fd, NULL);	
+		ft_putstr_fd("exit\n", fd, NULL);
 	}
 	else
 	{
@@ -337,7 +344,7 @@ int	exit_pre_handler(t_node *node, int fd)
 int	check_following_builtin (t_node *node)
 {
 	t_node *node_tmp;
-	
+
 	if (node == NULL)
 		return (0);
 	node_tmp = node->next;
