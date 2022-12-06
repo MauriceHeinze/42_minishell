@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:12:18 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 14:53:07 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 14:55:19 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		}
 		execution_manager(program->nodes, program->envp);
-		printf("======== HERE >>>\n");
 		free_split(words);
 		words = NULL;
 		free_program_loop();

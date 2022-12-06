@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/05 19:24:31 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 14:56:24 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,13 +367,13 @@ void	exec_call_stack(t_call	*call_stack, t_exec *executor, t_var *envp)
 		else
 			waitpid(call_stack->node->pid, NULL, 0);
 	}
-	
+
 }
 
 int sub_exec(t_node *node, t_exec *executor, t_var *envp)
 {
 	t_call	*cs;
-	
+
 	if (ft_strcmp(node->full_path, "builtin") == 0)
 	{
 		buildin_executor(node, executor, envp);
@@ -416,6 +416,5 @@ int	execution_manager (t_node *node, t_var *envp)
 	}
 	else
 		set_exit_code(executor.status);
-	exit (0);
 	return (0);
 }

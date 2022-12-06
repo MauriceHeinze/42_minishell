@@ -20,7 +20,6 @@ SOURCES = 	./exec/builtins.c							\
 			./utils/get_cmd_path.c						\
 			./utils/signal_handler.c					\
 			./utils/track_history.c						\
-			./inc/libft.a								\
 			./get_next_line/get_next_line_utils.c		\
 			./get_next_line/get_next_line.c
 

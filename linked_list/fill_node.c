@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 14:19:57 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/06 16:15:13 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_node	*setup_node(void)
 	node->next = NULL;
 	return (node);
 }
+
 
 int	get_command(t_program *program, t_node	*node, int *pos)
 {

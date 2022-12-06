@@ -33,10 +33,7 @@ static int	get_total_words(char **splitted_line)
 	i = 0;
 	total_words = 1;
 	while (splitted_line[i] != NULL)
-	{
-		total_words += count_words_operators(splitted_line[i]);
-		i++;
-	}
+		total_words += count_words_operators(splitted_line[i++]);
 	return (total_words);
 }
 
@@ -58,12 +55,7 @@ char	**split_subline(char **splitted_line)
 	while (splitted_line[i] != NULL)
 	{
 		if (count_words_operators(splitted_line[i]) == 1)
-		{
-			words[no_word] = ft_strdup(splitted_line[i]);
-			if (!words)
-				return (NULL);
-			no_word++;
-		}
+			words[no_word++] = ft_strdup(splitted_line[i]);
 		else
 		{
 			k = 0;
