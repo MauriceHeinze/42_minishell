@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:38:32 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/06 18:39:11 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/06 19:14:24 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void	fd_manager_output_builtin(t_node *node, t_exec	*executor)
 		else
 		{
 			found_fd = 1;
-			dprintf(2, "<%s>", fd_temp->meta);
+			// dprintf(2, "<%s>", fd_temp->meta);
 			if (fd_temp->mode == MODE_FILE)
 				fd_temp->fd = open(fd_temp->meta, O_TRUNC | O_CREAT | O_RDWR, 000644);
 			else if (fd_temp->mode == MODE_APPEND)
@@ -313,7 +313,6 @@ void	free_call_stack(t_call	*call_stack)
 	{
 		ls = call_stack->next;
 		call_stack->next = NULL;
-		call_stack->next = NULL;
 		free(call_stack);
 		call_stack = ls;
 	}
@@ -347,7 +346,7 @@ t_call	*gen_call_stack(t_node *node)
 	if (node == NULL)
 		return NULL;
 	node_tmp = node;
-	while (node_tmp->next != NULL && ft_strcmp(node->next->full_path, "builtin") != 0)
+	while (node_tmp->next != NULL && ft_strcmp(node_tmp->next->full_path, "builtin") != 0)
 		node_tmp = node_tmp->next;
 	call_stack = malloc(sizeof(t_call));
 	call_stack->node = node_tmp;
@@ -422,5 +421,6 @@ int	execution_manager (t_node *node, t_var *envp)
 	}
 	else
 		set_exit_code(executor.status);
+	// free_call_stack(executor.cs);
 	return (0);
 }
