@@ -86,6 +86,7 @@ char	*expand_variable(char *input_str, int start, int i);
 char	*expand_variables(char *input_str);
 
 // env
+t_var	*setup_var_node(void);
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
 t_var	*add_env(t_var *env, char *name, char* content);

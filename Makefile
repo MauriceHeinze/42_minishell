@@ -1,5 +1,6 @@
 NAME = minishell
-SOURCES = 	./exec/builtins.c							\
+SOURCES = 	./env/add_env.c								\
+			./exec/builtins.c							\
 			./exec/executor.c							\
 			./linked_list/fill_fd.c						\
 			./linked_list/fill_node.c					\

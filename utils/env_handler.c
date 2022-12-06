@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static t_var	*setup_var_node(void)
+t_var	*setup_var_node(void)
 {
 	t_var	*var;
 
@@ -61,50 +61,6 @@ t_var	*store_env(char *env[])
 			var = var->next;
 		}
 		i++;
-	}
-	return (head);
-}
-
-t_var	*add_env(t_var *env, char *name, char *content)
-{
-	t_var	*head;
-	char	*tmp;
-	int		exists;
-
-	head = env;
-	exists = 0;
-	while (env)
-	{
-		if (ft_strcmp(env->name, name) == 0)
-		{
-			exists = 1;
-			break ;
-		}
-		if (env->next)
-			env = env->next;
-		else
-			break ;
-	}
-	if (exists)
-	{
-		free(env->name);
-		env->name = name;
-		free(env->not_splitted);
-		free(env->content);
-		env->content = content;
-		tmp = ft_strjoin(name, "=");
-		env->not_splitted = ft_strjoin(tmp, env->content);
-		free(tmp);
-	}
-	else
-	{
-		env->next = setup_var_node();
-		env = env->next;
-		env->name = name;
-		env->content = content;
-		tmp = ft_strjoin(name, "=");
-		env->not_splitted = ft_strjoin(tmp, env->content);
-		free(tmp);
 	}
 	return (head);
 }
