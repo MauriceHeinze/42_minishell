@@ -44,7 +44,6 @@ char	**split_subline(char **splitted_line)
 	int		start;
 	int		no_word;
 	char	**words;
-	int		total_words;
 
 	i = 0;
 	no_word = 0;
