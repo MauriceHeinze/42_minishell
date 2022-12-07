@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 16:31:38 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/07 15:02:22 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,10 @@ static t_node	*setup_node(void)
 	return (node);
 }
 
-int	get_command(t_program *program, t_node	*node, int *pos)
+int	get_command_helper(t_node	*node, char *token, int category, int *pos)
 {
-	int		category;
-	char	*token;
-	char	*tmp;
 	char	**paths;
 
-	tmp = ft_strtrim(program->tokens[(*pos)], " ");
-	token = remove_quotes(tmp);
-	free(tmp);
-	category = get_category(token);
-	node->full_cmd = ft_strdup(token);
 	if (category == UNDEFINED || category == WORD)
 	{
 		paths = get_cmd_paths(program->envp);
@@ -62,6 +54,21 @@ int	get_command(t_program *program, t_node	*node, int *pos)
 		token = NULL;
 	}
 	return (0);
+}
+
+int	get_command(t_program *program, t_node	*node, int *pos)
+{
+	int		category;
+	char	*token;
+	char	*tmp;
+	char	**paths;
+
+	tmp = ft_strtrim(program->tokens[(*pos)], " ");
+	token = remove_quotes(tmp);
+	free(tmp);
+	category = get_category(token);
+	node->full_cmd = ft_strdup(token);
+	return (get_command_helper(node, token, category, pos));
 }
 
 t_node	*fill_node(t_program *program)
