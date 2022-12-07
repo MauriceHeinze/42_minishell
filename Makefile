@@ -23,6 +23,7 @@ SOURCES = 	./env/add_env.c							\
 			./utils/exit_handler.c					\
 			./utils/fd_handle_redirections.c		\
 			./utils/get_cmd_path.c					\
+			./utils/init_to_zero.c					\
 			./utils/signal_handler.c				\
 			./utils/track_history.c					\
 			./get_next_line/get_next_line_utils.c	\

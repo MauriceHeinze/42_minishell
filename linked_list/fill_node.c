@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/07 15:02:22 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/07 15:06:50 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_node	*setup_node(void)
 	return (node);
 }
 
-int	get_command_helper(t_node	*node, char *token, int category, int *pos)
+static int	get_command_helper(t_node	*node, char *token, int category, int *pos)
 {
 	char	**paths;
 

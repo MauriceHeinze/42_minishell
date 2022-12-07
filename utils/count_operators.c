@@ -63,6 +63,27 @@ static int	operator_end(char *input_str)
 	return (0);
 }
 
+int	op_found(char a, char b)
+{
+	if (a == '<' && b == '<')
+		return (2);
+	else if (a == '>' && b == '>')
+		return (2);
+	else if (a == '&' && b == '&')
+		return (2);
+	else if (a == '|' && b == '|')
+		return (2);
+	else if (a == '<' || b == '<')
+		return (1);
+	else if (a == '>' || b == '>')
+		return (1);
+	else if (a == '&' || b == '&')
+		return (1);
+	else if (a == '|' || b == '|')
+		return (1);
+	return (0);
+}
+
 int	count_words_operators(char *input_str)
 {
 	int	no_operators;

@@ -66,7 +66,7 @@ t_program *program;
 
 // split
 char	**split_line(char *str);
-char	**split_subline(char **words);
+char	**split_subline(char **splitted);
 
 // readline
 void	track_history(char *line);
@@ -118,10 +118,12 @@ void	special_error(int error);
 
 // utils
 int		count_words(char *str);
+int		op_found(char a, char b);
 int		count_words_operators(char *input_str);
 char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(t_var *envp);
 int		get_category(char *word);
+void	init_to_zero(int *a, int *b, int *c, int *d);
 int		is_whitespace(char *input_str);
 void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 
