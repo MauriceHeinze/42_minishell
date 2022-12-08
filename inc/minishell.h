@@ -68,6 +68,8 @@ t_program *program;
 char	**split_line(char *str);
 char	**split_subline(char **splitted);
 
+int	split_line_counter(char *str);
+
 // readline
 void	track_history(char *line);
 void	rl_replace_line (const char *text, int clear_undo);

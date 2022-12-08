@@ -12,8 +12,8 @@ SOURCES = 	./env/add_env.c							\
 			./parser/check_syntax.c					\
 			./parser/expand_variable.c				\
 			./parser/split_line.c					\
+			./parser/split_line_counter.c			\
 			./parser/split_subline.c				\
-			./parser_helper/count_words.c			\
 			./parser_helper/get_category.c			\
 			./parser_helper/quotes.c				\
 			./parser_helper/str_add.c				\

@@ -6,11 +6,24 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/07 16:50:04 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/08 18:36:26 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static int	double_operator_found(char a, char b)
+{
+	if (a == '<' && b == '<')
+		return (1);
+	else if (a == '>' && b == '>')
+		return (1);
+	else if (a == '&' && b == '&')
+		return (1);
+	else if (a == '|' && b == '|')
+		return (1);
+	return (0);
+}
 
 static int	get_total_words(char **splitted)
 {
@@ -24,62 +37,45 @@ static int	get_total_words(char **splitted)
 	return (total_words);
 }
 
-static int	handle_quote(char **splitted, int *i, int *k, int *start)
+static void	acutal_split(char **splits, char **words, int *i, int *no_word)
 {
-	if (splitted[(*i)][(*k)] == '\"' || splitted[(*i)][(*k)] == '\'')
-		(*k) = skip_quote(splitted[(*i)], (*k));
-	while (!ft_strchr("|<>&", splitted[(*i)][(*k)]
-		&& splitted[(*i)][(*k)] != '\0'))
-		(*k)++;
-	return ((*k));
-}
-
-char	*split_subline_helper(char **splitted, int *i, int *k, int *start)
-{
-	char	*tmp;
-
-	if (op_found(splitted[(*i)][(*k)], splitted[(*i)][(*k) + 1]) == 2)
-	{
-		(*start) = (*k);
-		(*k) += 2;
-		return (ft_substr(splitted[(*i)], (*start), (*k) - (*start)));
-	}
-	else if ((splitted[(*i)][(*k)] == '<')
-			|| (splitted[(*i)][(*k)] == '>')
-			|| (splitted[(*i)][(*k)] == '|'))
-	{
-		(*start) = (*k);
-		(*k)++;
-		tmp = ft_substr(splitted[(*i)], (*start), (*k) - (*start));
-		if (splitted[(*i)][(*k)] == ' ')
-			(*k)++;
-		return (tmp);
-	}
-	return (NULL);
-}
-
-char	*add_word(char **splitted, char **sub_splitted, int *no_word, int *i)
-{
-	int		k;
-	int		start;
-	char	*tmp;
+	int	start;
+	int	k;
 
 	k = 0;
-	tmp = NULL;
-	while (splitted[(*i)][k] != '\0')
+	while (splits[(*i)][k] != '\0')
 	{
-		start = handle_quote(splitted, i, &k, &start);
-		if (k > start)
-			tmp = ft_substr(splitted[(*i)], start, k - start);
-		if (op_found(splitted[(*i)][k], splitted[(*i)][k + 1]))
-			tmp = split_subline_helper(splitted, i, &k, &start);
+		start = k;
+		if (splits[(*i)][k] == '\"' || splits[(*i)][k] == '\'')
+			k = skip_quote(splits[(*i)], k);
+		while (splits[(*i)][k] != '>' && splits[(*i)][k] != '<'
+				&& splits[(*i)][k] != '|' && splits[(*i)][k] != '\0')
+			k++;
+		if (double_operator_found(splits[(*i)][k], splits[(*i)][k + 1]))
+		{
+			start = k;
+			k += 2;
+			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
+			if (splits[(*i)][k] == ' ')
+				k++;
+		}
+		else if (splits[(*i)][k] == '|' || splits[(*i)][k] == '>'
+				|| splits[(*i)][k] == '<')
+		{
+			start = k;
+			k++;
+			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
+			if (splits[(*i)][k] == ' ')
+				k++;
+		}
+		else if (k > start)
+			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
 		else
 			k++;
 	}
-	return (tmp);
 }
 
-char	**split_subline(char **splitted)
+char	**split_subline(char **splits)
 {
 	int		i;
 	int		k;
@@ -88,13 +84,15 @@ char	**split_subline(char **splitted)
 	char	**words;
 
 	init_to_zero(&i, &k, &start, &no_word);
-	words = malloc(sizeof(char *) * get_total_words(splitted));
-	while (splitted[i] != NULL)
+	words = malloc(sizeof(char *) * get_total_words(splits));
+	if (!words)
+		return (NULL);
+	while (splits[i] != NULL)
 	{
-		if (count_words_operators(splitted[i]) == 1)
-			words[no_word++] = ft_strdup(splitted[i]);
+		if (count_words_operators(splits[i]) == 1)
+			words[no_word++] = ft_strdup(splits[i]);
 		else
-			words[no_word++] = add_word(splitted, words, &no_word, &i);
+			acutal_split(splits, words, &i, &no_word);
 		i++;
 	}
 	words[no_word] = NULL;
