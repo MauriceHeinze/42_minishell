@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/08 18:36:26 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/08 19:18:33 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ static int	get_total_words(char **splitted)
 	return (total_words);
 }
 
+static int	skip(char **splits, char **words, int *i, int *k)
+{
+	if (splits[(*i)][(*k)] == '\"' || splits[(*i)][(*k)] == '\'')
+		(*i) = skip_quote(splits[(*i)], (*i));
+	while (splits[(*i)][(*k)] != '>' && splits[(*i)][(*k)] != '<'
+			&& splits[(*i)][(*k)] != '|' && splits[(*i)][(*k)] != '\0')
+		(*k)++;
+	return ((*k));
+}
+
 static void	acutal_split(char **splits, char **words, int *i, int *no_word)
 {
 	int	start;
@@ -48,7 +58,7 @@ static void	acutal_split(char **splits, char **words, int *i, int *no_word)
 		start = k;
 		if (splits[(*i)][k] == '\"' || splits[(*i)][k] == '\'')
 			k = skip_quote(splits[(*i)], k);
-		while (splits[(*i)][k] != '>' && splits[(*i)][k] != '<'
+		while (splits[(*i)][k] != '>' && splits[(*i)][k] != '<' && splits[(*i)][k] != ' '
 				&& splits[(*i)][k] != '|' && splits[(*i)][k] != '\0')
 			k++;
 		if (double_operator_found(splits[(*i)][k], splits[(*i)][k + 1]))
