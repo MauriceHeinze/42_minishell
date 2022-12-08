@@ -68,7 +68,15 @@ t_program *program;
 char	**split_line(char *str);
 char	**split_subline(char **splitted);
 
-int	split_line_counter(char *str);
+int		split_line_counter(char *str);
+void	acutal_split(char **splits, char **words, int *i, int *no_word);
+int		double_operator_found(char a, char b);
+
+
+// fill node
+int		get_command(t_program *program, t_node *node, int *pos);
+void	is_pipe(t_node *node, int *i);
+t_node	*setup_node(void);
 
 // readline
 void	track_history(char *line);
@@ -107,6 +115,7 @@ t_fd	*setup_fd(void);
 // free
 void	free_nodes(void);
 void	free_split(char **words);
+t_node	*free_head(t_node *head);
 
 // syntax checker
 int		check_syntax(char **tokens);

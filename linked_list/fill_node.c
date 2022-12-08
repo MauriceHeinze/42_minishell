@@ -6,13 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/08 13:15:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/08 21:42:32 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static t_node	*setup_node(void)
+t_node	*setup_node(void)
 {
 	t_node	*node;
 
@@ -28,47 +28,37 @@ static t_node	*setup_node(void)
 	return (node);
 }
 
-static int	get_command_helper(t_node	*node, char *token, int category, int *pos)
+int	add_tokens(t_node *node, t_node *head, char **tokens, int *i)
 {
-	char	**paths;
+	char	*tmp;
+	char	*tmp_2;
 
-	if (category == UNDEFINED || category == WORD)
+	while (get_category(tokens[(*i)]) < ARROW_LEFT
+		|| get_category(tokens[(*i)]) > PIPE)
 	{
-		paths = get_cmd_paths(program->envp);
-		node->full_cmd_orig = ft_strdup(token);
-		node->full_path = get_cmd_path(paths, token);
-		if (node->full_path == NULL)
-		{
-			free_split(paths);
+		if (tokens[(*i)] == NULL)
 			return (1);
-		}
-		free_split(paths);
-		(*pos)++;
+		tmp = ft_strjoin(node->full_cmd, ";");
+		free(node->full_cmd);
+		node->full_cmd = ft_strjoin(tmp, tokens[(*i)]);
+		free(tmp);
+		tmp_2 = remove_quotes(tokens[(*i)]);
+		tmp = ft_strjoin(node->full_cmd_orig, " ");
+		free(node->full_cmd_orig);
+		node->full_cmd_orig = ft_strjoin(tmp, tmp_2);
+		free(tmp);
+		free(tmp_2);
+		(*i)++;
 	}
-	else if (category > UNDEFINED && category <= EXIT)
-	{
-		node->full_cmd_orig = ft_strdup(token);
-		node->full_path = "builtin";
-		(*pos)++;
-		free(token);
-		token = NULL;
-	}
+	is_pipe(node, i);
 	return (0);
 }
 
-int	get_command(t_program *program, t_node	*node, int *pos)
+static void	init_fill_node(t_node **head, t_node **node, int *i)
 {
-	int		category;
-	char	*token;
-	char	*tmp;
-	char	**paths;
-
-	tmp = ft_strtrim(program->tokens[(*pos)], " ");
-	token = remove_quotes(tmp);
-	free(tmp);
-	category = get_category(token);
-	node->full_cmd = ft_strdup(token);
-	return (get_command_helper(node, token, category, pos));
+	(*i) = 0;
+	*head = setup_node();
+	*node = *head;
 }
 
 t_node	*fill_node(t_program *program)
@@ -76,70 +66,26 @@ t_node	*fill_node(t_program *program)
 	int		i;
 	t_node	*head;
 	t_node	*node;
-	char	**tokens;
-	char	*tmp;
-	char	*tmp_2;
 
-	head = NULL;
-	tokens = program->tokens;
-	i = 0;
-	head = setup_node();
-	if (!head)
-		return (NULL);
-	node = head;
+	init_fill_node(&head, &node, &i);
 	while (program->tokens[i] != NULL)
 	{
-		if (get_category(tokens[i]) >= ARROW_LEFT && get_category(tokens[i]) <= DOUBLE_ARROW_RIGHT)
+		if (get_category(program->tokens[i]) >= ARROW_LEFT
+			&& get_category(program->tokens[i]) <= DOUBLE_ARROW_RIGHT)
 		{
 			if (!fill_fd(program, node, &i))
 				return (NULL);
-			if (tokens[i] == NULL || tokens[i + 1] == NULL)
+			if (program->tokens[i] == NULL || program->tokens[i + 1] == NULL)
 				break ;
-			if (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
-			{
-				if (get_command(program, node, &i) == 1)
-				{
-					free(head->full_cmd_orig);
-					head->full_cmd_orig = NULL;
-					free(head);
-					head = NULL;
-					return (NULL);
-				}
-			}
+			if ((get_category(program->tokens[i]) < ARROW_LEFT
+					|| get_category(program->tokens[i]) > PIPE)
+				&& (get_command(program, node, &i) == 1))
+				return (free_head(head));
 		}
-		else
-		{
-			if (get_command(program, node, &i) == 1)
-			{
-				free(head->full_cmd_orig);
-				head->full_cmd_orig = NULL;
-				free(head);
-				head = NULL;
-				return (NULL);
-			}
-		}
-		while (get_category(tokens[i]) < ARROW_LEFT || get_category(tokens[i]) > PIPE)
-		{
-			if (tokens[i] == NULL)
-				return (head);
-			tmp = ft_strjoin(node->full_cmd, ";");
-			free(node->full_cmd);
-			node->full_cmd = ft_strjoin(tmp, tokens[i]);
-			free(tmp);
-			tmp_2 = remove_quotes(tokens[i]);
-			tmp = ft_strjoin(node->full_cmd_orig, " ");
-			free(node->full_cmd_orig);
-			node->full_cmd_orig = ft_strjoin(tmp, tmp_2);
-			free(tmp);
-			free(tmp_2);
-			i++;
-		}
-		if (get_category(program->tokens[i]) == PIPE)
-		{
-			node->next = setup_node();
-			node = node->next;
-			i++;
-		}
+		else if (get_command(program, node, &i) == 1)
+			return (free_head(head));
+		if (add_tokens(node, head, program->tokens, &i))
+			return (head);
 	}
 	return (head);
 }

@@ -87,7 +87,7 @@ int main(int argc, char *argv[], char *envp[])
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	free_env();
 	// system("leaks minishell");

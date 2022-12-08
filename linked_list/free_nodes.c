@@ -6,11 +6,20 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 14:18:26 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/08 21:38:23 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+t_node	*free_head(t_node *head)
+{
+	free(head->full_cmd_orig);
+	head->full_cmd_orig = NULL;
+	free(head);
+	head = NULL;
+	return (NULL);
+}
 
 static void	free_fds(t_node *node)
 {

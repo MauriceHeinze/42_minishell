@@ -7,6 +7,7 @@ SOURCES = 	./env/add_env.c							\
 			./exec/executor.c						\
 			./linked_list/fill_fd.c					\
 			./linked_list/fill_node.c				\
+			./linked_list/fill_node_helper.c		\
 			./linked_list/free_nodes.c				\
 			./linked_list/free.c					\
 			./parser/check_syntax.c					\
@@ -16,6 +17,7 @@ SOURCES = 	./env/add_env.c							\
 			./parser/split_subline.c				\
 			./parser_helper/get_category.c			\
 			./parser_helper/quotes.c				\
+			./parser_helper/split_subline_helper.c	\
 			./parser_helper/str_add.c				\
 			./parser_helper/str_remove.c			\
 			./utils/count_operators.c				\
