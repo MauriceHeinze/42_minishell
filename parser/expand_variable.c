@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:50:19 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/09 19:36:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/09 13:52:01 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*expand_variables(char *input_str)
 				break ;
 		}
 		else if (input_str[i] == '$' && (ft_isalpha(input_str[i + 1])
-				|| input_str[i + 1] == '_' || input_str[i + 1] == '?'))
+				|| ft_strchr("?_", input_str[i + 1])))
 			input_str = expand_variable_helper(input_str, &i, &start);
 		else if (input_str[i] == '~' && (ft_strchr("/ 	", input_str[i + 1])))
 			input_str = replace_var_with_path(input_str, &i, &start);
