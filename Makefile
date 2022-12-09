@@ -28,14 +28,14 @@ SOURCES = 	./env/add_env.c							\
 			./utils/init_to_zero.c					\
 			./utils/signal_handler.c				\
 			./utils/track_history.c					\
-			./get_next_line/get_next_line_utils.c	\
-			./get_next_line/get_next_line.c
+			# ./get_next_line/get_next_line_utils.c	\
+			# ./get_next_line/get_next_line.c
 
 CLIENT = main.c $(SOURCES)
 
 CLIENTOBJ =	$(CLIENT:.c=.o)
 
-HDR = ./inc/minishell.h ./get_next_line/get_next_line.h
+HDR = ./inc/minishell.h
 CC = cc -g
 # FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
 CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap

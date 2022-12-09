@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/09 13:41:02 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:36:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,37 +28,28 @@ t_node	*setup_node(void)
 	return (node);
 }
 
-int	add_tokens(t_node *node, t_node *head, char **tokens, int *i)
-{
-	char	*tmp;
-	char	*tmp_2;
-
-	while (get_category(tokens[(*i)]) < ARROW_LEFT
-		|| get_category(tokens[(*i)]) > PIPE)
-	{
-		if (tokens[(*i)] == NULL)
-			return (1);
-		tmp = ft_strjoin(node->full_cmd, ";");
-		free(node->full_cmd);
-		node->full_cmd = ft_strjoin(tmp, tokens[(*i)]);
-		free(tmp);
-		tmp_2 = remove_quotes(tokens[(*i)]);
-		tmp = ft_strjoin(node->full_cmd_orig, " ");
-		free(node->full_cmd_orig);
-		node->full_cmd_orig = ft_strjoin(tmp, tmp_2);
-		free(tmp);
-		free(tmp_2);
-		(*i)++;
-	}
-	is_pipe(node, i);
-	return (0);
-}
-
 static void	init_fill_node(t_node **head, t_node **node, int *i)
 {
 	(*i) = 0;
 	*head = setup_node();
 	*node = *head;
+}
+
+static int	operator_statement(int *i)
+{
+	if (get_category(program->tokens[(*i)]) >= ARROW_LEFT
+		&& get_category(program->tokens[(*i)]) <= DOUBLE_ARROW_RIGHT)
+		return (1);
+	return (0);
+}
+
+static int	operator_statement_2(t_node *node, int *i)
+{
+	if ((get_category(program->tokens[(*i)]) < ARROW_LEFT
+			|| get_category(program->tokens[(*i)]) > PIPE)
+		&& (get_command(program, node, i) == 1))
+		return (1);
+	return (0);
 }
 
 t_node	*fill_node(t_program *program)
@@ -70,22 +61,21 @@ t_node	*fill_node(t_program *program)
 	init_fill_node(&head, &node, &i);
 	while (program->tokens[i] != NULL)
 	{
-		if (get_category(program->tokens[i]) >= ARROW_LEFT
-			&& get_category(program->tokens[i]) <= DOUBLE_ARROW_RIGHT)
+		if (operator_statement(&i))
 		{
 			if (!fill_fd(program, node, &i))
 				return (NULL);
 			if (program->tokens[i] == NULL || program->tokens[i + 1] == NULL)
 				break ;
-			if ((get_category(program->tokens[i]) < ARROW_LEFT
-					|| get_category(program->tokens[i]) > PIPE)
-				&& (get_command(program, node, &i) == 1))
+			if (operator_statement_2(node, &i))
 				return (free_head(head));
 		}
 		else if (get_command(program, node, &i) == 1)
 			return (free_head(head));
 		if (add_tokens(node, head, program->tokens, &i))
 			return (head);
+		if (get_category(program->tokens[i]) == PIPE)
+			node = add_node(node, &i);
 	}
 	return (head);
 }

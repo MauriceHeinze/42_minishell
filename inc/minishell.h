@@ -72,11 +72,11 @@ int		split_line_counter(char *str);
 void	acutal_split(char **splits, char **words, int *i, int *no_word);
 int		double_operator_found(char a, char b);
 
-
 // fill node
 int		get_command(t_program *program, t_node *node, int *pos);
-void	is_pipe(t_node *node, int *i);
+t_node	*add_node(t_node *node, int *i);
 t_node	*setup_node(void);
+int		add_tokens(t_node *node, t_node *head, char **tokens, int *i);
 
 // readline
 void	track_history(char *line);

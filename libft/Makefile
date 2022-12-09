@@ -1,6 +1,6 @@
 NAME		= libft.a
 CFLAGS		= -Wall -Werror -Wextra -I.
-CC			= cc
+CC			= cc -g
 MAIN		= 	ft_isalnum.c 		\
 				ft_isalpha.c 		\
 				ft_isascii.c 		\

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/09 13:43:33 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:35:48 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,35 @@ int	get_command(t_program *program, t_node *node, int *pos)
 	return (get_command_helper(node, token, category, pos));
 }
 
-void	is_pipe(t_node *node, int *i)
+int	add_tokens(t_node *node, t_node *head, char **tokens, int *i)
 {
-	if (get_category(program->tokens[(*i)]) == PIPE)
+	char	*tmp;
+	char	*tmp_2;
+
+	while (get_category(tokens[(*i)]) < ARROW_LEFT
+		|| get_category(tokens[(*i)]) > PIPE)
 	{
-		node->next = setup_node();
-		node = node->next;
+		if (tokens[(*i)] == NULL)
+			return (1);
+		tmp = ft_strjoin(node->full_cmd, ";");
+		free(node->full_cmd);
+		node->full_cmd = ft_strjoin(tmp, tokens[(*i)]);
+		free(tmp);
+		tmp_2 = remove_quotes(tokens[(*i)]);
+		tmp = ft_strjoin(node->full_cmd_orig, " ");
+		free(node->full_cmd_orig);
+		node->full_cmd_orig = ft_strjoin(tmp, tmp_2);
+		free(tmp);
+		free(tmp_2);
 		(*i)++;
 	}
+	return (0);
+}
+
+t_node	*add_node(t_node *node, int *i)
+{
+	node->next = setup_node();
+	node = node->next;
+	(*i)++;
+	return (node);
 }

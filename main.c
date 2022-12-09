@@ -35,10 +35,7 @@ int main(int argc, char *argv[], char *envp[])
 	setup_term();
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			line = readline("minishell $ ");
-		else
-			line = get_next_line(0);
+		line = readline("minishell $ ");
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0 || is_whitespace(line) || !ft_strcmp(line, "."))
@@ -71,17 +68,17 @@ int main(int argc, char *argv[], char *envp[])
 			// system("leaks minishell");
 			continue;
 		}
-		// t_node *node = program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
-		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
-		// 	printf("fd is: %s|\n", node->fd);
-		// 	if (fd)
-		// 		printf("meta: %s\n", fd->meta);
-		// 	node = node->next;
-		// }
+		t_node *node = program->nodes;
+		t_fd *fd = node->fd;
+		while (node != NULL)
+		{
+			printf("\nFull cmd: %s|\n", node->full_cmd);
+			printf("Orig cmd: %s|\n", node->full_cmd_orig);
+			printf("fd is: %s|\n", node->fd);
+			if (fd)
+				printf("meta: %s\n", fd->meta);
+			node = node->next;
+		}
 		// printf("1 ======>\n");
 		execution_manager(program->nodes, program->envp);
 		free_split(words); // results in double free
