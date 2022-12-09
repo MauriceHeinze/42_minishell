@@ -3,10 +3,8 @@ SOURCES = 	./env/add_env.c							\
 			./env/store_env.c						\
 			./env/remove_env.c						\
 			./env/setup_fd.c						\
-			./executor/executor.c					\
-			./executor/executor_funct.c				\
-			./executor/executor_utils.c				\
-			./executor/builtins.c					\
+			./exec/builtins.c						\
+			./exec/executor.c						\
 			./linked_list/fill_fd.c					\
 			./linked_list/fill_node.c				\
 			./linked_list/fill_node_helper.c		\
