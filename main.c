@@ -1,5 +1,5 @@
 #include "./inc/minishell.h"
-#include "./exec/executor.h"
+#include "./executor/executor.h"
 
 static void setup_term(void)
 {
@@ -70,17 +70,17 @@ int main(int argc, char *argv[], char *envp[])
 		}
 		t_node *node = program->nodes;
 		t_fd *fd = node->fd;
-		while (node != NULL)
-		{
-			printf("\nFull cmd: %s|\n", node->full_cmd);
-			printf("Orig cmd: %s|\n", node->full_cmd_orig);
-			printf("fd is: %s|\n", node->fd);
-			if (fd)
-				printf("meta: %s\n", fd->meta);
-			node = node->next;
-		}
+		// while (node != NULL)
+		// {
+		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
+		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
+		// 	// printf("fd is: %s|\n", node->fd);
+		// 	if (fd)
+		// 		printf("meta: %s\n", fd->meta);
+		// 	node = node->next;
+		// }
 		// printf("1 ======>\n");
-		execution_manager(program->nodes, program->envp);
+		executor(program->nodes, program->envp);
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();

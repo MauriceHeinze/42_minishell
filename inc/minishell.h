@@ -43,7 +43,10 @@ typedef struct s_node {
 	char			*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
 	int				pid; // default -1, is set by executor
 	t_fd			*fd;
+	int				fd_in;
+	int				fd_out;
 	struct s_node	*next;
+	int				node_num;
 }				t_node;
 
 typedef struct s_var {
@@ -196,5 +199,7 @@ void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 # define INVALID_EXIT_ARG			255
 # define TERMINATED_BY_CTRL_C		130
 # define PIPE_SYNTAX_ERROR			258
+
+# define PATH_MAX					4096
 
 #endif
