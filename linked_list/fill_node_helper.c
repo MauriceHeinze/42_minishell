@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/08 21:41:35 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/09 13:43:33 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static int	get_command_helper(t_node	*node, char *token, int category,
 		node->full_cmd_orig = ft_strdup(token);
 		node->full_path = "builtin";
 		(*pos)++;
-		free(token);
-		token = NULL;
 	}
+	free(token);
+	token = NULL;
 	return (0);
 }
 

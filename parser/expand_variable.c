@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:50:19 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/07 14:16:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/09 13:52:01 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static char	*replace_var_with_path(char *input_str, int *i, int *start)
 	input_str = NULL;
 	(*i) = 0;
 	(*start) = 0;
-	return (ft_strdup(tmp));
+	return (tmp);
 }
 
 static void	skip_quote_helper(char *input_str, int *i, int *double_quote)
