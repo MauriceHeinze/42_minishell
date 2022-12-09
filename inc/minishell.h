@@ -45,6 +45,8 @@ typedef struct s_node {
 	t_fd			*fd;
 	int				fd_in;
 	int				fd_out;
+	int				fd_in_found;
+	int				fd_out_found;
 	struct s_node	*next;
 	int				node_num;
 }				t_node;

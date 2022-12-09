@@ -46,21 +46,19 @@ void	fd_manager_input(t_node *node, t_executor *executor)
 {
 	t_fd	*fd_temp;
 	t_fd	*fd_former;
-	int		found_fd;
 
 	if (executor == NULL || node == NULL)
 		return ;
 	node->fd_in = 0;
 	fd_temp = node->fd;
 	fd_former = NULL;
-	found_fd = 0;
 	while (fd_temp != NULL)
 	{
 		if (fd_temp->io == 0)
 			fd_temp = fd_temp->next;
 		else
 		{
-			found_fd = 1;
+			node->fd_in_found = 1;
 			if (fd_temp->mode == MODE_FILE)
 				fd_temp->fd = open(fd_temp->meta, O_RDONLY);
 			// else if (fd_temp->mode == MODE_HEREDOC)
@@ -72,7 +70,7 @@ void	fd_manager_input(t_node *node, t_executor *executor)
 			fd_temp = fd_temp->next;
 		}
 	}
-	if (found_fd == 0 && node != executor->first_node)
+	if (node->fd_in_found == 0 && node != executor->first_node)
 		node->fd_in = executor->pipes[(node->node_num - 1) * 2];
 }
 
@@ -80,21 +78,19 @@ void	fd_manager_output(t_node *node, t_executor	*executor)
 {
 	t_fd	*fd_temp;
 	t_fd	*fd_former;
-	int		found_fd;
 
 	if (executor == NULL || node == NULL)
 		return ;
 	node->fd_out = 1;
 	fd_temp = node->fd;
 	fd_former = NULL;
-	found_fd = 0;
 	while (fd_temp != NULL)
 	{
 		if (fd_temp->io == 1)
 			fd_temp = fd_temp->next;
 		else
 		{
-			found_fd = 1;
+			node->fd_out_found = 1;
 			if (fd_temp->mode == MODE_FILE)
 				fd_temp->fd = open(fd_temp->meta, O_TRUNC | O_CREAT | O_RDWR, 000644);
 			else if (fd_temp->mode == MODE_APPEND)
@@ -106,7 +102,7 @@ void	fd_manager_output(t_node *node, t_executor	*executor)
 			fd_temp = fd_temp->next;
 		}
 	}
-	if (found_fd == 0 && node->next != NULL)
+	if (node->fd_out_found == 0 && node->next != NULL)
 		node->fd_out = executor->pipes[node->node_num * 2 + 1];
 }
 
@@ -159,27 +155,29 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 	// 	here_doc(argv[2], executor);
 	while (node != NULL)
 	{
-		if (ft_strcmp(node->full_path, "builtin") != 0 && (x < executor->num_processes && (x == 0 || executor->pids[x - 1] != 0)))
+		if (ft_strcmp(node->full_path, "builtin") != 0)
 		{
-		executor->pids[x] = fork();
-		if (executor->pids[x] == -1)
-			exit_msg("Fork error", EXIT_FAILURE);
-		if (executor->pids[x] == 0)
-		{
-			fd_manager_output(node, executor);
-			fd_manager_input(node, executor);
-			// dprintf(2, "fd_out is %d and fd_in is %d", node->fd_out, node->fd_in);
-			child_process(executor, x + 1, envp, node);
-		}
-		x++;
+			executor->pids[x] = fork();
+			if (executor->pids[x] == -1)
+				exit_msg("Fork error", EXIT_FAILURE);
+			if (executor->pids[x] == 0)
+			{
+				fd_manager_output(node, executor);
+				fd_manager_input(node, executor);
+				// dprintf(2, "fd_out is %d and fd_in is %d", node->fd_out, node->fd_in);
+				child_process(executor, x + 1, envp, node);
+			}
+			
 		}
 		else if (ft_strcmp(node->full_path, "builtin") == 0)
 		{
 			fd_manager_output(node, executor);
 			fd_manager_input(node, executor);
 			// dprintf(2, "fd_out is %d and fd_in is %d", node->fd_out, node->fd_in);
+			// dup2_close_other(executor, x + 1, node);
 			builtin_caller(node, executor, envp);
 		}
+		x++;
 		node = node->next;
 	}
 }
@@ -195,8 +193,8 @@ static void	check_args(t_executor *executor, t_node *node)
 	node_tmp = node;
 	while (node_tmp != NULL)
 	{
-		if (ft_strcmp(node_tmp->full_path, "builtin") != 0)
-			executor->num_processes += 1;
+		// if (ft_strcmp(node_tmp->full_path, "builtin") != 0)
+		executor->num_processes += 1;
 		node_tmp = node_tmp->next;
 	}
 	node_tmp = node;
@@ -219,6 +217,8 @@ void	init_node_num(t_node *node)
 	while(node_tmp != NULL)
 	{
 		node_tmp->node_num = i++;
+		node_tmp->fd_in_found = 0;
+		node_tmp->fd_out_found = 0;
 		node_tmp=node_tmp->next;
 	}
 }
@@ -244,6 +244,7 @@ int	executor(t_node *node, t_var *envp)
 		waitpid(executor.pids[i], &(executor.status), 0);
 		i++;
 	}
+	close_other_fd(&executor, -1, -1);
 	// if (!WIFSIGNALED(executor.status))
 	// 	set_exit_code(WEXITSTATUS(executor.status));
 	// else if (WIFSIGNALED(executor.status))

@@ -48,26 +48,26 @@ void	dup2_close_other(t_executor *executor, int pid,t_node *node)
 		dup2_processor(node->fd_out, 1, 1);
 		close_other_fd(executor, pid, pid);
 		dup2_processor(node->fd_in, 0, 2);
-		// if (pid != node->fd_out && pid != node->fd_in)
-		// 	close(pid);
+		if (executor->pipes[pid] != node->fd_out && executor->pipes[pid] != node->fd_in)
+			close(pid);
 	}
 	if (pid > 1 && pid < executor->num_processes)
 	{
 		dup2_processor(node->fd_in, 0, 0);
 		close_other_fd(executor, (pid - 2) * 2, (pid) * 2 - 1);
 		dup2_processor(node->fd_out, 1, 1);
-		if ((pid - 2) * 2 != node->fd_in)
-			close((pid - 2) * 2);
-		if (pid * 2 - 1 != node->fd_out)
-			close(pid * 2 - 1);
+		if (executor->pipes[(pid - 2 * 2)] != node->fd_in)
+			close(executor->pipes[(pid - 2 * 2)]);
+		if (executor->pipes[(pid * 2 - 1)] != node->fd_out)
+		 	close(executor->pipes[(pid * 2 - 1)]);
 	}
 	if (pid == executor->num_processes)
 	{
 		dup2_processor(node->fd_out, 1, 2);
 		close_other_fd(executor, (pid - 2) * 2, (pid - 2) * 2);
 		dup2_processor(node->fd_in, 0, 0);
-		// if ((pid - 2) * 2 != node->fd_out && (pid - 2) * 2 != node->fd_in)
-		// 	close((pid - 2) * 2);
+		if (executor->pipes[(pid - 2)] * 2 != node->fd_out && executor->pipes[(pid - 2)] != node->fd_in)
+			close(executor->pipes[(pid - 2)]);
 	}
 }
 

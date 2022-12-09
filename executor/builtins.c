@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/09 14:34:36 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/09 18:43:02 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,21 +384,26 @@ int	builtin_caller(t_node *node, t_executor *executor, t_var *envp)
 		perror("builtin not found");
 		executor->status = 1;
 	}
-	if (!(node->fd_out== 1))
-	{
-		if(dup2(executor->fd_out_original, 1) < 0)
-			perror("Dup 2 restore output error");
-		close(executor->fd_out_original);
-		node->fd_out= 1;
-		executor->fd_out_original = dup(1);
-	}
-	if (!(node->fd_in == 0))
-	{
-		if(dup2(executor->fd_in_original, 0) < 0)
-			perror("Dup 2 restore output error");
-		close(executor->fd_in_original);
-		node->fd_in = 0;
-		executor->fd_in_original = dup(0);
-	}
+
+if (node->fd_out!= 1 && node->fd_out_found == 1) // check if redirected
+	close (node->fd_out);
+if (node->fd_in != 0 && node->fd_in_found == 1) // check if redirected
+	close (node->fd_out);
+	// if (!(node->fd_out== 1))
+	// {
+	// 	if(dup2(executor->fd_out_original, 1) < 0)
+	// 		perror("Dup 2 restore output error");
+	// 	close(executor->fd_out_original);
+	// 	node->fd_out= 1;
+	// 	executor->fd_out_original = dup(1);
+	// }
+	// if (!(node->fd_in == 0))
+	// {
+	// 	if(dup2(executor->fd_in_original, 0) < 0)
+	// 		perror("Dup 2 restore output error");
+	// 	close(executor->fd_in_original);
+	// 	node->fd_in = 0;
+	// 	executor->fd_in_original = dup(0);
+	// }
 	return (executor->status);
 }
