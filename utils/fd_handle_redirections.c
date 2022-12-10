@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 20:44:06 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 15:05:11 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static t_fd	*fd_redirect_output(t_node *node, t_fd *fd, int *pos)
 	char	*tmp;
 
 	(*pos)++;
+	// printf("print: %s\n", program->tokens[(*pos)]);
 	fd->io = OUTPUT;
 	fd->mode = MODE_FILE;
 	tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
