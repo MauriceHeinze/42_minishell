@@ -1,5 +1,5 @@
 #include "./inc/minishell.h"
-#include "./exec/executor.h"
+#include "./executor/executor.h"
 
 static void setup_term(void)
 {
@@ -11,27 +11,18 @@ static void setup_term(void)
 	setup_signal_handler();
 }
 
-static void	free_split(char **words)
+static void	free_program_loop()
 {
-	int	i;
-
-	if (words == NULL)
-		return ;
-	i = 0;
-	while (words[i] != NULL)
-	{
-		words[i] = NULL;
-		free(words[i]);
-		i++;
-	}
-	words = NULL;
-	free(words);
+	free_split(program->tokens);
+	free_nodes(); // not working with linux
 }
 
 int main(int argc, char *argv[], char *envp[])
 {
 	char	**words;
+	char	**subwords;
 	char	*line;
+	char	*expanded_line;
 	int		i;
 
 	i = 0;
@@ -40,42 +31,69 @@ int main(int argc, char *argv[], char *envp[])
 	if (!program)
 		return (0);
 	program->envp = store_env(envp);
-	add_env(program->envp, "Maurice", "Heinze");
-	// printf("env is %s\n", get_env(program->envp, "Maurice"));
-	// printf("env is %s\n", get_env(program->envp, "USER"));
-
-	// printf("not_splitted is %s\n", program->envp->not_splitted);
-	// start shell
+	set_exit_code(0);
 	setup_term();
 	while (1)
 	{
-		line = readline("minishell $");
+		line = readline("minishell $ ");
 		if (!line)
 			break ;
-		if (ft_strlen(line) == 0)
+		if (ft_strlen(line) == 0 || is_whitespace(line) || !ft_strcmp(line, "."))
 			continue ;
 		track_history(line);
-		line = expand_variables(line);
-		words = split_line(line);
-		words = split_subline(words);
-		program->tokens = words;
-		program->cmd_line = line;
+		expanded_line = expand_variables(line);
+		words = split_line(expanded_line);
+		// i = 0;
+		// while (words[i])
+		// {
+		// 	printf("%s| \n", words[i]);
+		// 	i++;
+		// }
+		subwords = split_subline(words);
+		i = 0;
+		while (subwords[i])
+		{
+			printf("%s| \n", subwords[i]);
+			i++;
+		}
+		if (!check_syntax(subwords))
+			continue ;
+		program->tokens = subwords;
 		program->nodes = fill_node(program);
-		t_node *node = program->nodes;
-		t_fd *fd = node->fd;
-		execution_manager(node, program->envp);
-		// printf("Full cmd orig: %s\n", node->full_cmd_orig);
-		// write(1, "1 \n", 3);
-		// printf("Full cmd: %s\n", node->full_cmd);
-		// printf("Full path: %s\n_____\n", node->full_path);
-		// printf("Meta: %s\n_____\n", node->fd->meta);
+		// system("leaks minishell");
+		if (program->nodes == NULL)
+		{
+			printf("minishell: %s: command not found\n", program->tokens[0]);
+			free_split(program->tokens);
+			free_split(words);
+			// system("leaks minishell");
+			continue;
+		}
+		// t_node *node = program->nodes;
+		// t_fd *fd = node->fd;
 		// while (node != NULL)
 		// {
-	// 	// 	node = node->next;
-	// 	// 	// if (node)
-	// 	// 	// 	fd = node->fd;
-	// 	// }
+		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
+		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
+		// 	// printf("fd is: %s|\n", node->fd);
+		// 	while (fd)
+		// 	{
+		// 		printf("meta: %s|\n", fd->meta);
+		// 		fd = fd->next;
+		// 	}
+		// 	node = node->next;
+		// 	if (node)
+		// 		fd = node->fd;
+		// }
+		// printf("1 ======>\n");
+		executor(program->nodes, program->envp);
+		free_split(words); // results in double free
+		words = NULL;
+		free_program_loop();
 	}
+	free_env();
+	// system("leaks minishell");
 	return (0);
 }
 
+// echo hallo > file.txt
