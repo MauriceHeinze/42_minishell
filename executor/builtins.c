@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/10 22:04:05 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/10 22:32:51 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ int	cd(t_var *envp, char *dir, int fd)
 			perror("bash: cd: OLDPWD not set");
 		pwd(fd);
 	}
-	chdir_subhandler(envp, dir, first_arg, cwd);
+	else
+		chdir_subhandler(envp, dir, first_arg, cwd);
 	if (add_env(envp, ft_strdup("OLDPWD"), ft_strdup(cwd)) == NULL)
 		perror("add_env failed");
 	if (getcwd(cwd, PATH_MAX) == NULL)

@@ -36,8 +36,8 @@ void	close_fd(t_executor *executor)
 		close(executor->pipes[2 * i + 1]);
 		i++;
 	}
-	close(executor->fd1);
-	close(executor->fd2);
+	// close(executor->fd1);
+	// close(executor->fd2);
 }
 
 // char	*get_cmd_path(char **paths, char *cmd)
