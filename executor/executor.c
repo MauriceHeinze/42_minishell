@@ -168,7 +168,11 @@ void	fd_manager_input(t_node *node, t_executor *executor)
 		{
 			node->fd_in_found = 1;
 			if (fd_temp->mode == MODE_FILE)
+			{
 				fd_temp->fd = open(fd_temp->meta, O_RDONLY);
+				if (fd_temp->fd == -1)
+					dprintf(2, "File not openable %s", fd_temp->meta);
+			}
 			else if (fd_temp->mode == MODE_HEREDOC)
 				fd_temp->fd = executor->heredoc;
 			if (fd_former != NULL)

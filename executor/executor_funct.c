@@ -42,7 +42,7 @@ void	dup2_processor(int out, int in, int exit_code)
 
 void	dup2_close_other(t_executor *executor, int pid,t_node *node)
 {
-	// dprintf(2, "<out %d - in %d - pid %d - num_proc %d>\n", node->fd_out, node->fd_in, pid, executor->num_processes);
+	dprintf(2, "<out %d - in %d - pid %d - num_proc %d>\n", node->fd_out, node->fd_in, pid, executor->num_processes);
 	if (pid == 1)
 	{
 		dup2_processor(node->fd_out, 1, 1);
@@ -61,7 +61,7 @@ void	dup2_close_other(t_executor *executor, int pid,t_node *node)
 		if (executor->pipes[(pid * 2 - 1)] != node->fd_out)
 		 	close(executor->pipes[(pid * 2 - 1)]);
 	}
-	if (pid == executor->num_processes)
+	if (pid == executor->num_processes && executor->num_processes > 1)
 	{
 		dup2_processor(node->fd_out, 1, 2);
 		close_other_fd(executor, (pid - 2) * 2, (pid - 2) * 2);
