@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 17:50:00 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 18:08:48 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	double_arrow(int token, int *pos, t_fd **fd)
 		(*pos)++;
 		(*fd)->io = INPUT;
 		(*fd)->mode = MODE_HEREDOC;
-		(*fd)->meta = program->tokens[(*pos)];
+		(*fd)->meta = ft_strdup(program->tokens[(*pos)]);
 		(*pos)++;
 	}
 	else if (token == DOUBLE_ARROW_RIGHT)
