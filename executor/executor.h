@@ -66,4 +66,6 @@ int	builtin_caller(t_node *node, t_executor *executor, t_var *envp);
 
 int	executor (t_node *node, t_var *envp);
 
+void	free_double_ptr(char **ptr, int head);
+
 #endif

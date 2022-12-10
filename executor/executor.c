@@ -12,10 +12,12 @@
 
 #include "executor.h"
 
-void	free_double_ptr(char **ptr)
+void	free_double_ptr(char **ptr, int head)
 {
 	while (*ptr != NULL)
 		free(*ptr++);
+	if (head)
+		free(ptr);
 }
 
 int	check_char (char c)
@@ -60,8 +62,7 @@ void	sub_write(int file, char *buffer, t_var *envp)
 		i++;
 	}
 	write(file, "\n", 1);
-	free_double_ptr(split);
-	free(split);
+	free_double_ptr(split, 1);
 	free(buffer);
 }
 
@@ -275,6 +276,9 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 	// 	here_doc(argv[2], executor);
 	while (node != NULL)
 	{
+		if (node->full_path == NULL && node->full_cmd == NULL && node->full_cmd_orig == NULL)
+			fd_manager_output(node, executor);
+			fd_manager_input(node, executor);
 		if (ft_strcmp(node->full_path, "builtin") != 0)
 		{
 			executor->pids[x] = fork();
