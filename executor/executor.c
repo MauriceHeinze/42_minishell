@@ -12,6 +12,114 @@
 
 #include "executor.h"
 
+void	free_double_ptr(char **ptr)
+{
+	while (*ptr != NULL)
+		free(*ptr++);
+}
+
+int	check_char (char c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	if (c >= '0' && c <= '1')
+		return (1);
+	return (0);
+}
+
+void	sub_write(int file, char *buffer, t_var *envp)
+{
+	char	**split;
+	int		i;
+	int		var_length;
+	char	*var;
+
+	i = 0;
+	split = ft_split(buffer, '$');
+	if (*buffer != '$')
+	{
+		write(file, split[i], ft_strlen(split[i]));
+		i++;
+	}
+	while (split[i] != NULL)
+	{
+		// dprintf(2, "split[%d] = \"%s\"", i, split[i]);
+		var_length = 0;
+		while(check_char(split[i][var_length]))
+			var_length++;
+		var = malloc(sizeof(char) * (var_length + 1));
+		ft_strlcpy(var, split[i], var_length + 1);
+		var[var_length] = '\0';
+		if (get_env(envp, var))
+			write(file, get_env(envp, var), ft_strlen(get_env(envp, var)));
+		while (split[i][var_length] != '\0')
+			write(file, &(split[i][var_length++]), 1);
+		free(var);
+		i++;
+	}
+	write(file, "\n", 1);
+	free_double_ptr(split);
+	free(split);
+	free(buffer);
+}
+
+
+
+void heredoc(t_executor	*executor, t_var *envp)
+{
+	int		file;
+	char	*buffer;
+	char	*ret;
+
+	if (executor == NULL)
+		return ;
+	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	if (file < 0)
+	{
+		perror("heredoc tempfile error");
+		return ;
+	}
+	while (1)
+	{
+		buffer = readline("> ");
+		// char buffer[] = "1$USER, Moin Meister $USER, wie ist die $USER Lage?";
+		if (buffer == NULL)
+			perror("HEREDOC ERROR");
+		if (!ft_strncmp(executor->limiter, buffer, ft_strlen(executor->limiter)))
+			break ;
+		sub_write(file, buffer, envp);
+	}
+	// free(buffer);
+	close(file);
+}
+
+
+void	heredoc_handler(t_executor *executor, t_node *node_tmp, t_var *envp)
+{
+	t_fd	*fd_temp;
+
+	if (executor == NULL || node_tmp == NULL)
+		return ;
+	fd_temp = node_tmp->fd;
+	while (fd_temp != NULL)
+	{
+		if (fd_temp->mode == MODE_HEREDOC)
+		{
+			executor->limiter = fd_temp->meta;
+			heredoc(executor, envp);
+			executor->heredoc = open(".heredoc_tmp", O_RDONLY);
+			if (executor->heredoc < 0)
+			{
+				unlink(".heredoc_tmp");
+				perror("Read heredoc failed");
+			}
+		}
+		fd_temp = fd_temp->next;
+	}
+}	
+
 char **restore_envp(t_var *envp)
 {
 	char 	**restored_envp;
@@ -61,8 +169,8 @@ void	fd_manager_input(t_node *node, t_executor *executor)
 			node->fd_in_found = 1;
 			if (fd_temp->mode == MODE_FILE)
 				fd_temp->fd = open(fd_temp->meta, O_RDONLY);
-			// else if (fd_temp->mode == MODE_HEREDOC)
-			// 	fd_temp->fd = executor->heredoc;
+			else if (fd_temp->mode == MODE_HEREDOC)
+				fd_temp->fd = executor->heredoc;
 			if (fd_former != NULL)
 				close(fd_former->fd);
 			fd_former = fd_temp;
@@ -117,12 +225,12 @@ static int	child_process(t_executor	*executor, int pid,  t_var *envp, t_node *no
 	// dprintf(2, "execve(%s, args, %s %s %s,restored_envp)\n", get_cmd_path(executor->cmd_paths, *args), args[0], args[1], args[2]);
 	if (execve(get_cmd_path(executor->cmd_paths, *args), args, restored_envp) == -1)
 	{
-		while (*restored_envp != NULL)
-			free(*restored_envp++);
-		free(restored_envp);
-		while (*args != NULL)
-			free(*args++);
-		free(args);
+		// while (*restored_envp != NULL)
+		// 	free(*restored_envp++);
+		// free(restored_envp);
+		// while (*args != NULL)
+		// 	free(*args++);
+		// free(args);
 		close(node->fd_out);
 		close(node->fd_in);
 		exit_msg("CMD - command not found", 127);
@@ -130,15 +238,22 @@ static int	child_process(t_executor	*executor, int pid,  t_var *envp, t_node *no
 	return(0);
 }
 
+
+
+
+
+
 static void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 {
-	executor->pipes = malloc(sizeof(int) * 2 * executor->num_pipes);
+	if (executor->num_pipes > 0)
+		executor->pipes = malloc(sizeof(int) * 2 * executor->num_pipes);
 	executor->pids = malloc(sizeof(pid_t) * executor->num_processes);
 	executor->cmd_paths = get_cmd_paths(envp);
 	executor->status = 0;
 	executor->first_node = node;
-	executor->fd_out_original = dup(1);
-	executor->fd_in_original = dup(0);
+	executor->heredoc = -1;
+	// executor->fd_out_original = dup(1);
+	// executor->fd_in_original = dup(0);
 	// executor->fd1 = open("infile.txt", O_RDONLY);
 	// 	if (executor->fd1 == -1)
 	// 		perror("argv[1]");
@@ -235,6 +350,7 @@ int	executor(t_node *node, t_var *envp)
 	check_args (&executor, node);
 	init_executor (&executor, envp, node);
 	create_pipes(&executor);
+	heredoc_handler(&executor, node, envp);
 	fork_processes(&executor, envp, node);
 	close_fd(&executor);
 	while (*executor.cmd_paths != NULL)
@@ -250,6 +366,11 @@ int	executor(t_node *node, t_var *envp)
 	// 	set_exit_code(WEXITSTATUS(executor.status));
 	// else if (WIFSIGNALED(executor.status))
 	// 	set_exit_code(WTERMSIG(executor.status) + 128);
+	if (executor.num_pipes > 0)
+		free(executor.pipes);
+	free(executor.pids);
+	// sleep(100);
+	// free_double_ptr(executor.cmd_paths);
 	return (0);
 }
 

@@ -48,7 +48,7 @@ void	dup2_close_other(t_executor *executor, int pid,t_node *node)
 		dup2_processor(node->fd_out, 1, 1);
 		close_other_fd(executor, pid, pid);
 		dup2_processor(node->fd_in, 0, 2);
-		if (executor->pipes[pid] != node->fd_out && executor->pipes[pid] != node->fd_in)
+		if (executor->num_pipes>0 && (executor->pipes[pid] != node->fd_out && executor->pipes[pid] != node->fd_in))
 			close(pid);
 	}
 	if (pid > 1 && pid < executor->num_processes)
@@ -70,40 +70,3 @@ void	dup2_close_other(t_executor *executor, int pid,t_node *node)
 			close(executor->pipes[(pid - 2)]);
 	}
 }
-
-void	here_doc_open(t_executor *executor)
-{
-	executor->fd1 = open(".heredoc_tmp", O_RDONLY);
-	if (executor->fd1 < 0)
-	{
-		unlink(".heredoc_tmp");
-		perror("Read heredoc failed");
-	}
-}
-
-// void	here_doc(char *argv, t_executor *executor)
-// {
-// 	int		file;
-// 	char	*buffer;
-
-// 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-// 	if (file < 0)
-// 	{
-// 		perror("heredoc tempfile error");
-// 		return ;
-// 	}
-// 	while (1 && file > 0)
-// 	{
-// 		write(1, "heredoc> ", 9);
-// 		buffer = get_next_line(0);
-// 		if (buffer == NULL)
-// 			exit_msg("GNL Error", EXIT_FAILURE);
-// 		if (!ft_strncmp(argv, buffer, ft_strlen(argv)))
-// 			break ;
-// 		write(file, buffer, ft_strlen(buffer));
-// 		free(buffer);
-// 	}
-// 	free(buffer);
-// 	close(file);
-// 	here_doc_open(executor);
-// }

@@ -33,15 +33,15 @@ typedef struct s_executor
 	int		num_pipes;
 	int		num_processes;
 	pid_t	*pids;
-	char	*all_paths;
+	// char	*all_paths;
 	char	**cmd_paths;
-	char	**args;
+	// char	**args;
 	char	*limiter;
 	char	*buffer;
 	int		status;
 	t_node	*first_node;
-	int		fd_out_original;
-	int		fd_in_original;
+	int		heredoc;
+	
 }	t_executor;
 
 void	close_fd(t_executor *executor);
