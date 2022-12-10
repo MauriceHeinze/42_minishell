@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 15:05:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 17:48:22 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 static t_fd	*fd_redirect_output(t_node *node, t_fd *fd, int *pos)
 {
 	char	*tmp;
+	char	*tmp_2;
 
 	(*pos)++;
-	// printf("print: %s\n", program->tokens[(*pos)]);
 	fd->io = OUTPUT;
 	fd->mode = MODE_FILE;
 	tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-	fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+	tmp_2 = ft_strtrim(program->tokens[(*pos)], " ");
+	fd->meta = ft_strjoin(tmp, tmp_2);
 	free(tmp);
+	free(tmp_2);
 	tmp = ft_strtrim(node->full_cmd, " ");
 	free(node->full_cmd);
 	node->full_cmd = ft_strdup(tmp);

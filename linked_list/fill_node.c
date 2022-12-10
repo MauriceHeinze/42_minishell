@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 16:41:31 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 17:21:54 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ static int	operator_statement_2(t_node *node, int *i)
 	if ((get_category(program->tokens[(*i)]) < ARROW_LEFT
 			|| get_category(program->tokens[(*i)]) > PIPE)
 		&& (get_command(program, &node, i) == 1))
-	{
-		printf("4 ===> \n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -70,25 +67,16 @@ t_node	*fill_node(t_program *program)
 		{
 			fill_fd(program, &node, &i);
 			if (program->tokens[i] == NULL && program->tokens[i + 1] == NULL)
-			{
-				printf("2 ===>\n");
 				break ;
-			}
 			if (operator_statement_2(node, &i))
-			{
-				printf("3 ===>\n");
 				return (free_head(head));
-			}
 		}
 		else if (get_command(program, &node, &i) == 1)
 			return (free_head(head));
 		if (add_tokens(&node, program->tokens, &i))
 			return (head);
 		if (get_category(program->tokens[i]) == PIPE)
-		{
 			node = add_node(node, &i);
-			printf("--- ===>\n");
-		}
 	}
 	return (head);
 }

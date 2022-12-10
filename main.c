@@ -68,22 +68,22 @@ int main(int argc, char *argv[], char *envp[])
 			// system("leaks minishell");
 			continue;
 		}
-		// t_node *node = program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
-		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
-		// 	// printf("fd is: %s|\n", node->fd);
-		// 	while (fd)
-		// 	{
-		// 		printf("meta: %s\n", fd->meta);
-		// 		fd = fd->next;
-		// 	}
-		// 	node = node->next;
-		// 	if (node)
-		// 		fd = node->fd;
-		// }
+		t_node *node = program->nodes;
+		t_fd *fd = node->fd;
+		while (node != NULL)
+		{
+			printf("\nFull cmd: %s|\n", node->full_cmd);
+			printf("Orig cmd: %s|\n", node->full_cmd_orig);
+			// printf("fd is: %s|\n", node->fd);
+			while (fd)
+			{
+				printf("meta: %s|\n", fd->meta);
+				fd = fd->next;
+			}
+			node = node->next;
+			if (node)
+				fd = node->fd;
+		}
 		// printf("1 ======>\n");
 		executor(program->nodes, program->envp);
 		free_split(words); // results in double free
