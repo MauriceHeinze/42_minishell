@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 18:08:48 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 18:43:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static void	arrow_right(int token, int *pos, t_node **node, t_fd **fd)
 		free(tmp_2);
 		tmp = ft_strtrim((*node)->full_cmd, " ");
 		free((*node)->full_cmd);
-		(*node)->full_cmd = ft_strdup(tmp);
+		if ((*node)->full_cmd)
+			(*node)->full_cmd = ft_strdup(tmp);
 		free(tmp);
 		tmp = NULL;
 		(*pos)++;
