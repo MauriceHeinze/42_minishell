@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 17:21:54 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/10 17:58:44 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,13 @@ static int	operator_statement(int *i)
 
 static int	operator_statement_2(t_node *node, int *i)
 {
-	if ((get_category(program->tokens[(*i)]) < ARROW_LEFT
-			|| get_category(program->tokens[(*i)]) > PIPE)
-		&& (get_command(program, &node, i) == 1))
-		return (1);
+	if (program->tokens[(*i)])
+	{
+		if ((get_category(program->tokens[(*i)]) < ARROW_LEFT
+				|| get_category(program->tokens[(*i)]) > PIPE)
+			&& (get_command(program, &node, i) == 1))
+			return (1);
+	}
 	return (0);
 }
 
