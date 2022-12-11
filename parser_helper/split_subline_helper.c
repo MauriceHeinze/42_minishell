@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/08 20:06:47 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:59:19 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	skip(char **splits, char **words, int *i, int *k)
 
 static void	skip_space(char **splits, int *i, int *k)
 {
-	if (splits[(*i)][(*k)] == ' ')
+	if (splits[(*i)][(*k)] == ' ' && splits[(*i)][(*k)] == '	')
 		(*k)++;
 }
 

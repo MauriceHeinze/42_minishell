@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 12:50:15 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:56:21 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_command(t_program *program, t_node **node, int *pos)
 	char	*tmp;
 	char	**paths;
 
-	tmp = ft_strtrim(program->tokens[(*pos)], " ");
+	tmp = ft_strtrim(program->tokens[(*pos)], " 	");
 	token = remove_quotes(tmp);
 	free(tmp);
 	category = get_category(token);

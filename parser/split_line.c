@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 21:00:11 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/08 19:41:22 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 13:06:34 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static char	*setup_split_line(char *str, int *i, int *start, int *no_word)
 
 static char	*handle_quote(char *str, int *i, int *start, int *no_word)
 {
-	if (str[(*i) + quote_length(str[(*i)], str, (*i)) + 2] == ' ')
+	if (str[(*i) + quote_length(str[(*i)], str, (*i)) + 2] == ' '
+		|| str[(*i) + quote_length(str[(*i)], str, (*i)) + 2] == '	')
 	{
 		(*i) = (*i) + quote_length(str[(*i)], str, (*i)) + 2;
 		return (ft_substr(str, (*start), (*i) - (*start) + 1));
@@ -40,7 +41,7 @@ static char	*handle_quote(char *str, int *i, int *start, int *no_word)
 
 static char	*add_word(char *str, int *i, int *start)
 {
-	if (str[(*i)] == ' ')
+	if (str[(*i)] == ' ' || str[(*i)] == '	')
 		(*i)++;
 	return (ft_substr(str, (*start), (*i) - (*start)));
 }
@@ -58,7 +59,7 @@ char	**split_line(char *str)
 	{
 		start = i;
 		while (str[i] != '\'' && str[i] != '\"'
-			&& str[i] != ' ' && str[i] != '\0')
+			&& str[i] != ' ' && str[i] != '	' && str[i] != '\0')
 			i++;
 		if (i > start)
 		{
