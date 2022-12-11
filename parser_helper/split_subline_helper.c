@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 12:59:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 15:46:52 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int	double_operator_found(char a, char b)
 
 static int	skip(char **splits, char **words, int *i, int *k)
 {
+	int	old_k;
+
+	old_k = (*k);
 	if (splits[(*i)][(*k)] == '\"' || splits[(*i)][(*k)] == '\'')
 			(*k) = skip_quote(splits[(*i)], (*k));
 	while (splits[(*i)][(*k)] != '>' && splits[(*i)][(*k)] != '<'
 			&& splits[(*i)][(*k)] != '|' && splits[(*i)][(*k)] != '\0')
 		(*k)++;
-	return ((*k));
+	return (old_k);
 }
 
 static void	skip_space(char **splits, int *i, int *k)
