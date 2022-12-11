@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/05 15:49:44 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:49:47 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_cmd_path(char **paths, char *cmd)
 	char	*command;
 
 	if (access(cmd, 0) == 0)
-		return (cmd);
+		return (ft_strdup(cmd));
 	while (*paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
