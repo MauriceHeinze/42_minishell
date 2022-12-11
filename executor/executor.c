@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 22:44:08 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 23:11:45 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 void	prepare_child_process(t_executor *executor,
 t_var *envp, t_node *node, int x)
 {
+	child_signal_handler();
 	executor->pids[x] = fork();
 	if (executor->pids[x] == -1)
 		exec_error(FORK_ERROR, NULL);

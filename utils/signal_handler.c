@@ -6,13 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:49:16 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 23:08:48 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	signal_interrupt(int sig)
+static void	signal_interrupt_default(int sig)
 {
 	write (1, "\n", 1);
 	rl_free_line_state();
@@ -21,8 +21,19 @@ static void	signal_interrupt(int sig)
 	rl_redisplay();
 }
 
-void	setup_signal_handler(void)
+void	default_signal_handler(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_interrupt);
+	signal(SIGINT, signal_interrupt_default);
+}
+
+static void	signal_interrupt_child(int sig)
+{
+	kill(0, SIGQUIT);
+}
+
+void	child_signal_handler(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_interrupt_child);
 }

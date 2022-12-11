@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 22:36:41 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 23:14:34 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	setup_term(void)
 	tcgetattr(0, &t);
 	t.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &t);
-	setup_signal_handler();
+	default_signal_handler();
 }
 
 static void	free_program_loop(void)
@@ -52,12 +52,13 @@ int	main(int argc, char *argv[], char *envp[])
 	setup_term();
 	while (1)
 	{
+		default_signal_handler();
 		line = readline("minishell $ ");
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0 || is_whitespace(line))
 			continue ;
-	
+
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
@@ -85,7 +86,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free_split(words);
 			free(g_program->unknown_cmd);
 			g_program->unknown_cmd = NULL;
-			// system("leaks minishell");
+			system("leaks minishell");
 			continue ;
 		}
 		// t_node *node = g_program->nodes;
@@ -109,12 +110,12 @@ int	main(int argc, char *argv[], char *envp[])
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
-	// system("leaks minishell");
+	system("leaks minishell");
 	return (0);
 }
 
