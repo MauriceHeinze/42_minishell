@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 20:18:14 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 20:34:16 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 		free(token);
 		if ((*node)->full_path == NULL)
 		{
+			free((*node)->full_cmd);
+			(*node)->full_cmd = NULL;
 			free_split(paths);
 			return (1);
 		}
