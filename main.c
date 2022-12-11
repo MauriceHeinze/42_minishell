@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:30:33 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 18:39:12 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free_split(words);
 			free(g_program->unknown_cmd);
 			g_program->unknown_cmd = NULL;
-			system("leaks minishell");
+			// system("leaks minishell");
 			continue ;
 		}
 		// t_node *node = g_program->nodes;
@@ -105,12 +105,12 @@ int	main(int argc, char *argv[], char *envp[])
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
-	system("leaks minishell");
+	// system("leaks minishell");
 	return (0);
 }
 

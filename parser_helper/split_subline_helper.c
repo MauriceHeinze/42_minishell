@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 15:46:52 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 19:03:10 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ static int	skip(char **splits, char **words, int *i, int *k)
 	old_k = (*k);
 	if (splits[(*i)][(*k)] == '\"' || splits[(*i)][(*k)] == '\'')
 			(*k) = skip_quote(splits[(*i)], (*k));
-	while (splits[(*i)][(*k)] != '>' && splits[(*i)][(*k)] != '<'
-			&& splits[(*i)][(*k)] != '|' && splits[(*i)][(*k)] != '\0')
-		(*k)++;
 	return (old_k);
 }
 
