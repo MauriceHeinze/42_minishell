@@ -43,10 +43,11 @@ CLIENT = main.c $(SOURCES)
 
 CLIENTOBJ =	$(CLIENT:.c=.o)
 
+HOMEPATH = ${HOME}
+EXPORT = $(shell echo 'export PATH=$(HOMEPATH)/goinfre/.brew/bin:$PATH' >> $(HOMEPATH)/.zshrc && source $(HOMEPATH)/.zshrc && brew update)
 HDR = ./inc/minishell.h
 CC = cc -g
-# FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
-CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
+CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
 
@@ -61,6 +62,12 @@ allLinux: nameLinux
 nameLinux: $(HDR) $(CLIENTOBJ)
 	make -C ./libft
 	$(CC) $(CLIENTOBJ) ./libft/libft.a $(CFLAGSLINUX) -o $(NAME)
+
+install_readline:
+	rm -rf $(HOMEPATH)/.brew && rm -rf $(HOMEPATH)/goinfre/.brew && git clone --depth=1 https://github.com/Homebrew/brew $(HOMEPATH)/goinfre/.brew
+	$(EXPORT)
+	brew update
+	brew install readline 
 
 clean:
 	make fclean -C ./libft
