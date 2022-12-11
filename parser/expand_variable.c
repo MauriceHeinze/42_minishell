@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:50:19 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/09 13:52:01 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ char	*expand_variable(char *input_str, int start, int i)
 	input_str = ft_strdup(tmp);
 	free(tmp);
 	tmp = NULL;
-	if (get_env(program->envp, var_name))
+	if (get_env(g_program->envp, var_name))
 	{
-		tmp = str_add(input_str, get_env(program->envp, var_name), start);
+		tmp = str_add(input_str, get_env(g_program->envp, var_name), start);
 		free(input_str);
 		input_str = NULL;
 		input_str = tmp;
@@ -63,7 +63,7 @@ static char	*replace_var_with_path(char *input_str, int *i, int *start)
 	input_str = ft_strdup(tmp);
 	free(tmp);
 	tmp = NULL;
-	tmp = str_add(input_str, get_env(program->envp, "HOME"), (*start));
+	tmp = str_add(input_str, get_env(g_program->envp, "HOME"), (*start));
 	free(input_str);
 	input_str = NULL;
 	(*i) = 0;

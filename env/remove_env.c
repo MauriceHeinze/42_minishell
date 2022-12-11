@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 16:26:25 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 20:30:49 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	remove_env(t_var *env, char *name)
 	{
 		head = env->next;
 		free_var(env);
-		program->envp = head;
+		g_program->envp = head;
 	}
 	while (env)
 	{
@@ -44,5 +44,5 @@ void	remove_env(t_var *env, char *name)
 		}
 		env = env->next;
 	}
-	program->envp = head;
+	g_program->envp = head;
 }

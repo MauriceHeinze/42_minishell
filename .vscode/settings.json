@@ -3,6 +3,8 @@
 		"minishell.h": "c",
 		"__node_handle": "c",
 		"executor.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"readline.h": "c",
+		"stdbool.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 15:45:12 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:59:21 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 
 	if (category == UNDEFINED || category == WORD)
 	{
-		paths = get_cmd_paths(program->envp);
+		paths = get_cmd_paths(g_program->envp);
 		(*node)->full_cmd_orig = ft_strdup(token);
 		(*node)->full_path = get_cmd_path_no_free(paths, token);
 		free(token);
@@ -41,14 +41,14 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 	return (0);
 }
 
-int	get_command(t_program *program, t_node **node, int *pos)
+int	get_command(t_program *g_program, t_node **node, int *pos)
 {
 	int		category;
 	char	*token;
 	char	*tmp;
 	char	**paths;
 
-	tmp = ft_strtrim(program->tokens[(*pos)], " 	");
+	tmp = ft_strtrim(g_program->tokens[(*pos)], " 	");
 	token = remove_quotes(tmp);
 	free(tmp);
 	category = get_category(token);

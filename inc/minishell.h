@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <signal.h>
-# include "../readline/readline.h"
-# include "../readline/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "./libft.h"
 # include "../get_next_line/get_next_line.h"
 # include <sys/wait.h>
@@ -58,7 +58,7 @@ typedef struct s_var {
 	struct s_var	*next;
 }				t_var;
 
-typedef struct s_program {
+typedef struct s_g_program {
 	t_var			*envp;
 	int				status;
 	char			**tokens;
@@ -66,14 +66,14 @@ typedef struct s_program {
 	t_node			*nodes;
 }				t_program;
 
-t_program	*program;
+t_program	*g_program;
 
 char	**split_line(char *str);
 char	**split_subline(char **splitted);
 int		split_line_counter(char *str);
 void	acutal_split(char **splits, char **words, int *i, int *no_word);
 int		double_operator_found(char a, char b);
-int		get_command(t_program *program, t_node **node, int *pos);
+int		get_command(t_program *g_program, t_node **node, int *pos);
 t_node	*add_node(t_node *node, int *i);
 t_node	*setup_node(void);
 int		add_tokens(t_node **node, char **tokens, int *i);
@@ -94,8 +94,8 @@ void	remove_env(t_var *env, char *name);
 void	free_env(void);
 void	setup_signal_handler(void);
 void	ctrl_c(void);
-t_node	*fill_node(t_program *program);
-void	fill_fd(t_program *program, t_node **node, int *pos);
+t_node	*fill_node(t_program *g_program);
+void	fill_fd(t_program *g_program, t_node **node, int *pos);
 t_fd	*setup_fd(void);
 void	free_nodes(void);
 void	free_split(char **words);

@@ -42,7 +42,7 @@ void	free_env(void)
 	t_var	*envp;
 	t_var	*tmp_envp;
 
-	envp = program->envp;
+	envp = g_program->envp;
 	while (envp != NULL)
 	{
 		tmp_envp = envp;

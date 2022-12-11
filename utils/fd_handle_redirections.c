@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/10 17:48:22 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static t_fd	*fd_redirect_output(t_node *node, t_fd *fd, int *pos)
 	(*pos)++;
 	fd->io = OUTPUT;
 	fd->mode = MODE_FILE;
-	tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-	tmp_2 = ft_strtrim(program->tokens[(*pos)], " ");
+	tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+	tmp_2 = ft_strtrim(g_program->tokens[(*pos)], " ");
 	fd->meta = ft_strjoin(tmp, tmp_2);
 	free(tmp);
 	free(tmp_2);
@@ -41,8 +41,8 @@ static t_fd	*fd_stdin(t_node *node, t_fd *fd, int *pos)
 	(*pos)++;
 	fd->io = INPUT;
 	fd->mode = MODE_FILE;
-	tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-	fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+	tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+	fd->meta = ft_strjoin(tmp, g_program->tokens[(*pos)]);
 	free(tmp);
 	tmp = NULL;
 	(*pos)++;
@@ -54,7 +54,7 @@ static t_fd	*fd_heredoc(t_node *node, t_fd *fd, int *pos)
 	(*pos)++;
 	fd->io = INPUT;
 	fd->mode = MODE_HEREDOC;
-	fd->meta = program->tokens[(*pos)];
+	fd->meta = g_program->tokens[(*pos)];
 	(*pos)++;
 	return (fd);
 }
@@ -66,8 +66,8 @@ static t_fd	*fd_append(t_node *node, t_fd *fd, int *pos)
 	(*pos)++;
 	fd->io = OUTPUT;
 	fd->mode = MODE_APPEND;
-	tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-	fd->meta = ft_strjoin(tmp, program->tokens[(*pos)]);
+	tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+	fd->meta = ft_strjoin(tmp, g_program->tokens[(*pos)]);
 	free(tmp);
 	tmp = NULL;
 	(*pos)++;

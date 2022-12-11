@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 15:59:35 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,15 @@ void	set_exit_code(int exit_code)
 {
 	char	*exit_code_str;
 
-	program->status = exit_code;
+	g_program->status = exit_code;
 	exit_code_str = ft_itoa(exit_code);
-	add_env(program->envp, ft_strdup("?"), exit_code_str);
+	add_env(g_program->envp, ft_strdup("?"), exit_code_str);
 }
 
 void	exit_shell(int error_code)
 {
-	free_split(program->tokens);
-	if (program->nodes->full_cmd != NULL)
+	free_split(g_program->tokens);
+	if (g_program->nodes->full_cmd != NULL)
 		free_nodes();
 	free_env();
 	exit(error_code);

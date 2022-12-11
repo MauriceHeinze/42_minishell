@@ -13,10 +13,10 @@ static void setup_term(void)
 
 static void	free_program_loop()
 {
-	free_split(program->tokens);
+	free_split(g_program->tokens);
 	free_nodes(); // not working with linux
-	free(program->unknown_cmd);
-	program->unknown_cmd = NULL;
+	free(g_program->unknown_cmd);
+	g_program->unknown_cmd = NULL;
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -28,11 +28,11 @@ int main(int argc, char *argv[], char *envp[])
 	int		i;
 
 	i = 0;
-	// setup program
-	program = malloc(sizeof(t_program));
-	if (!program)
+	// setup g_program
+	g_program = malloc(sizeof(g_program));
+	if (!g_program)
 		return (0);
-	program->envp = store_env(envp);
+	g_program->envp = store_env(envp);
 	set_exit_code(0);
 	setup_term();
 	while (1)
@@ -60,19 +60,19 @@ int main(int argc, char *argv[], char *envp[])
 		// }
 		if (!check_syntax(subwords))
 			continue ;
-		program->tokens = subwords;
-		program->nodes = fill_node(program);
-		if (program->nodes == NULL)
+		g_program->tokens = subwords;
+		g_program->nodes = fill_node(g_program);
+		if (g_program->nodes == NULL)
 		{
-			printf("minishell: %s: command not found\n", program->unknown_cmd);
-			free_split(program->tokens);
+			printf("minishell: %s: command not found\n", g_program->unknown_cmd);
+			free_split(g_program->tokens);
 			free_split(words);
-			free(program->unknown_cmd);
-			program->unknown_cmd = NULL;
+			free(g_program->unknown_cmd);
+			g_program->unknown_cmd = NULL;
 			system("leaks minishell");
 			continue;
 		}
-		// t_node *node = program->nodes;
+		// t_node *node = g_program->nodes;
 		// t_fd *fd = node->fd;
 		// while (node != NULL)
 		// {
@@ -89,15 +89,15 @@ int main(int argc, char *argv[], char *envp[])
 		// 		fd = node->fd;
 		// }
 		// printf("1 ======>\n");
-		executor(program->nodes, program->envp);
+		executor(g_program->nodes, g_program->envp);
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
 		system("leaks minishell");
 	}
 	free_env();
-	free(program->unknown_cmd);
-	program->unknown_cmd = NULL;
+	free(g_program->unknown_cmd);
+	g_program->unknown_cmd = NULL;
 	system("leaks minishell");
 	return (0);
 }

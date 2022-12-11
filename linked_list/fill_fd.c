@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 15:45:03 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:58:52 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	arrow_right(int token, int *pos, t_node **node, t_fd **fd)
 		(*pos)++;
 		(*fd)->io = OUTPUT;
 		(*fd)->mode = MODE_FILE;
-		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		tmp_2 = ft_strtrim(program->tokens[(*pos)], " ");
+		tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+		tmp_2 = ft_strtrim(g_program->tokens[(*pos)], " ");
 		(*fd)->meta = ft_strjoin(tmp, tmp_2);
 		free(tmp);
 		free(tmp_2);
@@ -67,8 +67,8 @@ static void	arrow_left(int token, int *pos, t_node **node, t_fd **fd)
 		(*pos)++;
 		(*fd)->io = INPUT;
 		(*fd)->mode = MODE_FILE;
-		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		tmp_2 = ft_strtrim(program->tokens[(*pos)], " ");
+		tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+		tmp_2 = ft_strtrim(g_program->tokens[(*pos)], " ");
 		(*fd)->meta = ft_strjoin(tmp, tmp_2);
 		free(tmp);
 		free(tmp_2);
@@ -87,7 +87,7 @@ static void	double_arrow(int token, int *pos, t_fd **fd)
 		(*pos)++;
 		(*fd)->io = INPUT;
 		(*fd)->mode = MODE_HEREDOC;
-		(*fd)->meta = ft_strtrim(program->tokens[(*pos)], " 	");
+		(*fd)->meta = ft_strtrim(g_program->tokens[(*pos)], " 	");
 		(*pos)++;
 	}
 	else if (token == DOUBLE_ARROW_RIGHT)
@@ -95,8 +95,8 @@ static void	double_arrow(int token, int *pos, t_fd **fd)
 		(*pos)++;
 		(*fd)->io = OUTPUT;
 		(*fd)->mode = MODE_APPEND;
-		tmp = ft_strjoin(get_env(program->envp, "PWD"), "/");
-		tmp_2 = ft_strtrim(program->tokens[(*pos)], " ");
+		tmp = ft_strjoin(get_env(g_program->envp, "PWD"), "/");
+		tmp_2 = ft_strtrim(g_program->tokens[(*pos)], " ");
 		(*fd)->meta = ft_strjoin(tmp, tmp_2);
 		free(tmp);
 		free(tmp_2);
@@ -105,14 +105,14 @@ static void	double_arrow(int token, int *pos, t_fd **fd)
 	}
 }
 
-void	fill_fd(t_program *program, t_node **node, int *pos)
+void	fill_fd(t_program *g_program, t_node **node, int *pos)
 {
 	t_fd	*fd;
 	t_fd	*head;
 	int		token;
 	char	*tmp;
 
-	token = get_category(program->tokens[(*pos)]);
+	token = get_category(g_program->tokens[(*pos)]);
 	node_null(node, &head, &fd);
 	arrow_left(token, pos, node, &fd);
 	arrow_right(token, pos, node, &fd);

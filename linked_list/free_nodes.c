@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 13:19:55 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	free_nodes(void)
 	t_node	*node;
 	t_node	*tmp_node;
 
-	node = program->nodes;
+	node = g_program->nodes;
 	while (node != NULL)
 	{
 		tmp_node = node;
