@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:55:28 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 13:56:52 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 16:25:57 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,24 @@ static char	*echo_pre(char *str, int *n)
 	return (str);
 }
 
-static int	echo_move(char *str, int *isq, int *idq)
+static int	echo_move(char **str, int *isq, int *idq)
 {
-	if (*str == '\"' && !isq)
+	if (**str == '\"' && !(*isq))
 	{
 		if (*idq)
 			*idq = 0;
 		else if (!(*idq))
 			*idq = 1;
-		str++;
+		*str = *str + 1;
 		return (1);
 	}
-	else if (!(*idq) && *str == '\'')
+	else if (!(*idq) && **str == '\'')
 	{
 		if (*isq)
 			*isq = 0;
 		else if (!(*isq))
 			*isq = 1;
-		str++;
+		*str = *str + 1;
 		return (1);
 	}
 	return (0);
@@ -85,8 +85,11 @@ int	echo_lat(char *str, int fd)
 	idq = 0;
 	while (*str != '\0')
 	{
-		if (echo_move(str, &isq, &idq))
-			continue ;
+		if (*str == '\"' || *str == '\'')
+		{
+			if (echo_move(&str, &isq, &idq))
+				continue ;
+		}
 		else if (*str == ';' && !isq && !idq)
 			str++;
 		else

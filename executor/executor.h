@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 14:06:35 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:14:11 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		builtin_caller(t_node *node, t_executor *executor, t_var *envp);
 
 int		executor(t_node *node, t_var *envp);
 
-void	free_double_ptr(char **ptr, int head);
+void	free_double_ptr(char **ptr);
 
 int		exit_pre_handler(t_node *node, int fd);
 
@@ -85,7 +85,5 @@ void	fd_manager_input(t_node *node, t_executor *executor);
 void	fd_manager_output(t_node *node, t_executor	*executor);
 
 char	**restore_envp(t_var *envp);
-
-void	free_double_ptr(char **ptr, int head);
 
 #endif

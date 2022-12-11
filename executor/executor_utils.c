@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 14:04:36 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:14:30 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ void	close_fd(t_executor *executor)
 	}
 }
 
-void	free_double_ptr(char **ptr, int head)
+void	free_double_ptr(char **ptr)
 {
+	char ***header;
+	
 	while (*ptr != NULL)
 		free(*ptr++);
 }

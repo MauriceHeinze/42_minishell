@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 14:05:29 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:14:33 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ static void	heredoc(t_executor	*executor, t_var *envp)
 		split = ft_split(buffer, '$');
 		sub_write(file, buffer, envp, split);
 		write(file, "\n", 1);
-		free_double_ptr(split, 1);
+		free_double_ptr(split);
+		free(split);
 		free(buffer);
 	}
 	close(file);

@@ -6,15 +6,18 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 15:58:57 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:14:36 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "../inc/minishell.h"
 
-static void	chdir_sub(t_var *envp, char *dir, char	**first_arg, char *cwd)
+static void	chdir_sub(t_var *envp, char *dir, char *cwd)
 {
+	char	**first_arg;
+	
+	first_arg = NULL;
 	if (dir == NULL || *dir == '\0')
 	{
 		if (chdir (get_env(envp, "HOME")) == -1)
@@ -25,15 +28,19 @@ static void	chdir_sub(t_var *envp, char *dir, char	**first_arg, char *cwd)
 		first_arg = ft_split(dir, ' ');
 		if (chdir (*first_arg) == -1)
 			special_error(INVALID_PATH);
+		if (first_arg != NULL)
+		{
+			free_double_ptr(first_arg);
+			free(first_arg);
+		}
 	}
 }
 
 int	cd(t_var *envp, char *dir, int fd)
 {
-	char	**first_arg;
 	char	cwd[PATH_MAX];
 
-	first_arg = NULL;
+	
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		builtin_error(GETCWD_ERROR, NULL);
 	if (ft_strcmp(dir, "-") == 0)
@@ -43,15 +50,13 @@ int	cd(t_var *envp, char *dir, int fd)
 		pwd(fd);
 	}
 	else
-		chdir_sub(envp, dir, first_arg, cwd);
+		chdir_sub(envp, dir, cwd);
 	if (add_env(envp, ft_strdup("OLDPWD"), ft_strdup(cwd)) == NULL)
 		builtin_error(ADD_ENV_ERROR, NULL);
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		builtin_error(GETCWD_ERROR, NULL);
 	if (add_env(envp, ft_strdup("PWD"), ft_strdup(cwd)) == NULL)
 		builtin_error(ADD_ENV_ERROR, NULL);
-	if (first_arg != NULL)
-		free_double_ptr(first_arg, 1);
 	return (EXIT_SUCCESS);
 }
 

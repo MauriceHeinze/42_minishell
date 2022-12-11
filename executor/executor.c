@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 14:08:04 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:14:23 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 	if (execve(get_cmd_path(ex->cmd_paths, *args), args, re) == -1)
 	{
 		exec_error(CMD_NOT_FOUND, *args);
-		free_double_ptr(re, 1);
-		free_double_ptr(args, 1);
+		free_double_ptr(re);
+		free_double_ptr(args);
+		free(re);
+		free(args);
 		close(node->fd_out);
 		close(node->fd_in);
 		set_exit_code(127);
@@ -94,6 +96,7 @@ int	executor(t_node *node, t_var *envp)
 	if (executor.num_pipes > 0)
 		free(executor.pipes);
 	free(executor.pids);
-	free_double_ptr(executor.cmd_paths, 0);
+	free_double_ptr(executor.cmd_paths);
+	free(executor.cmd_paths);
 	return (0);
 }
