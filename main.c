@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 21:19:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 21:29:53 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ int	main(int argc, char *argv[], char *envp[])
 	g_program = malloc(sizeof(t_program));
 	if (!g_program)
 		return (0);
-	g_program->envp = store_env(envp);
+	if (envp[0] != NULL)
+		g_program->envp = store_env(envp);
+	else
+		g_program->envp = store_env(&(envp[1]));
 	set_exit_code(0);
 	setup_term();
 	while (1)

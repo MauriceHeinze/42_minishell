@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 19:31:58 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 21:27:24 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,19 @@ char	**get_cmd_paths(t_var *envp)
 	t_var	*tmp;
 
 	tmp = envp;
-	while (ft_strcmp("PATH", tmp->name) != 0)
+	while (tmp != NULL)
+	{
+		if (tmp->name == NULL)
+			continue ;
+		else if (ft_strcmp("PATH", tmp->name) != 0)
+			break ;
 		tmp = tmp->next;
-	paths = ft_split(tmp->content, ':');
-	return (paths);
+	}
+	if (tmp == NULL)
+		return (NULL);
+	else
+	{	
+		paths = ft_split(tmp->content, ':');
+		return (paths);
+	}
 }

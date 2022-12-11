@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 20:16:36 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 17:28:43 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 21:28:34 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_var	*store_env(char *env[])
 	head = var;
 	last_pos = 0;
 	i = 0;
-	while (env[i])
+	while (env == NULL && env[i])
 	{
 		var->not_splitted = get_full_env_line(env, &i, &k);
 		var->name = get_env_name(env, &i, &k);
