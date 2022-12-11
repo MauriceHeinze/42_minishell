@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   fill_node_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:34:01 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 22:48:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static void	set_node_builtin(t_node	**node, char *token, int category,
+	int *pos)
+{
+	(*node)->full_cmd_orig = ft_strdup(token);
+	(*node)->full_path = ft_strdup("builtin");
+	(*pos)++;
+	free(token);
+}
 
 static int	get_command_helper(t_node	**node, char *token, int category,
 	int *pos)
@@ -34,12 +43,7 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 		(*pos)++;
 	}
 	else if (category > UNDEFINED && category <= EXIT)
-	{
-		(*node)->full_cmd_orig = ft_strdup(token);
-		(*node)->full_path = ft_strdup("builtin");
-		(*pos)++;
-		free(token);
-	}
+		set_node_builtin(node, token, category, pos);
 	return (0);
 }
 
