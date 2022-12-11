@@ -16,6 +16,7 @@ static void	free_program_loop()
 	free_split(program->tokens);
 	free_nodes(); // not working with linux
 	free(program->unknown_cmd);
+	program->unknown_cmd = NULL;
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -66,7 +67,9 @@ int main(int argc, char *argv[], char *envp[])
 			printf("minishell: %s: command not found\n", program->unknown_cmd);
 			free_split(program->tokens);
 			free_split(words);
-			// system("leaks minishell");
+			free(program->unknown_cmd);
+			program->unknown_cmd = NULL;
+			system("leaks minishell");
 			continue;
 		}
 		// t_node *node = program->nodes;
@@ -94,6 +97,7 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	free_env();
 	free(program->unknown_cmd);
+	program->unknown_cmd = NULL;
 	system("leaks minishell");
 	return (0);
 }
