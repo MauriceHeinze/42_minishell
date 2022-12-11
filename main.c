@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
+/*   Updated: 2022/12/11 17:30:33 by rpohl            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./inc/minishell.h"
 #include "./executor/executor.h"
 
-static void setup_term(void)
+static void	setup_term(void)
 {
 	struct termios	t;
 
@@ -11,7 +23,7 @@ static void setup_term(void)
 	setup_signal_handler();
 }
 
-static void	free_program_loop()
+static void	free_program_loop(void)
 {
 	free_split(g_program->tokens);
 	free_nodes(); // not working with linux
@@ -19,7 +31,7 @@ static void	free_program_loop()
 	g_program->unknown_cmd = NULL;
 }
 
-int main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	char	**words;
 	char	**subwords;
@@ -70,7 +82,7 @@ int main(int argc, char *argv[], char *envp[])
 			free(g_program->unknown_cmd);
 			g_program->unknown_cmd = NULL;
 			system("leaks minishell");
-			continue;
+			continue ;
 		}
 		// t_node *node = g_program->nodes;
 		// t_fd *fd = node->fd;

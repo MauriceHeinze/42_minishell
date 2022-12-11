@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:14:33 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:27:36 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ static void	sub_write(int file, char *buffer, t_var *envp, char **split)
 	}
 }
 
-static void	heredoc(t_executor	*executor, t_var *envp)
+static void	heredoc(t_executor	*ex, t_var *envp)
 {
 	int		file;
 	char	*buffer;
 	char	*ret;
 	char	**split;
 
-	if (executor == NULL)
+	if (ex == NULL)
 		return ;
 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (file < 0)
@@ -91,8 +91,7 @@ static void	heredoc(t_executor	*executor, t_var *envp)
 		buffer = readline("> ");
 		if (buffer == NULL)
 			exec_error(HEREDOC_BUFFER_ERROR, NULL);
-		if (!ft_strncmp(executor->limiter, buffer,
-				ft_strlen(executor->limiter)))
+		if (!ft_strncmp(ex->limiter, buffer, ft_strlen(ex->limiter)))
 			break ;
 		split = ft_split(buffer, '$');
 		sub_write(file, buffer, envp, split);

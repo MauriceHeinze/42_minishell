@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:14:36 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 17:28:30 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static void	chdir_sub(t_var *envp, char *dir, char *cwd)
 {
 	char	**first_arg;
-	
+
 	first_arg = NULL;
 	if (dir == NULL || *dir == '\0')
 	{
@@ -40,7 +40,6 @@ int	cd(t_var *envp, char *dir, int fd)
 {
 	char	cwd[PATH_MAX];
 
-	
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		builtin_error(GETCWD_ERROR, NULL);
 	if (ft_strcmp(dir, "-") == 0)
