@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:05:14 by mheinze           #+#    #+#             */
-/*   Updated: 2022/11/30 15:05:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 17:25:20 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	k = 0;
 	while (s2[k] != '\0')
-	{
-		sub_s[i] = s2[k];
-		k++;
-		i++;
-	}
+		sub_s[i++] = s2[k++];
 	sub_s[i] = '\0';
 	return (sub_s);
 }
