@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 10:32:00 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 14:04:36 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,37 @@ void	close_fd(t_executor *executor)
 	}
 }
 
-char	exit_msg(char *msg, char exit_code)
+void	free_double_ptr(char **ptr, int head)
 {
-	perror(msg);
-	exit(exit_code);
+	while (*ptr != NULL)
+		free(*ptr++);
+}
+
+char	**restore_envp(t_var *envp)
+{
+	char	**restored_envp;
+	t_var	*temp;
+	int		counter;
+	int		i;
+
+	if (envp == NULL)
+		return (NULL);
+	temp = envp;
+	counter = 0;
+	i = 0;
+	while (temp != NULL)
+	{
+		counter++;
+		temp = temp->next;
+	}
+	restored_envp = malloc(sizeof(char *) * (counter + 1));
+	temp = envp;
+	while (temp != NULL)
+	{
+		restored_envp[i] = temp->not_splitted;
+		temp = temp->next;
+		i++;
+	}
+	restored_envp[i] = NULL;
+	return (restored_envp);
 }

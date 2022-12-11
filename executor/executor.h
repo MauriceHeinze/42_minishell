@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_bonus.h                                      :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/10/19 11:14:37 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 14:06:35 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef executor_BONUS_H
-# define executor_BONUS_H
+#ifndef EXECUTOR_H
+# define EXECUTOR_H
 
 # include "../libft/libft.h"
 # include <unistd.h>
@@ -22,26 +22,20 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <stdio.h>
-
-#include "../inc/minishell.h"
+# include "../inc/minishell.h"
 
 typedef struct s_executor
 {
-	int		fd1;
-	int		fd2;
 	int		*pipes;
 	int		num_pipes;
 	int		num_processes;
 	pid_t	*pids;
-	// char	*all_paths;
 	char	**cmd_paths;
-	// char	**args;
 	char	*limiter;
 	char	*buffer;
 	int		status;
 	t_node	*first_node;
 	int		heredoc;
-	
 }	t_executor;
 
 void	close_fd(t_executor *executor);
@@ -60,11 +54,37 @@ void	here_doc_open(t_executor *executor);
 
 char	*get_cmd_path(char **paths, char *cmd);
 
-char	exit_msg(char *msg, char exit_code);
+int		builtin_caller(t_node *node, t_executor *executor, t_var *envp);
 
-int	builtin_caller(t_node *node, t_executor *executor, t_var *envp);
+int		executor(t_node *node, t_var *envp);
 
-int	executor (t_node *node, t_var *envp);
+void	free_double_ptr(char **ptr, int head);
+
+int		exit_pre_handler(t_node *node, int fd);
+
+int		export_name(char *export, t_var *envp);
+
+int		cd(t_var *envp, char *dir, int fd);
+
+int		echo_lat(char *str, int fd);
+
+int		pwd(int fd);
+
+int		export_print(t_var *envp, int fd);
+
+void	init_node_num(t_node *node);
+
+void	check_args(t_executor *executor, t_node *node);
+
+void	init_executor(t_executor *executor, t_var *envp, t_node *node);
+
+void	heredoc_handler(t_executor *executor, t_node *node_tmp, t_var *envp);
+
+void	fd_manager_input(t_node *node, t_executor *executor);
+
+void	fd_manager_output(t_node *node, t_executor	*executor);
+
+char	**restore_envp(t_var *envp);
 
 void	free_double_ptr(char **ptr, int head);
 

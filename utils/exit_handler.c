@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 14:31:39 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 14:11:59 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,27 @@ void	special_error(int error)
 		printf("minishell: env: too many arguments\n");
 }
 
-void	exec_error(int error, char *s)
+void	builtin_error(int error, char *s)
 {
 	set_exit_code(error);
 	if (error == EXPORT_ERROR)
 		printf("minishell: export: `%s': not a valid identifier\n", s);
 	else if (error == EXIT_ARG_ERROR)
 		printf("minishell: exit: %s: numeric argument required\n", s);
-	else if (error == CMD_ERROR)
+	else if (error == GETCWD_ERROR)
+		printf("minishell: getcwd: getting cwd unsucessful\n");
+	else if (error == CHDIR_ERROR)
+		printf("minishell: chdir: change dir unsucessful\n");
+	else if (error == ADD_ENV_ERROR)
+		printf("minishell: add_env: failed to add env\n");
+	else if (error == BULTIN_NF_ERROR)
+		printf("minishell: builtin: no such builtin\n");
+}
+
+void	exec_error(int error, char *s)
+{
+	set_exit_code(error);
+	if (error == CMD_ERROR)
 		printf("minishell: command: %s: not found\n", s);
 	else if (error == CMD_NOT_FOUND)
 		printf("minishell: %s: command not found\n", s);
@@ -52,6 +65,14 @@ void	exec_error(int error, char *s)
 		printf("minishell: cd: %s not set\n", s);
 	else if (error == EXIT_NUM_ERROR)
 		printf("minishell: exit: too many arguments\n");
+	else if (error == HEREDOC_BUFFER_ERROR)
+		printf("minishell: heredoc: buffer returned NULL\n");
+	else if (error == DUP_ERROR)
+		printf("minishell: dup2: %s - bad fd\n", s);
+	else if (error == PIPE_ERROR)
+		printf("minishell: pipe: creating of pipes unsucessful\n");
+	else if (error == FORK_ERROR)
+		printf("minishell: fork: creating of forks unsucessful\n");
 }
 
 void	set_exit_code(int exit_code)

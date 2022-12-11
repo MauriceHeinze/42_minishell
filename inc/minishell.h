@@ -133,6 +133,7 @@ void	exit_shell(int error_code);
 void	set_exit_code(int exit_code);
 void	exec_error(int error, char *s);
 void	special_error(int error);
+void	builtin_error(int error, char *s);
 
 // utils
 int		count_words(char *str);
@@ -199,6 +200,14 @@ void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 # define ENV_ERROR					14
 # define SEMICOLON_USED				15
 # define EXIT_NUM_ERROR				16
+# define HEREDOC_BUFFER_ERROR		17
+# define DUP_ERROR					18
+# define PIPE_ERROR					19
+# define FORK_ERROR					20
+# define GETCWD_ERROR				21
+# define CHDIR_ERROR				22
+# define ADD_ENV_ERROR				23
+# define BULTIN_NF_ERROR			24
 
 # define CMD_NOT_FOUND				127
 # define INVALID_EXIT_ARG			255

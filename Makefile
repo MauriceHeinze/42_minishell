@@ -4,9 +4,15 @@ SOURCES = 	./env/add_env.c							\
 			./env/remove_env.c						\
 			./env/setup_fd.c						\
 			./executor/executor.c					\
+			./executor/executor_init.c				\
+			./executor/executor_heredoc.c			\
+			./executor/executor_fd_manager.c		\
 			./executor/executor_funct.c				\
 			./executor/executor_utils.c				\
 			./executor/builtins.c					\
+			./executor/builtins_funct.c				\
+			./executor/builtins_extra.c				\
+			./executor/builtins_utils.c				\
 			./linked_list/fill_fd.c					\
 			./linked_list/fill_node.c				\
 			./linked_list/fill_node_helper.c		\

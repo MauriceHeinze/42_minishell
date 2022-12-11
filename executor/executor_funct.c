@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 17:40:12 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 10:37:05 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 12:44:07 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	create_pipes(t_executor *executor)
 	{
 		pipe_temp = executor->pipes + 2 * i;
 		if (pipe(pipe_temp) < 0)
-			exit_msg("Pipe error", EXIT_FAILURE);
+			exec_error(PIPE_ERROR, NULL);
 		i++;
 	}
 }
@@ -30,11 +30,9 @@ void	create_pipes(t_executor *executor)
 void	dup2_processor(int out, int in, int exit_code)
 {
 	if (dup2(out, in) < 0 && exit_code == 1)
-		exit_msg("Dup 2 output - bad fd", EXIT_FAILURE);
+		exec_error(DUP_ERROR, "output");
 	if (dup2(out, in) < 0 && exit_code == 0)
-	{
-		perror("Dup 2 input - bad fd");
-	}
+		exec_error(DUP_ERROR, "input");
 	if (dup2(out, in) < 0 && exit_code == 2)
 		exit(EXIT_FAILURE);
 }
