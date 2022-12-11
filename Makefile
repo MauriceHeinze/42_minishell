@@ -44,7 +44,6 @@ CLIENT = main.c $(SOURCES)
 CLIENTOBJ =	$(CLIENT:.c=.o)
 
 HOMEPATH = ${HOME}
-EXPORT = $(shell echo 'export PATH=$(HOMEPATH)/goinfre/.brew/bin:$PATH' >> $(HOMEPATH)/.zshrc && source $(HOMEPATH)/.zshrc && brew update)
 HDR = ./inc/minishell.h
 CC = cc -g
 CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
@@ -65,7 +64,6 @@ nameLinux: $(HDR) $(CLIENTOBJ)
 
 install_readline:
 	rm -rf $(HOMEPATH)/.brew && rm -rf $(HOMEPATH)/goinfre/.brew && git clone --depth=1 https://github.com/Homebrew/brew $(HOMEPATH)/goinfre/.brew
-	$(EXPORT)
 	brew update
 	brew install readline 
 
