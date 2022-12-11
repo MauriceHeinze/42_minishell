@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:44:56 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/12 00:45:34 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// returns path of executable
 char	*get_cmd_path(char **paths, char *cmd)
 {
 	char	*tmp;
@@ -43,17 +42,20 @@ char	*get_cmd_path_no_free(char **paths, char *cmd)
 
 	if (access(cmd, 0) == 0)
 		return (ft_strdup(cmd));
-	while (paths != NULL && *paths)
+	if (cmd[0] != '.')
 	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		tmp = NULL;
-		if (access(command, 0) == 0)
-			return (command);
-		free(command);
-		command = NULL;
-		paths++;
+		while (paths != NULL && *paths)
+		{
+			tmp = ft_strjoin(*paths, "/");
+			command = ft_strjoin(tmp, cmd);
+			free(tmp);
+			tmp = NULL;
+			if (access(command, 0) == 0)
+				return (command);
+			free(command);
+			command = NULL;
+			paths++;
+		}
 	}
 	g_program->unknown_cmd = ft_strdup(cmd);
 	set_exit_code(127);
