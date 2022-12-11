@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 19:19:44 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 20:06:18 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 			fd_manager_output(node, executor);
 			fd_manager_input(node, executor);
 		}
-		if (ft_strcmp(node->full_path, "builtin") != 0)
+		else if (ft_strcmp(node->full_path, "builtin") != 0)
 			prepare_child_process(executor, envp, node, x);
 		else if (ft_strcmp(node->full_path, "builtin") == 0)
 		{
