@@ -6,11 +6,24 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:26:48 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 19:17:40 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+
+void	close_until_nn(t_executor *executor, int nn)
+{
+	int	i;
+
+	i = 0;
+	while (i <= nn)
+	{
+		close(executor->pipes[i * 2]);
+		close(executor->pipes[i * 2 + 1]);
+		i++;
+	}
+}
 
 void	close_other_fd(t_executor *executor, int fd1, int fd2)
 {

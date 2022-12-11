@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:14:11 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 19:17:28 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ void	fd_manager_input(t_node *node, t_executor *executor);
 void	fd_manager_output(t_node *node, t_executor	*executor);
 
 char	**restore_envp(t_var *envp);
+
+void	close_until_nn(t_executor *executor, int nn);
 
 #endif

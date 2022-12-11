@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:14:23 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 19:19:44 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_var *envp, t_node *node, int x)
 		fd_manager_input(node, executor);
 		child_process(executor, x + 1, envp, node);
 	}
+	else
+		close_until_nn(executor, (node->node_num - 1));
 }
 
 static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
@@ -86,8 +88,7 @@ int	executor(t_node *node, t_var *envp)
 	create_pipes(&executor);
 	heredoc_handler(&executor, node, envp);
 	fork_processes(&executor, envp, node);
-	while (i < executor.num_processes)
-		waitpid(executor.pids[i++], &(executor.status), 0);
+	waitpid(-1, &(executor.status), 0);
 	if (!WIFSIGNALED(executor.status))
 		set_exit_code(WEXITSTATUS(executor.status));
 	else if (WIFSIGNALED(executor.status))
