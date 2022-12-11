@@ -30,18 +30,18 @@
 # include <sys/ioctl.h>
 
 typedef struct s_fd {
-	int				io; // 0 stdin, 1 stdout
-	int				mode; // 1. file -> full path, 2. heredoc -> delimiter, 3. stdin -> nothing 4. append mode -> full path
-	char			*meta; // full path || delimiter
-	int				fd; // Ralf only
+	int				io;
+	int				mode;
+	char			*meta;
+	int				fd;
 	struct s_fd		*next;
 }				t_fd;
 
 typedef struct s_node {
-	char			*full_cmd; // e.g. echo -n, cd etc.
+	char			*full_cmd;
 	char			*full_cmd_orig;
-	char			*full_path; // if builtin, then it's just full_cmd, else it's path to that cmd
-	int				pid; // default -1, is set by executor
+	char			*full_path;
+	int				pid;
 	t_fd			*fd;
 	int				fd_in;
 	int				fd_out;
@@ -58,7 +58,6 @@ typedef struct s_var {
 	struct s_var	*next;
 }				t_var;
 
-
 typedef struct s_program {
 	t_var			*envp;
 	int				status;
@@ -67,75 +66,47 @@ typedef struct s_program {
 	t_node			*nodes;
 }				t_program;
 
-t_program *program;
+t_program	*program;
 
-// split
 char	**split_line(char *str);
 char	**split_subline(char **splitted);
-
 int		split_line_counter(char *str);
 void	acutal_split(char **splits, char **words, int *i, int *no_word);
 int		double_operator_found(char a, char b);
-
-// fill node
 int		get_command(t_program *program, t_node **node, int *pos);
 t_node	*add_node(t_node *node, int *i);
 t_node	*setup_node(void);
-int	add_tokens(t_node **node, char **tokens, int *i);
-
-// readline
+int		add_tokens(t_node **node, char **tokens, int *i);
 void	track_history(char *line);
-void	rl_replace_line (const char *text, int clear_undo);
-
-// quotes
+void	rl_replace_line(const char *text, int clear_undo);
 int		quote_length(char found_quote, char *input_str, int pos);
 int		skip_quote(char *input_str, int pos);
 char	*remove_quotes(char *input_str);
-
-// manipulate string
 char	*str_add(char *dest, char *src, int pos);
 char	*str_remove(char const *orig, unsigned int start, size_t len);
-
-// variables
 char	*expand_variable(char *input_str, int start, int i);
 char	*expand_variables(char *input_str);
-
-// env
 t_var	*setup_var_node(void);
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
-t_var	*add_env(t_var *env, char *name, char* content);
+t_var	*add_env(t_var *env, char *name, char *content);
 void	remove_env(t_var *env, char *name);
 void	free_env(void);
-
-// signals
 void	setup_signal_handler(void);
 void	ctrl_c(void);
-
-// commands
 t_node	*fill_node(t_program *program);
-// int	fill_fd(t_program *program, t_node **node, int *pos);
 void	fill_fd(t_program *program, t_node **node, int *pos);
-
 t_fd	*setup_fd(void);
-
-// free
 void	free_nodes(void);
 void	free_split(char **words);
 t_node	*free_head(t_node *head);
-
-// syntax checker
 int		check_syntax(char **tokens);
 int		is_operator(char *word);
-
-// exit
 void	exit_shell(int error_code);
 void	set_exit_code(int exit_code);
 void	exec_error(int error, char *s);
 void	special_error(int error);
 void	builtin_error(int error, char *s);
-
-// utils
 int		count_words(char *str);
 int		op_found(char a, char b);
 int		count_words_operators(char *input_str);
@@ -150,7 +121,7 @@ void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 # define OUTPUT 0;
 # define INPUT 1;
 
-// KEYS FOR BUILT INS
+// KEYS FOR BUILTINS
 # define UNDEFINED 50
 # define ECHO_CMD 100
 # define CD 200

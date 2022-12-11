@@ -36,8 +36,8 @@ SOURCES = 	./env/add_env.c							\
 			./utils/init_to_zero.c					\
 			./utils/signal_handler.c				\
 			./utils/track_history.c					\
-			# ./get_next_line/get_next_line_utils.c	\
-			# ./get_next_line/get_next_line.c
+			./get_next_line/get_next_line_utils.c	\
+			./get_next_line/get_next_line.c
 
 CLIENT = main.c $(SOURCES)
 
@@ -65,7 +65,7 @@ nameLinux: $(HDR) $(CLIENTOBJ)
 install_readline:
 	rm -rf $(HOMEPATH)/.brew && rm -rf $(HOMEPATH)/goinfre/.brew && git clone --depth=1 https://github.com/Homebrew/brew $(HOMEPATH)/goinfre/.brew
 	brew update
-	brew install readline 
+	brew install readline
 
 clean:
 	make fclean -C ./libft
