@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 16:59:21 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 20:18:14 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 	else if (category > UNDEFINED && category <= EXIT)
 	{
 		(*node)->full_cmd_orig = ft_strdup(token);
-		(*node)->full_path = "builtin";
+		(*node)->full_path = ft_strdup("builtin");
 		(*pos)++;
 		free(token);
 	}

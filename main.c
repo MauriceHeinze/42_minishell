@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 19:25:27 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 19:30:10 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,12 @@ int	main(int argc, char *argv[], char *envp[])
 		free_split(words); // results in double free
 		words = NULL;
 		free_program_loop();
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
-	// system("leaks minishell");
+	system("leaks minishell");
 	return (0);
 }
 
