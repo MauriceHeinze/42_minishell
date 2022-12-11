@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:27:36 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 23:37:27 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,8 @@ static void	heredoc(t_executor	*ex, t_var *envp)
 {
 	int		file;
 	char	*buffer;
-	char	*ret;
 	char	**split;
 
-	if (ex == NULL)
-		return ;
 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (file < 0)
 		return ;
@@ -92,7 +89,10 @@ static void	heredoc(t_executor	*ex, t_var *envp)
 		if (buffer == NULL)
 			exec_error(HEREDOC_BUFFER_ERROR, NULL);
 		if (!ft_strncmp(ex->limiter, buffer, ft_strlen(ex->limiter)))
+		{
+			free(buffer);
 			break ;
+		}
 		split = ft_split(buffer, '$');
 		sub_write(file, buffer, envp, split);
 		write(file, "\n", 1);
@@ -115,7 +115,8 @@ void	heredoc_handler(t_executor *executor, t_node *node_tmp, t_var *envp)
 		if (fd_temp->mode == MODE_HEREDOC)
 		{
 			executor->limiter = fd_temp->meta;
-			heredoc(executor, envp);
+			if (executor != NULL)
+				heredoc(executor, envp);
 			executor->heredoc = open(".heredoc_tmp", O_RDONLY);
 			if (executor->heredoc < 0)
 			{
