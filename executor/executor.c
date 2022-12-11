@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 20:06:18 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 22:44:08 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,18 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 	}
 }
 
+static void	free_executor(t_executor *executor)
+{
+	if (executor->num_pipes > 0)
+		free(executor->pipes);
+	free(executor->pids);
+	if (executor->cmd_paths != NULL)
+	{
+		free_double_ptr(executor->cmd_paths);
+		free(executor->cmd_paths);
+	}
+}
+
 int	executor(t_node *node, t_var *envp)
 {
 	t_executor	executor;
@@ -94,10 +106,6 @@ int	executor(t_node *node, t_var *envp)
 	else if (WIFSIGNALED(executor.status))
 		set_exit_code(WTERMSIG(executor.status) + 128);
 	close_other_fd(&executor, -1, -1);
-	if (executor.num_pipes > 0)
-		free(executor.pipes);
-	free(executor.pids);
-	free_double_ptr(executor.cmd_paths);
-	free(executor.cmd_paths);
+	free_executor(&executor);
 	return (0);
 }

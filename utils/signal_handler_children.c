@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_fd.c                                         :+:      :+:    :+:   */
+/*   signal_handler_children.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/06 20:33:02 by mheinze          ###   ########.fr       */
+/*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
+/*   Updated: 2022/12/11 21:07:22 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_fd	*setup_fd(void)
+static void	signal_interrupt_child(int sig)
 {
-	t_fd	*fd;
+	// >> kill process <<
+	// write (1, "\n", 1);
+	// rl_free_line_state();
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
+}
 
-	fd = malloc(sizeof(t_fd));
-	if (!fd)
-		return (NULL);
-	fd->io = OUTPUT;
-	fd->mode = -1;
-	fd->meta = NULL;
-	fd->fd = -1;
-	fd->next = NULL;
-	return (fd);
+void	setup_signal_handler_child(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_interrupt_child);
 }

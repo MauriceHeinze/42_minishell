@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 21:21:19 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 19:18:55 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,13 @@ int	env(t_var *envp, int fd)
 	temp = envp;
 	while (temp != NULL)
 	{
-		if (temp->name != NULL)
+		write(fd, temp->name, ft_strlen(temp->name));
+		if (temp->content != NULL)
 		{
-			write(fd, temp->name, ft_strlen(temp->name));
-			if (temp->content != NULL)
-			{
-				write(fd, "=", 1);
-				write(fd, temp->content, ft_strlen(temp->content));
-			}
-			write(fd, "\n", 1);
+			write(fd, "=", 1);
+			write(fd, temp->content, ft_strlen(temp->content));
 		}
+		write(fd, "\n", 1);
 		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);

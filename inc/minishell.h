@@ -89,6 +89,7 @@ char	*expand_variables(char *input_str);
 t_var	*setup_var_node(void);
 t_var	*store_env(char *env[]);
 char	*get_env(t_var *env, char *name);
+t_var	*store_env_single(char *env[]);
 t_var	*add_env(t_var *env, char *name, char *content);
 void	remove_env(t_var *env, char *name);
 void	free_env(void);
@@ -117,7 +118,6 @@ int		get_category(char *word);
 void	init_to_zero(int *a, int *b, int *c, int *d);
 int		is_whitespace(char *input_str);
 void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
-t_var	*store_env_single(char *env[]);
 
 # define OUTPUT 0;
 # define INPUT 1;

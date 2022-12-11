@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 21:40:57 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 22:36:41 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		if (ft_strlen(line) == 0 || is_whitespace(line))
 			continue ;
+	
 		track_history(line);
 		expanded_line = expand_variables(line);
 		words = split_line(expanded_line);
@@ -103,7 +104,7 @@ int	main(int argc, char *argv[], char *envp[])
 		// 	if (node)
 		// 		fd = node->fd;
 		// }
-		// printf("1 ======>\n");
+		// printf("1 ======>\n")
 		executor(g_program->nodes, g_program->envp);
 		free_split(words); // results in double free
 		words = NULL;

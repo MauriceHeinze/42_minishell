@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 21:27:24 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 22:44:56 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_cmd_path_no_free(char **paths, char *cmd)
 
 	if (access(cmd, 0) == 0)
 		return (ft_strdup(cmd));
-	while (*paths)
+	while (paths != NULL && *paths)
 	{
 		tmp = ft_strjoin(*paths, "/");
 		command = ft_strjoin(tmp, cmd);
@@ -67,19 +67,10 @@ char	**get_cmd_paths(t_var *envp)
 	t_var	*tmp;
 
 	tmp = envp;
-	while (tmp != NULL)
-	{
-		if (tmp->name == NULL)
-			continue ;
-		else if (ft_strcmp("PATH", tmp->name) != 0)
-			break ;
+	while (tmp != NULL && (ft_strcmp("PATH", tmp->name) != 0))
 		tmp = tmp->next;
-	}
 	if (tmp == NULL)
 		return (NULL);
-	else
-	{	
-		paths = ft_split(tmp->content, ':');
-		return (paths);
-	}
+	paths = ft_split(tmp->content, ':');
+	return (paths);
 }
