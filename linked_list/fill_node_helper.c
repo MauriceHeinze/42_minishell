@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 12:56:21 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 13:30:20 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 	{
 		paths = get_cmd_paths(program->envp);
 		(*node)->full_cmd_orig = ft_strdup(token);
-		(*node)->full_path = get_cmd_path(paths, token);
+		(*node)->full_path = get_cmd_path_no_free(paths, token);
 		free(token);
 		token = NULL;
 		if ((*node)->full_path == NULL)

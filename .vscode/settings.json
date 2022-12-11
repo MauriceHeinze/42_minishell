@@ -2,6 +2,7 @@
 	"files.associations": {
 		"minishell.h": "c",
 		"__node_handle": "c",
-		"executor.h": "c"
+		"executor.h": "c",
+		"get_next_line.h": "c"
 	}
 }

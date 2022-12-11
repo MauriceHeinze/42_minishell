@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 12:49:47 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 13:32:26 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,29 @@ char	*get_cmd_path(char **paths, char *cmd)
 		paths++;
 	}
 	free(cmd);
+	return (NULL);
+}
+
+char	*get_cmd_path_no_free(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*command;
+
+	if (access(cmd, 0) == 0)
+		return (ft_strdup(cmd));
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		tmp = NULL;
+		if (access(command, 0) == 0)
+			return (command);
+		free(command);
+		command = NULL;
+		paths++;
+	}
+	program->unknown_cmd = ft_strdup(cmd);
 	return (NULL);
 }
 

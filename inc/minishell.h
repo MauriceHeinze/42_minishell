@@ -63,7 +63,7 @@ typedef struct s_program {
 	t_var			*envp;
 	int				status;
 	char			**tokens;
-	char			**unfound_command;
+	char			*unknown_cmd;
 	t_node			*nodes;
 }				t_program;
 
@@ -140,6 +140,7 @@ int		op_found(char a, char b);
 int		count_words_operators(char *input_str);
 char	*get_cmd_path(char **paths, char *cmd);
 char	**get_cmd_paths(t_var *envp);
+char	*get_cmd_path_no_free(char **paths, char *cmd);
 int		get_category(char *word);
 void	init_to_zero(int *a, int *b, int *c, int *d);
 int		is_whitespace(char *input_str);
