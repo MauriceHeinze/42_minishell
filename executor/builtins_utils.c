@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 13:58:25 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 15:58:57 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	chdir_sub(t_var *envp, char *dir, char	**first_arg, char *cwd)
 	{
 		first_arg = ft_split(dir, ' ');
 		if (chdir (*first_arg) == -1)
-			builtin_error(CHDIR_ERROR, NULL);
+			special_error(INVALID_PATH);
 	}
 }
 

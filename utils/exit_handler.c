@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 14:11:59 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 15:59:35 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	special_error(int error)
 	else if (error == EXIT_ERROR)
 		printf("minishell: exit: too many arguments\n");
 	else if (error == INVALID_PATH)
-		printf("minishell: No such file or directory");
+		printf("minishell: No such file or directory\n");
 	else if (error == OLDPWD_ERROR)
 		printf("minishell: cd: OLDPWD not set\n");
 	else if (error == ENV_ERROR)
