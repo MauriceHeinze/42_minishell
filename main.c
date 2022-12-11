@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 21:29:53 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/11 21:40:57 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (envp[0] != NULL)
 		g_program->envp = store_env(envp);
 	else
-		g_program->envp = store_env(&(envp[1]));
+		g_program->envp = store_env_single(&(envp[1]));
 	set_exit_code(0);
 	setup_term();
 	while (1)

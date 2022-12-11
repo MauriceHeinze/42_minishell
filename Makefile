@@ -1,6 +1,7 @@
 NAME = minishell
 SOURCES = 	./env/add_env.c							\
 			./env/store_env.c						\
+			./env/store_env_s.c						\
 			./env/remove_env.c						\
 			./env/setup_fd.c						\
 			./executor/executor.c					\
