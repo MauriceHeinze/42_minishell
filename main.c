@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 18:39:12 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/11 19:25:27 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	i = 0;
 	// setup g_program
-	g_program = malloc(sizeof(g_program));
+	g_program = malloc(sizeof(t_program));
 	if (!g_program)
 		return (0);
 	g_program->envp = store_env(envp);
