@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 23:14:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/12 01:35:20 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,57 @@ static void	setup_term(void)
 static void	free_program_loop(void)
 {
 	free_split(g_program->tokens);
-	free_nodes(); // not working with linux
+	free_nodes();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
 }
 
-int	main(int argc, char *argv[], char *envp[])
+static void	init_main(char *envp[])
 {
-	char	**words;
-	char	**subwords;
-	char	*line;
-	char	*expanded_line;
-	int		i;
-
-	i = 0;
-	// setup g_program
 	g_program = malloc(sizeof(t_program));
 	if (!g_program)
-		return (0);
+		exit (1);
 	if (envp[0] != NULL)
 		g_program->envp = store_env(envp);
 	else
 		g_program->envp = store_env_single(&(envp[1]));
 	set_exit_code(0);
 	setup_term();
+}
+
+static int	handle_line(char *line)
+{
+	char	**words;
+	char	**subwords;
+	char	*expanded_line;
+
+	track_history(line);
+	expanded_line = expand_variables(line);
+	words = split_line(expanded_line);
+	subwords = split_subline(words);
+	if (!check_syntax(subwords))
+		return (1);
+	g_program->tokens = subwords;
+	g_program->nodes = fill_node(g_program);
+	if (g_program->nodes == NULL)
+	{
+		printf("minishell: %s: command not found\n", g_program->unknown_cmd);
+		free_split(g_program->tokens);
+		free_split(words);
+		free(g_program->unknown_cmd);
+		g_program->unknown_cmd = NULL;
+		return (1);
+	}
+	free_split(words);
+	words = NULL;
+	return (0);
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
+	char	*line;
+
+	init_main(envp);
 	while (1)
 	{
 		default_signal_handler();
@@ -58,65 +85,13 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		if (ft_strlen(line) == 0 || is_whitespace(line))
 			continue ;
-
-		track_history(line);
-		expanded_line = expand_variables(line);
-		words = split_line(expanded_line);
-		// i = 0;
-		// while (words[i])
-		// {
-		// 	printf("%s| \n", words[i]);
-		// 	i++;
-		// }
-		subwords = split_subline(words);
-		// i = 0;
-		// while (subwords[i])
-		// {
-		// 	printf("%s| \n", subwords[i]);
-		// 	i++;
-		// }
-		if (!check_syntax(subwords))
+		if (handle_line(line))
 			continue ;
-		g_program->tokens = subwords;
-		g_program->nodes = fill_node(g_program);
-		if (g_program->nodes == NULL)
-		{
-			printf("minishell: %s: command not found\n", g_program->unknown_cmd);
-			free_split(g_program->tokens);
-			free_split(words);
-			free(g_program->unknown_cmd);
-			g_program->unknown_cmd = NULL;
-			system("leaks minishell");
-			continue ;
-		}
-		// t_node *node = g_program->nodes;
-		// t_fd *fd = node->fd;
-		// while (node != NULL)
-		// {
-		// 	printf("\nFull cmd: %s|\n", node->full_cmd);
-		// 	printf("Orig cmd: %s|\n", node->full_cmd_orig);
-		// 	// printf("fd is: %s|\n", node->fd);
-		// 	while (fd)
-		// 	{
-		// 		printf("meta: %s|\n", fd->meta);
-		// 		fd = fd->next;
-		// 	}
-		// 	node = node->next;
-		// 	if (node)
-		// 		fd = node->fd;
-		// }
-		// printf("1 ======>\n")
 		executor(g_program->nodes, g_program->envp);
-		free_split(words); // results in double free
-		words = NULL;
 		free_program_loop();
-		system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
-	system("leaks minishell");
 	return (0);
 }
-
-// echo hallo > file.txt
