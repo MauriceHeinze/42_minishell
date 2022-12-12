@@ -87,7 +87,7 @@ static void	heredoc(t_executor	*ex, t_var *envp)
 	{
 		buffer = readline("> ");
 		if (buffer == NULL)
-			exec_error(HEREDOC_BUFFER_ERROR, NULL);
+			break ;
 		if (!ft_strncmp(ex->limiter, buffer, ft_strlen(ex->limiter)))
 		{
 			free(buffer);
