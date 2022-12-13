@@ -47,6 +47,8 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 HOMEPATH = ${HOME}
 HDR = ./inc/minishell.h
 CC = cc -g -Wall -Wextra -Werror
+# Download readline folder from older commit, uncomment next line and comment after next out
+# -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
 CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
