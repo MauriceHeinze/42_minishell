@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:28:30 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:00:41 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "../inc/minishell.h"
 
-static void	chdir_sub(t_var *envp, char *dir, char *cwd)
+static void	chdir_sub(t_var *envp, char *dir)
 {
 	char	**first_arg;
 
@@ -49,7 +49,7 @@ int	cd(t_var *envp, char *dir, int fd)
 		pwd(fd);
 	}
 	else
-		chdir_sub(envp, dir, cwd);
+		chdir_sub(envp, dir);
 	if (add_env(envp, ft_strdup("OLDPWD"), ft_strdup(cwd)) == NULL)
 		builtin_error(ADD_ENV_ERROR, NULL);
 	if (getcwd(cwd, PATH_MAX) == NULL)
@@ -110,7 +110,7 @@ int	export_name(char *export, t_var *envp)
 		return (EXIT_FAILURE);
 	}
 	else
-	{		
+	{
 		length_name = 0;
 		while (export[length_name] != '\0' && export[length_name] != '='
 			&& export[length_name] != ' ' && export[length_name] != ';')

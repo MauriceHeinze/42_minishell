@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 16:58:52 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:01:33 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	arrow_right(int token, int *pos, t_node **node, t_fd **fd)
 	}
 }
 
-static void	arrow_left(int token, int *pos, t_node **node, t_fd **fd)
+static void	arrow_left(int token, int *pos, t_fd **fd)
 {
 	char	*tmp;
 	char	*tmp_2;
@@ -110,11 +110,10 @@ void	fill_fd(t_program *g_program, t_node **node, int *pos)
 	t_fd	*fd;
 	t_fd	*head;
 	int		token;
-	char	*tmp;
 
 	token = get_category(g_program->tokens[(*pos)]);
 	node_null(node, &head, &fd);
-	arrow_left(token, pos, node, &fd);
+	arrow_left(token, pos, &fd);
 	arrow_right(token, pos, node, &fd);
 	double_arrow(token, pos, &fd);
 }

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 21:00:11 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 13:06:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:02:51 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*setup_split_line(char *str, int *i, int *start, int *no_word)
 	return (tmp);
 }
 
-static char	*handle_quote(char *str, int *i, int *start, int *no_word)
+static char	*handle_quote(char *str, int *i, int *start)
 {
 	if (str[(*i) + quote_length(str[(*i)], str, (*i)) + 2] == ' '
 		|| str[(*i) + quote_length(str[(*i)], str, (*i)) + 2] == '	')
@@ -67,7 +67,7 @@ char	**split_line(char *str)
 			continue ;
 		}
 		if (str[i] == '\'' || str[i] == '\"')
-			words[no_word++] = handle_quote(str, &i, &start, &no_word);
+			words[no_word++] = handle_quote(str, &i, &start);
 		i++;
 	}
 	free(str);

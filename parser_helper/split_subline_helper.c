@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_subline_helper.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:45:07 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:03:20 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	double_operator_found(char a, char b)
 	return (0);
 }
 
-static int	skip(char **splits, char **words, int *i, int *k)
+static int	skip(char **splits, int *i, int *k)
 {
 	int	old_k;
 
@@ -55,7 +55,7 @@ void	acutal_split(char **splits, char **words, int *i, int *no_word)
 	k = 0;
 	while (splits[(*i)][k] != '\0')
 	{
-		start = skip(splits, words, i, &k);
+		start = skip(splits, i, &k);
 		if (double_operator_found(splits[(*i)][k], splits[(*i)][k + 1]))
 		{
 			set_start(&start, &k, 2);

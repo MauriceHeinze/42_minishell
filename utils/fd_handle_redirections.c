@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:05:07 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_fd	*fd_redirect_output(t_node *node, t_fd *fd, int *pos)
 	return (fd);
 }
 
-static t_fd	*fd_stdin(t_node *node, t_fd *fd, int *pos)
+static t_fd	*fd_stdin(t_fd *fd, int *pos)
 {
 	char	*tmp;
 
@@ -49,7 +49,7 @@ static t_fd	*fd_stdin(t_node *node, t_fd *fd, int *pos)
 	return (fd);
 }
 
-static t_fd	*fd_heredoc(t_node *node, t_fd *fd, int *pos)
+static t_fd	*fd_heredoc(t_fd *fd, int *pos)
 {
 	(*pos)++;
 	fd->io = INPUT;
@@ -59,7 +59,7 @@ static t_fd	*fd_heredoc(t_node *node, t_fd *fd, int *pos)
 	return (fd);
 }
 
-static t_fd	*fd_append(t_node *node, t_fd *fd, int *pos)
+static t_fd	*fd_append(t_fd *fd, int *pos)
 {
 	char	*tmp;
 
@@ -79,9 +79,9 @@ void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos)
 	if (category == ARROW_RIGHT)
 		fd_redirect_output(node, fd, pos);
 	else if (category == ARROW_LEFT)
-		fd_stdin(node, fd, pos);
+		fd_stdin(fd, pos);
 	else if (category == DOUBLE_ARROW_LEFT)
-		fd_heredoc(node, fd, pos);
+		fd_heredoc(fd, pos);
 	else if (category == DOUBLE_ARROW_RIGHT)
-		fd_append(node, fd, pos);
+		fd_append(fd, pos);
 }

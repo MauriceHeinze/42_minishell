@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/12 01:35:20 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 14:59:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	*line;
 
+	(void)argc;
+	(void)argv;
 	init_main(envp);
 	while (1)
 	{

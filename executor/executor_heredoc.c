@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 23:37:27 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:00:21 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,6 @@ static int	check_char(char c)
 	if (c >= '0' && c <= '1')
 		return (1);
 	return (0);
-}
-
-static void	sub_write_loop(int file, t_var *envp, char **split, int *i)
-{
-	int		var_length;
-	char	*var;
-
-	while (split[*i] != NULL)
-	{
-		var_length = 0;
-		while (check_char(split[*i][var_length]))
-			var_length++;
-		var = malloc(sizeof(char) * (var_length + 1));
-		ft_strlcpy(var, split[*i], var_length + 1);
-		var[var_length] = '\0';
-		if (get_env(envp, var))
-			write(file, get_env(envp, var), ft_strlen(get_env(envp, var)));
-		while (split[*i][var_length] != '\0')
-			write(file, &(split[*i][var_length++]), 1);
-		free(var);
-		*i = *i + 1;
-	}
 }
 
 static void	sub_write(int file, char *buffer, t_var *envp, char **split)

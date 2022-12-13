@@ -6,14 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:48:57 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:02:32 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	set_node_builtin(t_node	**node, char *token, int category,
-	int *pos)
+static void	set_node_builtin(t_node	**node, char *token, int *pos)
 {
 	(*node)->full_cmd_orig = ft_strdup(token);
 	(*node)->full_path = ft_strdup("builtin");
@@ -43,7 +42,7 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 		(*pos)++;
 	}
 	else if (category > UNDEFINED && category <= EXIT)
-		set_node_builtin(node, token, category, pos);
+		set_node_builtin(node, token, pos);
 	return (0);
 }
 
@@ -52,7 +51,6 @@ int	get_command(t_program *g_program, t_node **node, int *pos)
 	int		category;
 	char	*token;
 	char	*tmp;
-	char	**paths;
 
 	tmp = ft_strtrim(g_program->tokens[(*pos)], " 	");
 	token = remove_quotes(tmp);

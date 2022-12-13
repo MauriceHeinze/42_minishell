@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 16:26:25 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:14:07 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:00:08 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static t_var	*add_env_helper(t_var *env, int exists, char *name,
 t_var	*add_env(t_var *env, char *name, char *content)
 {
 	t_var	*head;
-	char	*tmp;
 	int		exists;
 
 	head = env;

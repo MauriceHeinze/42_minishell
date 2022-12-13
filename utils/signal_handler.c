@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 23:38:10 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:05:27 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	signal_interrupt_default(int sig)
 {
+	(void)sig;
 	write (1, "\n", 1);
 	rl_free_line_state();
 	rl_on_new_line();
@@ -29,6 +30,7 @@ void	default_signal_handler(void)
 
 static void	signal_interrupt_child(int sig)
 {
+	(void)sig;
 	kill(0, SIGQUIT);
 }
 

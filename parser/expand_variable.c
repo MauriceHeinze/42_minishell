@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:50:19 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 16:57:59 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:02:38 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char	*expand_variables(char *input_str)
 	int		i;
 	int		start;
 	int		double_quote;
-	char	*tmp;
 
 	i = 0;
 	double_quote = 0;

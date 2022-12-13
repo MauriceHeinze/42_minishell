@@ -46,8 +46,8 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 
 HOMEPATH = ${HOME}
 HDR = ./inc/minishell.h
-CC = cc -g
-CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
+CC = cc -g -Wall -Wextra -Werror
+CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
 
