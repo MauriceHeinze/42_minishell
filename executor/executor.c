@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 23:11:45 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:40:30 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,7 @@ static void	free_executor(t_executor *executor)
 int	executor(t_node *node, t_var *envp)
 {
 	t_executor	executor;
-	int			i;
 
-	i = 0;
 	init_node_num(node);
 	check_args (&executor, node);
 	init_executor (&executor, envp, node);

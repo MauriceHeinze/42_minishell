@@ -16,14 +16,12 @@ char	*str_remove(char const *orig, unsigned int start, size_t len)
 {
 	unsigned int	i;
 	int				orig_i;
-	int				new_part_i;
 	char			*copy;
 
 	if (start > 0)
 		start--;
 	i = 0;
 	orig_i = 0;
-	new_part_i = 0;
 	copy = malloc(sizeof(char) * (ft_strlen(orig) + 1));
 	if (!copy || !orig)
 		return (NULL);
