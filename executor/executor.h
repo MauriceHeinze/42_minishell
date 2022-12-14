@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 19:17:28 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:31:51 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ char	*get_cmd_path(char **paths, char *cmd);
 int		builtin_caller(t_node *node, t_executor *executor, t_var *envp);
 
 int		executor(t_node *node, t_var *envp);
-
-void	free_double_ptr(char **ptr);
 
 int		exit_pre_handler(t_node *node, int fd);
 

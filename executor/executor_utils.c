@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 19:17:40 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:32:30 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ void	close_fd(t_executor *executor)
 		close(executor->pipes[2 * i + 1]);
 		i++;
 	}
-}
-
-void	free_double_ptr(char **ptr)
-{
-	while (*ptr != NULL)
-		free(*ptr++);
 }
 
 char	**restore_envp(t_var *envp)

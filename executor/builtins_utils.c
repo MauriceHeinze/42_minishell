@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/13 15:00:41 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static void	chdir_sub(t_var *envp, char *dir)
 		if (chdir (*first_arg) == -1)
 			special_error(INVALID_PATH);
 		if (first_arg != NULL)
-		{
 			free_double_ptr(first_arg);
-			free(first_arg);
-		}
 	}
 }
 

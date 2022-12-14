@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/13 15:00:21 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	heredoc(t_executor	*ex, t_var *envp)
 		sub_write(file, buffer, envp, split);
 		write(file, "\n", 1);
 		free_double_ptr(split);
-		free(split);
 		free(buffer);
 	}
 	close(file);

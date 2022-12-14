@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/13 15:02:32 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 		{
 			free((*node)->full_cmd);
 			(*node)->full_cmd = NULL;
-			free_split(paths);
+			free_double_ptr(paths);
 			return (1);
 		}
-		free_split(paths);
+		free_double_ptr(paths);
 		(*pos)++;
 	}
 	else if (category > UNDEFINED && category <= EXIT)

@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/13 14:59:57 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	setup_term(void)
 
 static void	free_program_loop(void)
 {
-	free_split(g_program->tokens);
+	free_double_ptr(g_program->tokens);
 	free_nodes();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
@@ -61,13 +61,13 @@ static int	handle_line(char *line)
 	if (g_program->nodes == NULL)
 	{
 		printf("minishell: %s: command not found\n", g_program->unknown_cmd);
-		free_split(g_program->tokens);
-		free_split(words);
+		free_double_ptr(g_program->tokens);
+		free_double_ptr(words);
 		free(g_program->unknown_cmd);
 		g_program->unknown_cmd = NULL;
 		return (1);
 	}
-	free_split(words);
+	free_double_ptr(words);
 	words = NULL;
 	return (0);
 }
