@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
-/*                                                                            */
+/*										*/
+/*							:::	  ::::::::   */
+/*   main.c						 :+:	  :+:	:+:   */
+/*							+:+ +:+	 +:+	 */
+/*   By: mheinze <mheinze@student.42.fr>		+#+  +:+	   +#+	*/
+/*						+#+#+#+#+#+   +#+	   */
+/*   Created: 2022/12/11 17:29:19 by rpohl		 #+#	#+#		 */
+/*   Updated: 2022/12/15 16:55:49 by mheinze	  ###   ########.fr	   */
+/*										*/
 /* ************************************************************************** */
 
 #include "./inc/minishell.h"
@@ -21,6 +21,26 @@ static void	setup_term(void)
 	t.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSANOW, &t);
 	default_signal_handler();
+}
+
+static int	check_line(char *line)
+{
+	int		i;
+	char	*cmd;
+
+	i = 0;
+	while(line[i] == ' ' || line[i] == '	'
+	|| line[i] == '.' || line[i] == ';')
+		i++;
+	if (line[i] == '\0')
+	{
+		cmd = ft_strtrim(line, " 	");
+		printf("minishell: %s: command not found\n", cmd);
+		free(line);
+		line = NULL;
+		return (0);
+	}
+	return (1);
 }
 
 static void	free_program_loop(void)
@@ -58,7 +78,7 @@ static int	handle_line(char *line)
 		return (1);
 	g_program->tokens = subwords;
 	g_program->nodes = fill_node(g_program);
-	if (g_program->nodes == NULL)
+	if (g_program->nodes == NULL || ft_strcmp(expanded_line, "..") == 0)
 	{
 		printf("minishell: %s: command not found\n", g_program->unknown_cmd);
 		free_double_ptr(g_program->tokens);
@@ -85,7 +105,7 @@ int	main(int argc, char *argv[], char *envp[])
 		line = readline("minishell $ ");
 		if (!line)
 			break ;
-		if (ft_strlen(line) == 0 || is_whitespace(line))
+		if (ft_strlen(line) == 0 || !check_line(line))
 			continue ;
 		if (handle_line(line))
 			continue ;
@@ -94,6 +114,5 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	free_env();
 	free(g_program->unknown_cmd);
-	g_program->unknown_cmd = NULL;
 	return (0);
 }
