@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/12 00:45:34 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/15 16:34:05 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_cmd_path(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
-	if (access(cmd, 0) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	while (*paths)
 	{
@@ -25,7 +25,7 @@ char	*get_cmd_path(char **paths, char *cmd)
 		command = ft_strjoin(tmp, cmd);
 		free(tmp);
 		tmp = NULL;
-		if (access(command, 0) == 0)
+		if (access(command, X_OK) == 0)
 			return (command);
 		free(command);
 		command = NULL;
@@ -40,7 +40,7 @@ char	*get_cmd_path_no_free(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
-	if (access(cmd, 0) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	if (cmd[0] != '.')
 	{
@@ -50,7 +50,7 @@ char	*get_cmd_path_no_free(char **paths, char *cmd)
 			command = ft_strjoin(tmp, cmd);
 			free(tmp);
 			tmp = NULL;
-			if (access(command, 0) == 0)
+			if (access(command, X_OK) == 0)
 				return (command);
 			free(command);
 			command = NULL;

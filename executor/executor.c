@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 10:32:56 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 		exec_error(CMD_NOT_FOUND, *args);
 		free_double_ptr(re);
 		free_double_ptr(args);
-		free(re);
-		free(args);
-		re = NULL;
-		args = NULL;
 		close(node->fd_out);
 		close(node->fd_in);
 		set_exit_code(127);
@@ -85,10 +81,7 @@ static void	free_executor(t_executor *executor)
 		free(executor->pipes);
 	free(executor->pids);
 	if (executor->cmd_paths != NULL)
-	{
 		free_double_ptr(executor->cmd_paths);
-		free(executor->cmd_paths);
-	}
 }
 
 int	executor(t_node *node, t_var *envp)
