@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 19:18:55 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/15 12:35:54 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ int	env(t_var *envp, int fd)
 	temp = envp;
 	while (temp != NULL)
 	{
-		write(fd, temp->name, ft_strlen(temp->name));
 		if (temp->content != NULL)
 		{
+			write(fd, temp->name, ft_strlen(temp->name));
 			write(fd, "=", 1);
 			write(fd, temp->content, ft_strlen(temp->content));
 		}

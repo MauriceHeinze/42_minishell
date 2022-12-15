@@ -100,7 +100,7 @@ t_node	*fill_node(t_program *g_program);
 void	fill_fd(t_program *g_program, t_node **node, int *pos);
 t_fd	*setup_fd(void);
 void	free_nodes(void);
-void	free_double_ptr(char **words);
+void	free_split(char **words);
 t_node	*free_head(t_node *head);
 int		check_syntax(char **tokens);
 int		is_operator(char *word);

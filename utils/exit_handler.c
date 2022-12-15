@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/15 13:37:34 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ void	special_error(int error)
 		printf("minishell: exit: too many arguments\n");
 	else if (error == INVALID_PATH)
 		printf("minishell: No such file or directory\n");
-	else if (error == OLDPWD_ERROR)
-		printf("minishell: cd: OLDPWD not set\n");
 	else if (error == ENV_ERROR)
 		printf("minishell: env: too many arguments\n");
 }
 
 void	builtin_error(int error, char *s)
 {
-	set_exit_code(error);
+	set_exit_code(-1);
 	if (error == EXPORT_ERROR)
 		printf("minishell: export: `%s': not a valid identifier\n", s);
 	else if (error == EXIT_ARG_ERROR)
@@ -46,11 +44,15 @@ void	builtin_error(int error, char *s)
 		printf("minishell: add_env: failed to add env\n");
 	else if (error == BULTIN_NF_ERROR)
 		printf("minishell: builtin: no such builtin\n");
+	else if (error == INVALID_PATH)
+		printf("minishell: No such file or directory\n");
+	else if (error == OLDPWD_ERROR)
+		printf("minishell: cd: OLDPWD not set\n");
 }
 
 void	exec_error(int error, char *s)
 {
-	set_exit_code(error);
+	set_exit_code(-1);
 	if (error == CMD_ERROR)
 		printf("minishell: command: %s: not found\n", s);
 	else if (error == CMD_NOT_FOUND)
@@ -86,7 +88,7 @@ void	set_exit_code(int exit_code)
 
 void	exit_shell(int error_code)
 {
-	free_double_ptr(g_program->tokens);
+	free_split(g_program->tokens);
 	if (g_program->nodes->full_cmd != NULL)
 		free_nodes();
 	free_env();

@@ -14,6 +14,7 @@ SOURCES = 	./env/add_env.c							\
 			./executor/builtins_funct.c				\
 			./executor/builtins_extra.c				\
 			./executor/builtins_utils.c				\
+			./executor/builtins_cd.c				\
 			./linked_list/fill_fd.c					\
 			./linked_list/fill_node.c				\
 			./linked_list/fill_node_helper.c		\
@@ -47,9 +48,8 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 HOMEPATH = ${HOME}
 HDR = ./inc/minishell.h
 CC = cc -g -Wall -Wextra -Werror
-# Download readline folder from older commit, uncomment next line and comment after next out
-# -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
-CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
+CFLAGSMAC = -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
+# CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
 

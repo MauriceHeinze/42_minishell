@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_extra.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:55:28 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 16:25:57 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/15 11:00:57 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../inc/minishell.h"
 
 int	pwd(int fd)
 {

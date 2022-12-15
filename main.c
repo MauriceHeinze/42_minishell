@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 17:29:19 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/15 10:26:49 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	setup_term(void)
 
 static void	free_program_loop(void)
 {
-	free_double_ptr(g_program->tokens);
+	free_split(g_program->tokens);
 	free_nodes();
 	free(g_program->unknown_cmd);
 	g_program->unknown_cmd = NULL;
@@ -61,13 +61,13 @@ static int	handle_line(char *line)
 	if (g_program->nodes == NULL)
 	{
 		printf("minishell: %s: command not found\n", g_program->unknown_cmd);
-		free_double_ptr(g_program->tokens);
-		free_double_ptr(words);
+		free_split(g_program->tokens);
+		free_split(words);
 		free(g_program->unknown_cmd);
 		g_program->unknown_cmd = NULL;
 		return (1);
 	}
-	free_double_ptr(words);
+	free_split(words);
 	words = NULL;
 	return (0);
 }
@@ -76,8 +76,8 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	*line;
 
-	(void)argc;
-	(void)argv;
+	(void) argc;
+	(void) argv;
 	init_main(envp);
 	while (1)
 	{

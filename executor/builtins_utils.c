@@ -3,58 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/14 18:31:25 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/15 12:38:16 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../inc/minishell.h"
-
-static void	chdir_sub(t_var *envp, char *dir)
-{
-	char	**first_arg;
-
-	first_arg = NULL;
-	if (dir == NULL || *dir == '\0')
-	{
-		if (chdir (get_env(envp, "HOME")) == -1)
-			builtin_error(CHDIR_ERROR, NULL);
-	}
-	else
-	{
-		first_arg = ft_split(dir, ' ');
-		if (chdir (*first_arg) == -1)
-			special_error(INVALID_PATH);
-		if (first_arg != NULL)
-			free_double_ptr(first_arg);
-	}
-}
-
-int	cd(t_var *envp, char *dir, int fd)
-{
-	char	cwd[PATH_MAX];
-
-	if (getcwd(cwd, PATH_MAX) == NULL)
-		builtin_error(GETCWD_ERROR, NULL);
-	if (ft_strcmp(dir, "-") == 0)
-	{
-		if (chdir (get_env(envp, "OLDPWD")) == -1)
-			special_error(OLDPWD_ERROR);
-		pwd(fd);
-	}
-	else
-		chdir_sub(envp, dir);
-	if (add_env(envp, ft_strdup("OLDPWD"), ft_strdup(cwd)) == NULL)
-		builtin_error(ADD_ENV_ERROR, NULL);
-	if (getcwd(cwd, PATH_MAX) == NULL)
-		builtin_error(GETCWD_ERROR, NULL);
-	if (add_env(envp, ft_strdup("PWD"), ft_strdup(cwd)) == NULL)
-		builtin_error(ADD_ENV_ERROR, NULL);
-	return (EXIT_SUCCESS);
-}
 
 static char	*export_content(char *export)
 {
@@ -103,8 +59,8 @@ int	export_name(char *export, t_var *envp)
 	if (!((*export >= 'A' && *export <= 'Z')
 			|| (*export >= 'a' && *export <= 'z')))
 	{
-		builtin_error(EXPORT_ERROR, NULL);
-		return (EXIT_FAILURE);
+		builtin_error(EXPORT_ERROR, export);
+		return (-1);
 	}
 	else
 	{

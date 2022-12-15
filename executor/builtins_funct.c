@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_funct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:49:58 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 13:50:57 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/15 11:01:01 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "../inc/minishell.h"
 
 static int	exit_sub_handler(t_node *node, char *check_input, int fd)
 {
 	ft_putstr_fd("exit\n", fd);
 	if (*check_input == ' ')
 	{
-		builtin_error(EXIT_NUM_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
+		exec_error(EXIT_NUM_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
 		return (1);
 	}
 	builtin_error(EXIT_ARG_ERROR, &(node->full_cmd[ft_strlen("exit") + 1]));
