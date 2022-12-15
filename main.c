@@ -23,26 +23,6 @@ static void	setup_term(void)
 	default_signal_handler();
 }
 
-static int	check_line(char *line)
-{
-	int		i;
-	char	*cmd;
-
-	i = 0;
-	while(line[i] == ' ' || line[i] == '	'
-	|| line[i] == '.' || line[i] == ';')
-		i++;
-	if (line[i] == '\0')
-	{
-		cmd = ft_strtrim(line, " 	");
-		printf("minishell: %s: command not found\n", cmd);
-		free(line);
-		line = NULL;
-		return (0);
-	}
-	return (1);
-}
-
 static void	free_program_loop(void)
 {
 	free_double_ptr(g_program->tokens);

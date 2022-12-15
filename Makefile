@@ -38,6 +38,7 @@ SOURCES = 	./env/add_env.c							\
 			./utils/init_to_zero.c					\
 			./utils/signal_handler.c				\
 			./utils/track_history.c					\
+			./utils/check_line.c					\
 			./get_next_line/get_next_line_utils.c	\
 			./get_next_line/get_next_line.c
 
@@ -49,8 +50,8 @@ HOMEPATH = ${HOME}
 HDR = ./inc/minishell.h
 CC = cc -g -Wall -Wextra -Werror
 # Download readline folder from older commit, uncomment next line and comment after next out
-CFLAGSMAC = -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
-# CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
+# CFLAGSMAC = -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
+CFLAGSMAC = -lreadline -L $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/lib -lhistory -I $(HOMEPATH)/goinfre/.brew/Cellar/readline/8.2.1/include/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
 

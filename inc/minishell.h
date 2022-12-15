@@ -119,6 +119,7 @@ int		get_category(char *word);
 void	init_to_zero(int *a, int *b, int *c, int *d);
 int		is_whitespace(char *input_str);
 void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
+int		check_line(char *line);
 
 # define OUTPUT 0;
 # define INPUT 1;
