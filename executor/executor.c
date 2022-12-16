@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/16 12:26:47 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_var *envp, t_node *node, int x)
 		exec_error(FORK_ERROR, NULL);
 	if (executor->pids[x] == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		fd_manager_output(node, executor);
 		fd_manager_input(node, executor);
 		child_process(executor, x + 1, envp, node);

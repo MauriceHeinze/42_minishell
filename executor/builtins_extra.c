@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_extra.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:55:28 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 11:00:57 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/16 12:26:26 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*echo_pre(char *str, int *n)
 	return (str);
 }
 
-static int	echo_move(char **str, int *isq, int *idq)
+static int	echo_move(char **str, int *isq, int *idq, int fd)
 {
 	if (**str == '\"' && !(*isq))
 	{
@@ -69,6 +69,11 @@ static int	echo_move(char **str, int *isq, int *idq)
 		*str = *str + 1;
 		return (1);
 	}
+	else
+	{
+		write(fd, *str, 1);
+		*str = *str + 1;
+	}
 	return (0);
 }
 
@@ -86,7 +91,7 @@ int	echo_lat(char *str, int fd)
 	{
 		if (*str == '\"' || *str == '\'')
 		{
-			if (echo_move(&str, &isq, &idq))
+			if (echo_move(&str, &isq, &idq, fd))
 				continue ;
 		}
 		else if (*str == ';' && !isq && !idq)
