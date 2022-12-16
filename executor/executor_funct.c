@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 17:40:12 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 17:53:26 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/16 18:35:34 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	dup2_close_other(t_executor *ex, int pid, t_node *node)
 		dup2_processor(node->fd_in, 0, 2);
 		if (ex->num_pipes > 0 && (ex->pipes[pid] != node->fd_out
 				&& ex->pipes[pid] != node->fd_in))
-			close(pid);
+			close(ex->pipes[pid]);
 	}
 	if (pid > 1 && pid < ex->num_processes)
 		dup2_middle_processor(ex, pid, node);

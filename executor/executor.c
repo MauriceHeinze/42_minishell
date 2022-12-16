@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/16 12:26:47 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:51:12 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	executor(t_node *node, t_var *envp)
 	create_pipes(&executor);
 	heredoc_handler(&executor, node, envp);
 	fork_processes(&executor, envp, node);
-	waitpid(-1, &(executor.status), 0);
+	while(waitpid(-1, &(executor.status), 0) != -1)
+		continue;
 	if (executor.status < 0)
 		set_exit_code(1);
 	else if (!WIFSIGNALED(executor.status))
