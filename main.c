@@ -58,15 +58,6 @@ static int	handle_line(char *line)
 		return (1);
 	g_program->tokens = subwords;
 	g_program->nodes = fill_node(g_program);
-	if (g_program->nodes == NULL || ft_strcmp(expanded_line, "..") == 0)
-	{
-		printf("minishell: %s: command not found\n", g_program->unknown_cmd);
-		free_double_ptr(g_program->tokens);
-		free_double_ptr(words);
-		free(g_program->unknown_cmd);
-		g_program->unknown_cmd = NULL;
-		return (1);
-	}
 	free_double_ptr(words);
 	words = NULL;
 	return (0);
@@ -82,7 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		default_signal_handler();
-		line = readline("minishell $ ");
+	line = readline("\x01\x02minishell $ \x01\x02");
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0 || !check_line(line))

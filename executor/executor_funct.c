@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 17:40:12 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/16 18:35:34 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 15:43:31 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,14 @@ void	dup2_close_other(t_executor *ex, int pid, t_node *node)
 			&& ex->pipes[(pid - 2)] != node->fd_in)
 			close(ex->pipes[(pid - 2)]);
 	}
+}
+
+void	fd_manager(t_node *node, t_executor	*executor)
+{
+	fd_manager_output(node, executor);
+	fd_manager_input(node, executor);
+	if (node->fd_out != 1 && node->fd_out_found == 1)
+		close (node->fd_out);
+	if (node->fd_in != 0 && node->fd_in_found == 1)
+		close (node->fd_out);
 }

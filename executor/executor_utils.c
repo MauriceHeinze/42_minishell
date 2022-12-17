@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 16:44:11 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/17 15:44:20 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,14 @@ char	**restore_envp(t_var *envp)
 	}
 	restored_envp[i] = NULL;
 	return (restored_envp);
+}
+
+void	cmd_not_found(char *str)
+{
+	char	**args;
+
+	args = ft_split(str, ' ');
+	printf("minishell: %s: command not found\n", *args);
+	free_double_ptr(args);
+	set_exit_code(127);
 }

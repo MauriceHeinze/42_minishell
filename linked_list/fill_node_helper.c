@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_node_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/17 15:29:37 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@ static int	get_command_helper(t_node	**node, char *token, int category,
 		(*node)->full_cmd_orig = ft_strdup(token);
 		(*node)->full_path = get_cmd_path_no_free(paths, token);
 		free(token);
-		if ((*node)->full_path == NULL)
-		{
-			free((*node)->full_cmd);
-			(*node)->full_cmd = NULL;
-			free_double_ptr(paths);
-			return (1);
-		}
 		free_double_ptr(paths);
 		(*pos)++;
 	}

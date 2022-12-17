@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 11:04:31 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/17 15:45:38 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,9 @@ void	fd_manager_output(t_node *node, t_executor	*executor);
 char	**restore_envp(t_var *envp);
 
 void	close_until_nn(t_executor *executor, int nn);
+
+void	cmd_not_found(char *str);
+
+void	fd_manager(t_node *node, t_executor	*executor);
 
 #endif

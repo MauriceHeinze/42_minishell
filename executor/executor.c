@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/16 18:51:12 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 15:47:48 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 	{
 		if (node->full_path == NULL && node->full_cmd == NULL
 			&& node->full_cmd_orig == NULL)
+			fd_manager(node, executor);
+		else if (node->full_cmd != NULL && node->full_path == NULL)
 		{
-			fd_manager_output(node, executor);
-			fd_manager_input(node, executor);
-		}
+			fd_manager(node, executor);
+			cmd_not_found(node->full_cmd);
+		}	
 		else if (ft_strcmp(node->full_path, "builtin") != 0)
 			prepare_child_process(executor, envp, node, x);
 		else if (ft_strcmp(node->full_path, "builtin") == 0)
@@ -95,8 +97,8 @@ int	executor(t_node *node, t_var *envp)
 	create_pipes(&executor);
 	heredoc_handler(&executor, node, envp);
 	fork_processes(&executor, envp, node);
-	while(waitpid(-1, &(executor.status), 0) != -1)
-		continue;
+	while (waitpid(-1, &(executor.status), 0) != -1)
+		continue ;
 	if (executor.status < 0)
 		set_exit_code(1);
 	else if (!WIFSIGNALED(executor.status))
