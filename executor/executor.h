@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 15:45:38 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 18:08:45 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	**restore_envp(t_var *envp);
 
 void	close_until_nn(t_executor *executor, int nn);
 
-void	cmd_not_found(char *str);
+void	cmd_not_found(char *str, t_executor	*executor);
 
 void	fd_manager(t_node *node, t_executor	*executor);
 

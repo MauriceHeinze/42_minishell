@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 17:08:32 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/16 16:10:19 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/17 18:22:29 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	check_line(char *line)
 	i = 0;
 	while (line[i] == ' ' || line[i] == '	'
 		|| line[i] == '.' || line[i] == ';'
-		|| line[i] == '\"' || line[i] == '\'')
+		|| line[i] == '\"' || line[i] == '\''
+		|| line[i] == '\t')
 		i++;
 	if (line[i] == '\0')
 	{
 		cmd = ft_strtrim(line, " 	");
 		track_history(line);
-		printf("minishell: %s: command not found\n", cmd);
 		free(line);
 		line = NULL;
 		return (0);

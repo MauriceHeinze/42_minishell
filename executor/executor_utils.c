@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 15:44:20 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 18:29:52 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ char	**restore_envp(t_var *envp)
 	return (restored_envp);
 }
 
-void	cmd_not_found(char *str)
+void	cmd_not_found(char *str, t_executor *executor)
 {
 	char	**args;
 
 	args = ft_split(str, ' ');
 	printf("minishell: %s: command not found\n", *args);
 	free_double_ptr(args);
-	set_exit_code(127);
+	executor->status = -2;
 }

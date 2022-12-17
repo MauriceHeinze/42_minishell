@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 15:47:48 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:08:51 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 		else if (node->full_cmd != NULL && node->full_path == NULL)
 		{
 			fd_manager(node, executor);
-			cmd_not_found(node->full_cmd);
+			cmd_not_found(node->full_cmd, executor);
 		}	
 		else if (ft_strcmp(node->full_path, "builtin") != 0)
 			prepare_child_process(executor, envp, node, x);
@@ -99,8 +99,10 @@ int	executor(t_node *node, t_var *envp)
 	fork_processes(&executor, envp, node);
 	while (waitpid(-1, &(executor.status), 0) != -1)
 		continue ;
-	if (executor.status < 0)
+	if (executor.status == -1)
 		set_exit_code(1);
+	else if (executor.status == -2)
+		set_exit_code(127);
 	else if (!WIFSIGNALED(executor.status))
 		set_exit_code(WEXITSTATUS(executor.status));
 	else if (WIFSIGNALED(executor.status))

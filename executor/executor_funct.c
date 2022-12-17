@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 17:40:12 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 15:43:31 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:29:27 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ void	dup2_middle_processor(t_executor *ex, int pid, t_node *node)
 	dup2_processor(node->fd_in, 0, 0);
 	close_other_fd(ex, (pid - 2) * 2, (pid) * 2 - 1);
 	dup2_processor(node->fd_out, 1, 1);
-	if (ex->pipes[(pid - 2 * 2)] != node->fd_in)
-		close(ex->pipes[(pid - 2 * 2)]);
-	if (ex->pipes[(pid * 2 - 1)] != node->fd_out)
-		close(ex->pipes[(pid * 2 - 1)]);
 }
 
 void	dup2_close_other(t_executor *ex, int pid, t_node *node)
@@ -55,9 +51,6 @@ void	dup2_close_other(t_executor *ex, int pid, t_node *node)
 		dup2_processor(node->fd_out, 1, 1);
 		close_other_fd(ex, pid, pid);
 		dup2_processor(node->fd_in, 0, 2);
-		if (ex->num_pipes > 0 && (ex->pipes[pid] != node->fd_out
-				&& ex->pipes[pid] != node->fd_in))
-			close(ex->pipes[pid]);
 	}
 	if (pid > 1 && pid < ex->num_processes)
 		dup2_middle_processor(ex, pid, node);
@@ -66,9 +59,6 @@ void	dup2_close_other(t_executor *ex, int pid, t_node *node)
 		dup2_processor(node->fd_out, 1, 2);
 		close_other_fd(ex, (pid - 2) * 2, (pid - 2) * 2);
 		dup2_processor(node->fd_in, 0, 0);
-		if (ex->pipes[(pid - 2)] * 2 != node->fd_out
-			&& ex->pipes[(pid - 2)] != node->fd_in)
-			close(ex->pipes[(pid - 2)]);
 	}
 }
 
@@ -79,5 +69,5 @@ void	fd_manager(t_node *node, t_executor	*executor)
 	if (node->fd_out != 1 && node->fd_out_found == 1)
 		close (node->fd_out);
 	if (node->fd_in != 0 && node->fd_in_found == 1)
-		close (node->fd_out);
+		close (node->fd_in);
 }

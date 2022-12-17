@@ -73,7 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		default_signal_handler();
-	line = readline("\x01\x02minishell $ \x01\x02");
+		line = readline("\x01\x02minishell $ \x01\x02");
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0 || !check_line(line))

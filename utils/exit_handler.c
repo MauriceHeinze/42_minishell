@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/17 18:34:01 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,17 @@ void	special_error(int error)
 
 void	builtin_error(int error, char *s)
 {
+	char	**args;
+
 	set_exit_code(-1);
 	if (error == EXPORT_ERROR)
 		printf("minishell: export: `%s': not a valid identifier\n", s);
 	else if (error == EXIT_ARG_ERROR)
-		printf("minishell: exit: %s: numeric argument required\n", s);
+	{
+		args = ft_split(s, ' ');
+		printf("minishell: exit: %s: numeric argument required\n", *args);
+		free_double_ptr(args);
+	}
 	else if (error == GETCWD_ERROR)
 		printf("minishell: getcwd: getting cwd unsucessful\n");
 	else if (error == CHDIR_ERROR)
