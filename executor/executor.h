@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 18:08:45 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:46:19 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_executor
 	int		status;
 	t_node	*first_node;
 	int		heredoc;
+	int		last_builtin_exit;
 }	t_executor;
 
 void	close_fd(t_executor *executor);

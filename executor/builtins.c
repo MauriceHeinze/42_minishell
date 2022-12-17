@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 20:28:50 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:45:05 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ int	builtin_caller(t_node *n, t_executor *ex, t_var *envp)
 		ex->status = env(envp, n->fd_out);
 	else if (ft_strncmp(n->full_cmd, "exit", ft_strlen("exit")) == 0)
 		ex->status = exit_pre_handler(n, n->fd_out);
-	else
-		builtin_error(BULTIN_NF_ERROR, NULL);
+	if (n->next == NULL)
+		ex->last_builtin_exit = ex->status;
 	if (n->fd_out != 1 && n->fd_out_found == 1)
 		close (n->fd_out);
 	if (n->fd_in != 0 && n->fd_in_found == 1)

@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 21:08:51 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:47:36 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	executor(t_node *node, t_var *envp)
 	fork_processes(&executor, envp, node);
 	while (waitpid(-1, &(executor.status), 0) != -1)
 		continue ;
+	if (executor.last_builtin_exit != -3)
+		executor.status = executor.last_builtin_exit;
 	if (executor.status == -1)
 		set_exit_code(1);
 	else if (executor.status == -2)

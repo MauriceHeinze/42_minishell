@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 22:19:59 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/17 21:45:39 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 	executor->cmd_paths = get_cmd_paths(envp);
 	executor->status = 0;
 	executor->first_node = node;
+	executor->last_builtin_exit = -3;
 }
