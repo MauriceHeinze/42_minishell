@@ -66,6 +66,7 @@ t_node	*fill_node(t_program *g_program)
 	init_fill_node(&head, &node, &i);
 	while (g_program->tokens[i] != NULL)
 	{
+		// printf("%s\n", g_program->tokens[i]);
 		if (operator_statement(&i))
 		{
 			fill_fd(g_program, &node, &i);

@@ -45,6 +45,7 @@ int	get_command(t_program *g_program, t_node **node, int *pos)
 	char	*token;
 	char	*tmp;
 
+	printf("token: %s\n", g_program->tokens[(*pos)]);
 	tmp = ft_strtrim(g_program->tokens[(*pos)], " 	");
 	token = remove_quotes(tmp);
 	free(tmp);

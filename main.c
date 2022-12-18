@@ -58,6 +58,8 @@ static int	handle_line(char *line)
 		return (1);
 	g_program->tokens = subwords;
 	g_program->nodes = fill_node(g_program);
+	printf("%s\n", g_program->nodes->full_path);
+	printf("%s\n", g_program->nodes->full_cmd_orig);
 	free_double_ptr(words);
 	words = NULL;
 	return (0);
@@ -76,7 +78,7 @@ int	main(int argc, char *argv[], char *envp[])
 		line = readline("\x01\x02minishell $ \x01\x02");
 		if (!line)
 			break ;
-		if (ft_strlen(line) == 0 || !check_line(line))
+		if (ft_strlen(line) == 0)
 			continue ;
 		if (handle_line(line))
 			continue ;

@@ -22,9 +22,8 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 	dup2_close_other(ex, pid, node);
 	if (execve(get_cmd_path(ex->cmd_paths, *args), args, re) == -1)
 	{
-		exec_error(CMD_NOT_FOUND, *args);
+		exec_error(CMD_NOT_FOUND, ft_strdup(""));
 		free_double_ptr(re);
-		free_double_ptr(args);
 		close(node->fd_out);
 		close(node->fd_in);
 		set_exit_code(127);

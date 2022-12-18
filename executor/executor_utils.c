@@ -84,8 +84,8 @@ void	cmd_not_found(char *str, t_executor *executor)
 {
 	char	**args;
 
-	args = ft_split(str, ' ');
-	printf("minishell: %s: command not found\n", *args);
+	args = ft_split(str, ';');
+	printf("minishell: %s: command not found\n", args[0]);
 	free_double_ptr(args);
 	executor->status = -2;
 }
