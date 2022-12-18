@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_extra.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:55:28 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/16 12:26:26 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:40:04 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	echo_move(char **str, int *isq, int *idq, int fd)
 	return (0);
 }
 
-int	echo_lat(char *str, int fd)
+static int	echo_lat(char *str, int fd)
 {
 	int		isq;
 	int		idq;
@@ -102,4 +102,15 @@ int	echo_lat(char *str, int fd)
 	if (!n)
 		write(fd, "\n", 1);
 	return (EXIT_SUCCESS);
+}
+
+int	echo_fst(char *str, int fd)
+{
+	if (str[-1] == '\0')
+	{
+		write(fd, "\n", 1);
+		return (EXIT_SUCCESS);
+	}
+	else
+		return (echo_lat(str, fd));
 }

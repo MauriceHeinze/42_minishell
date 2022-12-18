@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 21:45:05 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/18 12:39:33 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exp_h(char *export, t_var *envp, int fd)
 	exit_code = 0;
 	if (export == NULL)
 		return (exit_code);
-	else if (*export == '\0')
+	else if (export[-1] == '\0')
 		export_print(envp, fd);
 	else
 	{
@@ -54,7 +54,7 @@ int	unset(char *remove, t_var *envp)
 	int		i;
 	int		c;
 
-	if (remove == NULL)
+	if (remove == NULL || remove[-1] == '\0')
 		return (EXIT_SUCCESS);
 	i = 0;
 	remove_split = ft_split(remove, ';');
@@ -99,7 +99,7 @@ int	builtin_caller(t_node *n, t_executor *ex, t_var *envp)
 	if (ft_strncmp(n->full_cmd, "cd", ft_strlen("cd")) == 0)
 		ex->status = cd(envp, &(n->full_cmd[ft_strlen("cd") + 1]), n->fd_out);
 	else if (ft_strncmp(n->full_cmd, "echo", ft_strlen("echo")) == 0)
-		ex->status = echo_lat(&(n->full_cmd[ft_strlen("echo") + 1]), n->fd_out);
+		ex->status = echo_fst(&(n->full_cmd[ft_strlen("echo") + 1]), n->fd_out);
 	else if (ft_strncmp(n->full_cmd, "pwd", ft_strlen("pwd")) == 0)
 		ex->status = pwd(n->fd_out);
 	else if (ft_strncmp(n->full_cmd, "export", ft_strlen("export")) == 0)

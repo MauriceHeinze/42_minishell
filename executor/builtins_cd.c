@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 11:00:10 by ralf              #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:27:49 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ int	cd(t_var *envp, char *dir, int fd)
 	chdir_return = 0;
 	if (getcwd(cwd, PATH_MAX) == NULL)
 		builtin_error(GETCWD_ERROR, NULL);
-	if (ft_strcmp(dir, "-") == 0)
-		chdir_return = cd_oldir(envp, fd);
-	else if (dir == NULL || *dir == '\0')
+	if (dir == NULL || dir[-1] == '\0')
 		chdir_return = cd_home(envp);
+	else if (ft_strcmp(dir, "-") == 0)
+		chdir_return = cd_oldir(envp, fd);
 	else
 		chdir_return = cd_switch(dir);
 	if (chdir_return == 0)

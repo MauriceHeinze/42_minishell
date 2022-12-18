@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 21:46:19 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/18 12:39:40 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		export_name(char *export, t_var *envp);
 
 int		cd(t_var *envp, char *dir, int fd);
 
-int		echo_lat(char *str, int fd);
+int		echo_fst(char *str, int fd);
 
 int		pwd(int fd);
 
