@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/18 22:55:32 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/19 12:00:32 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,19 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 {
 	char	**args;
 	char	**re;
+	int		i;
+	char	*str_tmp;
 
+	i = 0;
 	re = restore_envp(envp);
 	args = ft_split(node->full_cmd, ';');
+	while (args[i] != NULL)
+	{
+		str_tmp = args[i];
+		args[i] = remove_quotes(args[i]);
+		free(str_tmp);
+		i++;
+	}
 	dup2_close_other(ex, pid, node);
 	if (execve(get_cmd_path(ex->cmd_paths, *args), args, re) == -1)
 	{
