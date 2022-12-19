@@ -6,7 +6,7 @@
 /*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 19:33:17 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/18 12:39:33 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/19 15:06:19 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	env(t_var *envp, int fd)
 	temp = envp;
 	while (temp != NULL)
 	{
-		if (temp->content != NULL)
+		if (temp->content != NULL && strcmp("?", temp->name))
 		{
 			write(fd, temp->name, ft_strlen(temp->name));
 			write(fd, "=", 1);

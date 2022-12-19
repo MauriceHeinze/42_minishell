@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 12:38:16 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/19 15:11:22 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,31 @@ int	export_print(t_var *envp, int fd)
 	temp = envp;
 	while (temp != NULL)
 	{
-		write(fd, "declare -x ", 11);
-		write(fd, temp->name, ft_strlen(temp->name));
-		if (temp->content != NULL)
+		if (strcmp("?", temp->name))
 		{
-			write(fd, "=\"", 2);
-			write(fd, temp->content, ft_strlen(temp->content));
-			write(fd, "\"", 1);
+			write(fd, "declare -x ", 11);
+			write(fd, temp->name, ft_strlen(temp->name));
+			if (temp->content != NULL)
+			{
+				write(fd, "=\"", 2);
+				write(fd, temp->content, ft_strlen(temp->content));
+				write(fd, "\"", 1);
+			}
+			write(fd, "\n", 1);
 		}
-		write(fd, "\n", 1);
 		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);
+}
+
+static void	first_arg_builtin_error(char *str)
+{
+	char	**args;
+
+	args = ft_split(str, ' ');
+	if (args[0] != NULL)
+		builtin_error(EXPORT_ERROR, args[0]);
+	free_double_ptr(args);
 }
 
 int	export_name(char *export, t_var *envp)
@@ -59,7 +72,7 @@ int	export_name(char *export, t_var *envp)
 	if (!((*export >= 'A' && *export <= 'Z')
 			|| (*export >= 'a' && *export <= 'z')))
 	{
-		builtin_error(EXPORT_ERROR, export);
+		first_arg_builtin_error(export);
 		return (-1);
 	}
 	else

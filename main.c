@@ -85,7 +85,6 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		executor(g_program->nodes, g_program->envp);
 		free_program_loop();
-		system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);

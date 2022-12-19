@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_funct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:49:58 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 11:01:01 by ralf             ###   ########.fr       */
+/*   Updated: 2022/12/19 14:56:11 by rpohl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exit_pre_handler(t_node *node, int fd)
 			else
 			{
 				if (exit_sub_handler(node, check_input, fd) == 1)
-					return (1);
+					return (-1);
 			}
 		}
 		ft_putstr_fd("exit\n", fd);
