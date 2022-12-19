@@ -48,7 +48,7 @@ CLIENTOBJ =	$(CLIENT:.c=.o)
 
 HOMEPATH = ${HOME}
 HDR = ./inc/minishell.h
-CC = cc -g -Wall -Wextra -Werror
+CC = cc -g
 CFLAGSMAC = -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
 CFLAGSLINUX = -lreadline
 RM = rm -f
