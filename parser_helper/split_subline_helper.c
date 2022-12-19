@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/19 15:42:45 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:40:56 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	skip(char **splits, int *i, int *k)
 
 static void	skip_space(char **splits, int *i, int *k)
 {
-	if (splits[(*i)][(*k)] == ' ' && splits[(*i)][(*k)] == '	')
+	if (splits[(*i)][(*k)] == ' ' || splits[(*i)][(*k)] == '	')
 		(*k)++;
 }
 
@@ -76,6 +76,8 @@ void	acutal_split(char **splits, char **words, int *i, int *no_word)
 		start = skip(splits, i, &k);
 		if (k > start)
 			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
+		if (splits[(*i)][k] == '\0')
+			break ;
 		if (double_operator_found(splits[(*i)][k], splits[(*i)][k + 1]))
 		{
 			set_start(&start, &k, 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/19 12:00:32 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/19 16:37:44 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 	while (args[i] != NULL)
 	{
 		str_tmp = args[i];
-		args[i] = remove_quotes(args[i]);
+		if (args[i][0] == '\"' || args[i][0] == '\'')
+			args[i] = remove_quotes(args[i]);
+		else
+			args[i] = ft_strtrim(args[i], " ");
 		free(str_tmp);
 		i++;
 	}
@@ -73,7 +76,7 @@ static void	fork_processes(t_executor *executor, t_var *envp, t_node *node)
 		{
 			fd_manager(node, executor);
 			cmd_not_found(node->full_cmd, executor);
-		}	
+		}
 		else if (ft_strcmp(node->full_path, "builtin") != 0)
 			prepare_child_process(executor, envp, node, x);
 		else if (ft_strcmp(node->full_path, "builtin") == 0)
