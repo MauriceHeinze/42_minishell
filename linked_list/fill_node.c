@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_node.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/11 22:28:02 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/19 12:21:08 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_node	*fill_node(t_program *g_program)
 	init_fill_node(&head, &node, &i);
 	while (g_program->tokens[i] != NULL)
 	{
-		// printf("%s\n", g_program->tokens[i]);
 		if (operator_statement(&i))
 		{
 			fill_fd(g_program, &node, &i);

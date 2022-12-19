@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_node_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 18:08:00 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/17 15:29:37 by rpohl            ###   ########.fr       */
+/*   Updated: 2022/12/19 12:16:20 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,13 @@ int	get_command(t_program *g_program, t_node **node, int *pos)
 	char	*token;
 	char	*tmp;
 
-	printf("token: %s\n", g_program->tokens[(*pos)]);
 	tmp = ft_strtrim(g_program->tokens[(*pos)], " 	");
 	token = remove_quotes(tmp);
+	if (token[0] == '\0')
+	{
+		g_program->tokens[(*pos)][0] = '\0';
+		return (0);
+	}
 	free(tmp);
 	category = get_category(token);
 	(*node)->full_cmd = ft_strdup(token);

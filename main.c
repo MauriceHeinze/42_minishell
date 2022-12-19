@@ -58,8 +58,6 @@ static int	handle_line(char *line)
 		return (1);
 	g_program->tokens = subwords;
 	g_program->nodes = fill_node(g_program);
-	printf("%s\n", g_program->nodes->full_path);
-	printf("%s\n", g_program->nodes->full_cmd_orig);
 	free_double_ptr(words);
 	words = NULL;
 	return (0);
@@ -79,11 +77,15 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!line)
 			break ;
 		if (ft_strlen(line) == 0)
+		{
+			free(line);
 			continue ;
+		}
 		if (handle_line(line))
 			continue ;
 		executor(g_program->nodes, g_program->envp);
 		free_program_loop();
+		system("leaks minishell");
 	}
 	free_env();
 	free(g_program->unknown_cmd);
