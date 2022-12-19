@@ -6,25 +6,25 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/19 15:20:52 by mheinze          ###   ########.fr       */
+/*   Updated: 2022/12/19 15:42:22 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static int	get_total_words(char **splitted_line)
+static int	get_total_words(char **splitted)
 {
 	int		i;
 	int		total_words;
 
 	i = 0;
 	total_words = 1;
-	while (splitted_line[i] != NULL)
-		total_words += count_words_operators(splitted_line[i++]);
+	while (splitted[i] != NULL)
+		total_words += count_words_operators(splitted[i++]);
 	return (total_words);
 }
 
-char	**split_subline(char **splitted_line)
+char	**split_subline(char **splits)
 {
 	int		i;
 	int		k;
@@ -32,46 +32,16 @@ char	**split_subline(char **splitted_line)
 	int		no_word;
 	char	**words;
 
-	i = 0;
-	no_word = 0;
-	start = 0;
-	words = malloc(sizeof(char *) * get_total_words(splitted_line));
+	init_to_zero(&i, &k, &start, &no_word);
+	words = malloc(sizeof(char *) * get_total_words(splits));
 	if (!words)
 		return (NULL);
-	while (splitted_line[i] != NULL)
+	while (splits[i] != NULL)
 	{
-		if (count_words_operators(splitted_line[i]) == 1)
-			words[no_word++] = ft_strdup(splitted_line[i]);
+		if (count_words_operators(splits[i]) == 1)
+			words[no_word++] = ft_strdup(splits[i]);
 		else
-		{
-			k = 0;
-			while (splitted_line[i][k] != '\0')
-			{
-				start = k;
-				if (splitted_line[i][k] == '\"' || splitted_line[i][k] == '\'')
-					k = skip_quote(splitted_line[i], k);
-				while (!ft_strchr("|<>&", splitted_line[i][k]) && splitted_line[i][k] != '\0')
-					k++;
-				if (k > start)
-					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
-				if (double_operator_found(splitted_line[i][k], splitted_line[i][k + 1]))
-				{
-					start = k;
-					k += 2;
-					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
-				}
-				else if ((splitted_line[i][k] == '<') || (splitted_line[i][k] == '>') || (splitted_line[i][k] == '|'))
-				{
-					start = k;
-					k++;
-					words[no_word++] = ft_substr(splitted_line[i], start, k - start);
-					if (splitted_line[i][k] == ' ')
-						k++;
-				}
-				else
-					k++;
-			}
-		}
+			acutal_split(splits, words, &i, &no_word);
 		i++;
 	}
 	words[no_word] = NULL;
