@@ -6,22 +6,8 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:41:59 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/19 17:40:56 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/04 16:31:36 by mheinze          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
-#include "../inc/minishell.h"
-
-/* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   get_cmd_path.c									 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: mheinze <mheinze@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/10/04 21:08:49 by mheinze		   #+#	#+#			 */
-/*   Updated: 2022/11/22 16:15:23 by mheinze		  ###   ########.fr	   */
-/*																			*/
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
@@ -53,12 +39,6 @@ static int	skip(char **splits, int *i, int *k)
 	return (old_k);
 }
 
-static void	skip_space(char **splits, int *i, int *k)
-{
-	if (splits[(*i)][(*k)] == ' ' || splits[(*i)][(*k)] == '	')
-		(*k)++;
-}
-
 static void	set_start(int *start, int *k, int add)
 {
 	(*start) = (*k);
@@ -81,15 +61,13 @@ void	acutal_split(char **splits, char **words, int *i, int *no_word)
 		if (double_operator_found(splits[(*i)][k], splits[(*i)][k + 1]))
 		{
 			set_start(&start, &k, 2);
-			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
-			skip_space(splits, i, &k);
+			words[(*no_word)++] = substr_skip(splits, start, &k, i);
 		}
 		else if (splits[(*i)][k] == '|' || splits[(*i)][k] == '>'
 				|| splits[(*i)][k] == '<')
 		{
 			set_start(&start, &k, 1);
-			words[(*no_word)++] = ft_substr(splits[(*i)], start, k - start);
-			skip_space(splits, i, &k);
+			words[(*no_word)++] = substr_skip(splits, start, &k, i);
 		}
 		else
 			k++;

@@ -21,7 +21,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./libft.h"
-# include "../get_next_line/get_next_line.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <sys/types.h>
@@ -70,6 +69,7 @@ t_program	*g_program;
 
 char	**split_line(char *str);
 char	**split_subline(char **splitted);
+char	*substr_skip(char **splits, int start, int *k, int *i);
 int		split_line_counter(char *str);
 void	acutal_split(char **splits, char **words, int *i, int *no_word);
 int		double_operator_found(char a, char b);
