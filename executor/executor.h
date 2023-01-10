@@ -95,4 +95,6 @@ void	fd_manager(t_node *node, t_executor	*executor);
 
 void	execve_error(char **re, t_node *node);
 
+int		export_invalid(char *export);
+
 #endif
