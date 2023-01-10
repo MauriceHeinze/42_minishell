@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_funct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:49:58 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/19 14:56:11 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:41:42 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ int	exit_pre_handler(t_node *node, int fd)
 
 int	export_invalid(char *export)
 {
-	while (*export != '\0' && *export != '\0')
+	while (*export != '\0' && *export != '=')
 	{
 		if (!((*export >= 'A' && *export <= 'Z')
 				|| (*export >= 'a' && *export <= 'z')
 				|| (*export >= '0' && *export <= '9')
-				|| *export == '-'))
+				|| *export == '_'))
 			return (1);
+		export++;
 	}
 	return (0);
 }

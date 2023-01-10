@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/18 12:39:40 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:45:46 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	free_double_ptr(char **ptr);
 
 int		exit_pre_handler(t_node *node, int fd);
 
-int		export_name(char *export, t_var *envp);
+int		export_name(char *exp, t_var *envp);
 
 int		cd(t_var *envp, char *dir, int fd);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/19 15:11:22 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:45:10 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,30 @@ static void	first_arg_builtin_error(char *str)
 	free_double_ptr(args);
 }
 
-int	export_name(char *export, t_var *envp)
+int	export_name(char *exp, t_var *envp)
 {
 	int		length_name;
 	char	*name;
 	char	*content;
 
 	content = NULL;
-	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a'
-				&& *export <= 'z')) || export_invalid(export) == 1)
+	if (!((*exp >= 'A' && *exp <= 'Z') || *exp == '_' || (*exp >= 'a'
+				&& *exp <= 'z')) || export_invalid(exp) == 1)
 	{
-		first_arg_builtin_error(export);
+		first_arg_builtin_error(exp);
 		return (-1);
 	}
 	else
 	{
 		length_name = 0;
-		while (export[length_name] != '\0' && export[length_name] != '='
-			&& export[length_name] != ' ' && export[length_name] != ';')
+		while (exp[length_name] != '\0' && exp[length_name] != '='
+			&& exp[length_name] != ' ' && exp[length_name] != ';')
 			length_name++;
 		name = malloc(sizeof(char) * (length_name + 1));
-		ft_strlcpy(name, export, length_name + 1);
+		ft_strlcpy(name, exp, length_name + 1);
 		name[length_name] = '\0';
-		if (export[length_name] == '=')
-			content = export_content(&(export[length_name + 1]));
+		if (exp[length_name] == '=')
+			content = export_content(&(exp[length_name + 1]));
 		add_env(envp, name, content);
 	}
 	return (EXIT_SUCCESS);
