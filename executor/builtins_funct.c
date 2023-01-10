@@ -57,3 +57,16 @@ int	exit_pre_handler(t_node *node, int fd)
 	}
 	return (0);
 }
+
+int	export_invalid(char *export)
+{
+	while (*export != '\0' && *export != '\0')
+	{
+		if (!((*export >= 'A' && *export <= 'Z')
+				|| (*export >= 'a' && *export <= 'z')
+				|| (*export >= '0' && *export <= '9')
+				|| *export == '-'))
+			return (1);
+	}
+	return (0);
+}
