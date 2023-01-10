@@ -69,8 +69,8 @@ int	export_name(char *export, t_var *envp)
 	char	*content;
 
 	content = NULL;
-	if (!((*export >= 'A' && *export <= 'Z')
-			|| (*export >= 'a' && *export <= 'z')))
+	if (!((*export >= 'A' && *export <= 'Z') || (*export >= 'a'
+				&& *export <= 'z')) || export_invalid(export) == 1)
 	{
 		first_arg_builtin_error(export);
 		return (-1);
