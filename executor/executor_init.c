@@ -62,3 +62,12 @@ void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 	executor->first_node = node;
 	executor->last_builtin_exit = -3;
 }
+
+void	execve_error(char **re, t_node *node)
+{
+	exec_error(CMD_NOT_FOUND, ft_strdup(""));
+	free_double_ptr(re);
+	close(node->fd_out);
+	close(node->fd_in);
+	set_exit_code(127);
+}
