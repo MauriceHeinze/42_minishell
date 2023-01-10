@@ -93,4 +93,6 @@ void	cmd_not_found(char *str, t_executor	*executor);
 
 void	fd_manager(t_node *node, t_executor	*executor);
 
+void	execve_error(char **re, t_node* node);
+
 #endif
