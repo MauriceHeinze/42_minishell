@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:02:52 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/15 16:45:09 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/11 15:54:27 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	heredoc(t_executor	*ex, t_var *envp)
 		buffer = readline("> ");
 		if (buffer == NULL)
 			break ;
-		if (!ft_strncmp(ex->limiter, buffer, ft_strlen(ex->limiter)))
+		if (!ft_strcmp(ex->limiter, buffer))
 		{
 			free(buffer);
 			break ;
