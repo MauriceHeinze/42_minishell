@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_fd_manager.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:04:10 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/11 14:04:16 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:48:39 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,10 @@ void	fd_manager_output(t_node *node, t_executor	*executor)
 	}
 	if (node->fd_out_found == 0 && node->next != NULL)
 		node->fd_out = executor->pipes[node->node_num * 2 + 1];
+}
+
+void	free_dptr(char **ptr)
+{
+	while (*ptr != NULL)
+		free(*ptr++);
 }

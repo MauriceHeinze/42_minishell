@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/17 21:45:39 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 void	execve_error(char **re, t_node *node)
 {
 	exec_error(CMD_NOT_FOUND, ft_strdup(""));
-	free_double_ptr(re);
+	free_dptr(re);
 	close(node->fd_out);
 	close(node->fd_in);
 	set_exit_code(127);

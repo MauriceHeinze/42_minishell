@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 13:50:03 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/10 15:45:10 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	first_arg_builtin_error(char *str)
 	args = ft_split(str, ' ');
 	if (args[0] != NULL)
 		builtin_error(EXPORT_ERROR, args[0]);
-	free_double_ptr(args);
+	free_dptr(args);
 }
 
 int	export_name(char *exp, t_var *envp)

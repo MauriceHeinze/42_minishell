@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:44:02 by rpohl             #+#    #+#             */
-/*   Updated: 2022/12/19 14:50:20 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ void	cmd_not_found(char *str, t_executor *executor)
 		printf("minishell: %s: command not found\n", args[0]);
 	else
 		printf("minishell: : command not found\n");
-	free_double_ptr(args);
+	free_dptr(args);
 	executor->status = -2;
 }

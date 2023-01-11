@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/10 15:45:46 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		builtin_caller(t_node *node, t_executor *executor, t_var *envp);
 
 int		executor(t_node *node, t_var *envp);
 
-void	free_double_ptr(char **ptr);
+void	free_dptr(char **ptr);
 
 int		exit_pre_handler(t_node *node, int fd);
 

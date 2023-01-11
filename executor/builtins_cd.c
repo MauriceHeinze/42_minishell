@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 11:00:10 by ralf              #+#    #+#             */
-/*   Updated: 2022/12/18 12:27:49 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	cd_switch(char *dir)
 	first_arg = ft_split(dir, ' ');
 	chdir_return = chdir(*first_arg);
 	if (first_arg != NULL)
-		free_double_ptr(first_arg);
+		free_dptr(first_arg);
 	if (chdir_return == -1)
 		builtin_error(INVALID_PATH, NULL);
 	return (chdir_return);
