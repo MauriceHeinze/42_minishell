@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpohl <rpohl@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/17 18:34:01 by rpohl            ###   ########.fr       */
+/*   Updated: 2023/01/12 14:36:17 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	exec_error(int error, char *s)
 		printf("minishell: pipe: creating of pipes unsucessful\n");
 	else if (error == FORK_ERROR)
 		printf("minishell: fork: creating of forks unsucessful\n");
+	else if (error == DIR_ERROR)
+		printf("minishell: %s: Is a directory\n", s);
 }
 
 void	set_exit_code(int exit_code)

@@ -182,6 +182,7 @@ int		check_line(char *line);
 # define CHDIR_ERROR				22
 # define ADD_ENV_ERROR				23
 # define BULTIN_NF_ERROR			24
+# define DIR_ERROR					25
 
 # define CMD_NOT_FOUND				127
 # define INVALID_EXIT_ARG			255

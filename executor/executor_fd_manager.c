@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:04:10 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/11 17:48:39 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/12 14:39:38 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ static int	oo(char *meta, int mode)
 		fd = open(meta, O_TRUNC | O_CREAT | O_RDWR, 000644);
 	else if (mode == MODE_APPEND)
 		fd = open(meta, O_APPEND | O_CREAT | O_RDWR, 000644);
-	if (fd == -1)
+	if (fd == -1 && errno == EISDIR)
+		exec_error(DIR_ERROR, meta);
+	else if (fd == -1)
 		exec_error(PERMISSION_ERROR, meta);
 	return (fd);
 }

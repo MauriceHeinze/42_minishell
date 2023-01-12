@@ -6,7 +6,7 @@
 /*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/12 14:29:56 by ralf             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <errno.h>
 # include <string.h>
 # include <stdio.h>
 # include "../inc/minishell.h"
