@@ -16,6 +16,7 @@ SOURCES = 	./env/add_env.c								\
 			./executor/builtins_utils.c					\
 			./executor/builtins_cd.c					\
 			./linked_list/fill_fd.c						\
+			./linked_list/fill_fd_helper.c						\
 			./linked_list/fill_node.c					\
 			./linked_list/fill_node_helper.c			\
 			./linked_list/free_nodes.c					\

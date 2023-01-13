@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/13 17:23:39 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:58:57 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	execve_error(char **re, t_node *node)
 	}
 	else if (err_code == 0)
 		exec_error(CMD_NOT_FOUND, ft_strdup(""));
-	// exec_error(CMD_NOT_FOUND, ft_strdup(""));
 	// free_dptr(re);
 	close(node->fd_out);
 	close(node->fd_in);

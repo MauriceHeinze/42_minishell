@@ -120,6 +120,8 @@ void	init_to_zero(int *a, int *b, int *c, int *d);
 int		is_whitespace(char *input_str);
 void	fd_handle_redirection(int category, t_node *node, t_fd *fd, int *pos);
 int		check_line(char *line);
+void	node_null(t_node **node, t_fd **head, t_fd **fd);
+void	free_multiple(char *a, char *b, char *c, char *d);
 
 # define OUTPUT 0;
 # define INPUT 1;
