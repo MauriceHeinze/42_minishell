@@ -6,13 +6,13 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2023/01/13 16:12:42 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:23:58 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int		garbage_bin(char *cmd)
+int	garbage_bin(char *cmd)
 {
 	if (access(cmd, X_OK) == 0)
 		return (0);

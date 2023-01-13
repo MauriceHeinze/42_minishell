@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/13 16:08:53 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/13 17:23:39 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 	executor->last_builtin_exit = -3;
 }
 
-static int		garbage_bin_2(char *cmd)
+static int	garbage_bin_2(char *cmd)
 {
 	if (ft_strchr(cmd, '/'))
 	{
@@ -82,9 +82,9 @@ static int		garbage_bin_2(char *cmd)
 
 void	execve_error(char **re, t_node *node)
 {
-	(void) re;
-	int	err_code;
+	int		err_code;
 
+	(void) re;
 	err_code = garbage_bin_2(node->full_path);
 	if (err_code == 1)
 	{
