@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:05:47 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/12 14:29:56 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/13 15:55:18 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <string.h>
 # include <stdio.h>
 # include "../inc/minishell.h"
+
+#include <dirent.h>
+#include <errno.h>
 
 typedef struct s_executor
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ralf <ralf@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/11 17:49:17 by ralf             ###   ########.fr       */
+/*   Updated: 2023/01/13 16:08:53 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,39 @@ void	init_executor(t_executor *executor, t_var *envp, t_node *node)
 	executor->last_builtin_exit = -3;
 }
 
+static int		garbage_bin_2(char *cmd)
+{
+	if (ft_strchr(cmd, '/'))
+	{
+		if (errno == EACCES)
+		{
+			write(2, "minishell: ", 11);
+			write(2, cmd, ft_strlen(cmd));
+			write(2, ": is a directory\n", 17);
+			return (2);
+		}
+		else if (errno == ENOENT)
+			return (1);
+	}
+	return (0);
+}
+
 void	execve_error(char **re, t_node *node)
 {
-	exec_error(CMD_NOT_FOUND, ft_strdup(""));
-	free_dptr(re);
+	(void) re;
+	int	err_code;
+
+	err_code = garbage_bin_2(node->full_path);
+	if (err_code == 1)
+	{
+		write(2, "minishell: ", 11);
+		write(2, node->full_path, ft_strlen(node->full_path));
+		write(2, ": No such file or directory\n", 30);
+	}
+	else if (err_code == 0)
+		exec_error(CMD_NOT_FOUND, ft_strdup(""));
+	// exec_error(CMD_NOT_FOUND, ft_strdup(""));
+	// free_dptr(re);
 	close(node->fd_out);
 	close(node->fd_in);
 	set_exit_code(127);

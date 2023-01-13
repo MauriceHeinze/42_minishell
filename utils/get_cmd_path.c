@@ -6,17 +6,28 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:08:49 by mheinze           #+#    #+#             */
-/*   Updated: 2022/12/15 16:34:05 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/13 16:12:42 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int		garbage_bin(char *cmd)
+{
+	if (access(cmd, X_OK) == 0)
+		return (0);
+	if (ft_strchr(cmd, '/'))
+		return (1);
+	return (0);
+}
 
 char	*get_cmd_path(char **paths, char *cmd)
 {
 	char	*tmp;
 	char	*command;
 
+	if (garbage_bin(cmd))
+		return (ft_strdup(cmd));
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	while (*paths)
@@ -40,22 +51,22 @@ char	*get_cmd_path_no_free(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
+	command = NULL;
+	if (garbage_bin(cmd))
+		return (ft_strdup(cmd));
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
-	if (cmd[0] != '.')
+	while (paths != NULL && *paths)
 	{
-		while (paths != NULL && *paths)
-		{
-			tmp = ft_strjoin(*paths, "/");
-			command = ft_strjoin(tmp, cmd);
-			free(tmp);
-			tmp = NULL;
-			if (access(command, X_OK) == 0)
-				return (command);
-			free(command);
-			command = NULL;
-			paths++;
-		}
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		tmp = NULL;
+		if (access(command, X_OK) == 0)
+			return (command);
+		free(command);
+		command = NULL;
+		paths++;
 	}
 	g_program->unknown_cmd = ft_strdup(cmd);
 	set_exit_code(127);
