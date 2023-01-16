@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:49:49 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/13 15:50:02 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/16 14:00:46 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	child_process(t_executor *ex, int pid, t_var *envp, t_node *node)
 	dup2_close_other(ex, pid, node);
 	if (execve(get_cmd_path(ex->cmd_paths, *args), args, re) == -1)
 		execve_error(re, node);
+	free_double_ptr(args);
 	return (0);
 }
 
@@ -90,7 +91,10 @@ static void	free_executor(t_executor *executor)
 		free(executor->pipes);
 	free(executor->pids);
 	if (executor->cmd_paths != NULL)
+	{
 		free_dptr(executor->cmd_paths);
+		free(executor->cmd_paths);
+	}
 }
 
 int	executor(t_node *node, t_var *envp)
