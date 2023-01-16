@@ -6,7 +6,7 @@
 /*   By: mheinze <mheinze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 14:00:13 by rpohl             #+#    #+#             */
-/*   Updated: 2023/01/16 13:54:20 by mheinze          ###   ########.fr       */
+/*   Updated: 2023/01/16 14:09:37 by mheinze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static int	garbage_bin_2(char *cmd)
 void	execve_error(char **re, t_node *node)
 {
 	int		err_code;
+	char	*error;
 
 	(void) re;
 	err_code = garbage_bin_2(node->full_path);
@@ -93,7 +94,11 @@ void	execve_error(char **re, t_node *node)
 		write(2, ": No such file or directory\n", 30);
 	}
 	else if (err_code == 0)
-		exec_error(CMD_NOT_FOUND, ft_strdup(""));
+	{
+		error = ft_strdup("");
+		exec_error(CMD_NOT_FOUND, error);
+		free(error);
+	}
 	free(re);
 	close(node->fd_out);
 	close(node->fd_in);
