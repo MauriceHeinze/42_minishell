@@ -47,10 +47,8 @@ CLIENT = main.c $(SOURCES)
 CLIENTOBJ =	$(CLIENT:.c=.o)
 
 HDR = ./inc/minishell.h
-CC = cc -g
-# FLAGS = -Wall -Wextra -Werror -lreadline -L /opt/homebrew/Cellar/readline/8.2.1/lib -I /opt/homebrew/Cellar/readline/8.2.1/include/
-CFLAGSMAC = -Wall -Wextra -Werror -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
-CFLAGSLINUX = -lreadline
+CC = cc -g -Wall -Wextra -Werror
+CFLAGSMAC = -lreadline -L ./readline/ -lhistory -L ./readline/ -I /readline/ -ltermcap
 RM = rm -f
 
 all: $(NAME)
@@ -58,12 +56,6 @@ all: $(NAME)
 $(NAME): $(HDR) $(CLIENTOBJ)
 	make -C ./libft
 	$(CC) $(CFLAGSMAC) $(CLIENTOBJ) ./libft/libft.a -o $(NAME)
-
-allLinux: nameLinux
-
-nameLinux: $(HDR) $(CLIENTOBJ)
-	make -C ./libft
-	$(CC) $(CLIENTOBJ) ./libft/libft.a $(CFLAGSLINUX) -o $(NAME)
 
 clean:
 	make fclean -C ./libft
@@ -75,7 +67,5 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
-
-rel: fclean allLinux
 
 .PHONY: all clean fclean

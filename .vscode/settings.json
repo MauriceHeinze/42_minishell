@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"typeinfo": "c",
-		"executor.h": "c",
-		"dirent.h": "c",
-		"__node_handle": "c"
-	}
-}
